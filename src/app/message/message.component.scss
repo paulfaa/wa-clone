@@ -1,0 +1,18 @@
+#messageBubble{
+    border-radius: 25px;
+    background-color: cornflowerblue;
+    min-height: 70px;
+    max-width: 80%;
+}
+p.ownMessage{
+    background-color: rgb(171, 212, 95);
+    float: right;
+}
+p.otherMessage{
+    background-color: rgb(226, 230, 221);
+    float: left;
+}
+#messageDate {
+    bottom: 50px;
+    float: right;
+}

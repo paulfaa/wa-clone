@@ -1,0 +1,10 @@
+<h1>WA</h1>
+
+<div fileUpload (fileDropped)="onFileDrop($event)">
+    <input type="file" (change)="fileBrowserHandler($event.target.files )"/>
+    Drop text file here
+</div>
+
+<router-outlet>
+  
+</router-outlet>
