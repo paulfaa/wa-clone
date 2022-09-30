@@ -7,9 +7,20 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 })
 export class AppComponent {
   title = 'wa';
+  fileContent = '';
 
   @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef | undefined;
   file: any;
+
+  public onChange(fileList: FileList): void {
+    let file = fileList[0];
+    let fileReader: FileReader = new FileReader();
+    fileReader.onloadend = function(x) {
+      var result = fileReader.result;
+      this.fileContent = result;
+    }
+    fileReader.readAsText(file);
+  }
 
   /**
    * on file drop handler
