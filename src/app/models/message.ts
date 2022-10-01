@@ -1,11 +1,11 @@
 export class Message {
     messageDate: Date;
     messageContents: string;
-    sentByMe: boolean;
+    isChatOwner: boolean;
 
-    constructor(date: Date, contents: string, sentByMe: boolean) {
+    constructor(date: Date, contents: string, isChatOwner: boolean) {
         this.messageDate = date;
         this.messageContents = contents;
-        this.sentByMe = sentByMe;
+        this.isChatOwner = isChatOwner;
     }
 }
