@@ -16,6 +16,10 @@ export class MessageParsingService {
 
   constructor() { }
 
+  public getAllMessages(){
+    return this.messages;
+  }
+
   private getAllChatMembers(): string[]{
     var members: string[] = [];
     //look at first x lines of chat and add unique members to array
@@ -34,18 +38,22 @@ export class MessageParsingService {
       const sender = line.match(senderRegex)
       const messageContents = line.match(contentsRegex);
       const isChatOwner = sender?.toString() == this.chatOwner;
-      this.messages.push(new Message(date, messageContents!.toString(), isChatOwner));
+      this.messages.push(new Message(date, sender!.toString(), messageContents!.toString(), isChatOwner));
     });
   }
 
   public parseOldFormat(text: string): void {
     var lines: string[] = [];
+    const contentsRegex = new RegExp("\?.*");
+    const senderRegex = new RegExp("\?.*");
     lines.forEach(line => {
       var date = new Date(line.substring(0,7));
       const time = new Date (line.substring(10, 15));
       date.setTime(time.getTime()); 
-      const isUser = true;
-      this.messages.push(new Message(date, "messageContents", isUser));
+      const sender = line.match(senderRegex)
+      const messageContents = line.match(contentsRegex);
+      const isChatOwner = sender?.toString() == this.chatOwner;
+      this.messages.push(new Message(date, sender!.toString(), messageContents!.toString(), isChatOwner));
     });
   }
 
