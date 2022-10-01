@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OptionsMenuComponent implements OnInit {
 
+  selected = 'option2';
+
   constructor() { }
 
   ngOnInit(): void {
