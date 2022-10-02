@@ -8,9 +8,10 @@ import { AppComponent } from './app.component';
 import { MessageComponent } from './message/message.component';
 import { DatePopupComponent } from './date-popup/date-popup.component';
 import { ChatViewComponent } from './chat-view/chat-view.component';
-import { FileUploadDirective } from './file-upload.directive';
 import { OptionsMenuComponent } from './options-menu/options-menu.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [
@@ -18,7 +19,6 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     MessageComponent,
     DatePopupComponent,
     ChatViewComponent,
-    FileUploadDirective,
     OptionsMenuComponent,
     FileUploadComponent
   ],
@@ -27,7 +27,8 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     AppRoutingModule,
     MatRadioModule,
     MatSelectModule,
-    MatIconModule
+    MatIconModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

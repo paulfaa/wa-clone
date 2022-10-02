@@ -14,9 +14,27 @@ export class FileUploadComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onFileSelected(event: any) {
+  readFileContent(file: File): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+        if (!file) {
+            resolve('');
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            const text = reader.result!.toString();
+            resolve(text);
+
+        };
+        reader.readAsText(file);
+    });
+}
+
+  async onFileSelected(event: any) {
 
     const file:File = event.target.files[0];
+    const fileReader = new FileReader();
 
     if (file) {
 
@@ -25,8 +43,9 @@ export class FileUploadComponent implements OnInit {
         const formData = new FormData();
 
         formData.append("thumbnail", file);
-
+        const fileContent = await this.readFileContent(file);
+        console.log(this.fileName)
+        console.log(fileContent);
     }
-}
-
+  }
 }
