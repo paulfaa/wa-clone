@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Message } from '../models/message';
 
 @Component({
   selector: 'app-message',
@@ -7,12 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessageComponent implements OnInit {
 
-  date: Date;
-  sentByMe: boolean;
+  messageDate: Date;
+  author: string;
+  messageContents: string;
+  isChatOwner: boolean;
 
-  constructor() { 
-    this.date = new Date();
-    this.sentByMe = true;
+  constructor(message: Message) { 
+    this.messageDate = message.messageDate;
+    this.author = message.author;
+    this.messageContents = message.messageContents;
+    this.isChatOwner = message.isChatOwner;
   }
 
   ngOnInit(): void {
