@@ -15,7 +15,7 @@ export class FileUploadComponent implements OnInit {
   }
 
   readFileContent(file: File): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
+    return new Promise<string>((resolve) => {
         if (!file) {
             resolve('');
         }
@@ -39,9 +39,7 @@ export class FileUploadComponent implements OnInit {
     if (file) {
 
         this.fileName = file.name;
-
         const formData = new FormData();
-
         formData.append("thumbnail", file);
         const fileContent = await this.readFileContent(file);
         console.log(this.fileName)

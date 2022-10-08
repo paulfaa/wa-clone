@@ -23,9 +23,14 @@ export class MessageParsingService {
     return this.messages;
   }
 
-  private getAllChatMembers(): string[]{
+  private getAllChatMembers(linesToReview: number, lines: string[]): string[] {
     var members: string[] = [];
-    //look at first x lines of chat and add unique members to array
+    for (let index = 0; index < linesToReview; index++) {
+      const element = lines[index];
+      if (!members.includes(element)){
+        members.push(element);
+      }
+    }
     return members;
   }
   
@@ -55,19 +60,19 @@ export class MessageParsingService {
   }
 
   public parseOldFormat(text: string): void {
-    var lines: string[] = text.split(/\r?\n/);
-    //const contentsRegex = new RegExp("\?.*");
-    //const senderRegex = new RegExp("\?.*");
+    var lines: string[] = text.split(("\n"));
     lines.forEach(line => {
+      var splitLine  = line.split(":");
       var date = new Date(line.substring(0,7));
-      const time = new Date (line.substring(10, 15));
-      date.setTime(time.getTime()); 
-      //const sender = line.match(senderRegex)
-      //const messageContents = line.match(contentsRegex);
-      //const isChatOwner = sender?.toString() == this.chatOwner;
-      //this.messages.push(new Message(date, sender!.toString(), messageContents!.toString(), isChatOwner));
+      const timeStamp = line.substring(10, 15).split("/");
+      date.setHours(parseInt(timeStamp[0]));
+      date.setMinutes(parseInt(timeStamp[1]));
+      date.setSeconds(parseInt(timeStamp[2]));
+      const author = splitLine[2].slice(4);
+      splitLine = splitLine.slice(3);
+      const messageContents = splitLine.join(":").trimStart();
+      const isChatOwner = author?.toString() == this.chatOwner;
+      this.messages.push(new Message(date, author, messageContents, isChatOwner));
     });
   }
-
-
 }

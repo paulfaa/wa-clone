@@ -18,6 +18,7 @@ describe('MessageParsingService', () => {
   describe('parse()', () => {
     it('converts the provided text file to an array of message objects', () => {
         // Arrange
+        service['chatOwner'] = "User1";
         const testFile = "[10/10/22, 11:11:11] User1: Hello";
         var expectedDate = new Date('2022-10-10');
         expectedDate.setHours(11);
@@ -34,8 +35,24 @@ describe('MessageParsingService', () => {
         expect(messages[0].author).toEqual("User1");
         console.log("Expected" + expectedDate)
         expect(messages[0].messageDate).toEqual(expectedDate);
+        expect(messages[0].isChatOwner).toBe(true);
+      });
+
+      it('sets isChatOwner correctly', () => {
+        // Arrange
+        service['chatOwner'] = "Joe";
+        const testFile = "[10/10/22, 11:11:11] User1: Hello";
+        var expectedDate = new Date('2022-10-10');
+        expectedDate.setTime(9999);
+
+        // Act
+        service.parse(testFile);
+        const messages = service.getAllMessages();
+
+        // Assert
+        expect(messages).not.toBeNull();
+        expect(messages[0].author).toEqual("User1");
         expect(messages[0].isChatOwner).toBe(false);
       });
   });
-
 });

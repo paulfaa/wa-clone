@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Message } from '../models/message';
 
 @Component({
@@ -7,6 +7,8 @@ import { Message } from '../models/message';
   styleUrls: ['./message.component.scss']
 })
 export class MessageComponent implements OnInit {
+
+  @Input() message!: Message;
 
   messageDate: Date;
   author: string;
