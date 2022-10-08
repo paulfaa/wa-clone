@@ -29,28 +29,28 @@ export class MessageParsingService {
     return members;
   }
   
-  private checkIsNewFormat(): boolean {
+  private checkIsNewFormat(text: string): boolean {
     //look at first char of text and determine format
-    const firstChar: string = "a";
-    if (firstChar == "["){
+    if (text[0] == "["){
       return true;
     }
     else {return false}
   }
 
   public parse(text: string): void {
-    var lines: string[] = [text];
-    const contentsRegex = new RegExp(/:.*:(.*)/);
-    const senderRegex = new RegExp(/\:(.*)/);
+    var lines: string[] = text.split(("\n"));
     lines.forEach(line => {
-      //might be more efficient to trim string
-      var date = new Date(line.substring(1, 8));
-      const time = new Date (line.substring(11, 18));
-      date.setTime(time.getTime());
-      const sender = line.match(senderRegex)?.at(0);
-      const messageContents = line.match(contentsRegex);
-      const isChatOwner = sender?.toString() == this.chatOwner;
-      this.messages.push(new Message(date, sender!.toString(), messageContents!.toString(), isChatOwner));
+      var splitLine  = line.split(":");
+      var date = new Date(line.substring(1, 9));
+      const timeString = line.substring(11, 19).split(":");
+      date.setHours(parseInt(timeString[0]));
+      date.setMinutes(parseInt(timeString[1]));
+      date.setSeconds(parseInt(timeString[2]));
+      const author = splitLine[2].slice(4);
+      splitLine = splitLine.slice(3);
+      const messageContents = splitLine.join(":").trimStart();
+      const isChatOwner = author?.toString() == this.chatOwner;
+      this.messages.push(new Message(date, author, messageContents, isChatOwner));
     });
   }
 
