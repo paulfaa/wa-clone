@@ -16,6 +16,41 @@ describe('MessageParsingService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('getAllChatMembers()', () => {
+    it('Returns a list of all members in the chat', () => {
+      //Arrange
+      const linesToReview = [
+        "Person1 hello",
+        "Person2 hello"
+      ]
+
+      //Act
+      const result = service.getAllChatMembers(10, linesToReview);
+      const isGroupChat = service.isGroupChat;
+
+      //Assert
+      expect(isGroupChat).toBe(true);
+      expect(result[0]).toEqual("Person1");
+      expect(result[1]).toEqual("Person2");
+    });
+    it('Sets isGroupChat to true if 3 or more members', () => {
+      //Arrange
+      const linesToReview = [
+        "Person1 hello",
+        "Person2 hello",
+        "Person3 hello"
+      ]
+
+      //Act
+      const result = service.getAllChatMembers(10, linesToReview);
+      const isGroupChat = service.isGroupChat;
+
+      //Assert
+      expect(result.length).toBe(3);
+      expect(isGroupChat).toBe(true);
+    });
+  });
+
   describe('parse()', () => {
     it('converts the provided text file to an array of message objects', () => {
       // Arrange

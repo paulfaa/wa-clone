@@ -9,6 +9,7 @@ export class MessageParsingService {
   private messages: Message[];
   chatOwner: string = '';
   useOldFormat: boolean;
+  isGroupChat: boolean;
 
   //add function called once to get index of userName to get substring each time
   //instead of using regex on each line
@@ -17,19 +18,23 @@ export class MessageParsingService {
   constructor() {
     this.messages = [];
     this.useOldFormat = false;
+    this.isGroupChat = false;
    }
 
   public getAllMessages(){
     return this.messages;
   }
 
-  private getAllChatMembers(linesToReview: number, lines: string[]): string[] {
+  public getAllChatMembers(linesToReview: number, lines: string[]): string[] {
     var members: string[] = [];
     for (let index = 0; index < linesToReview; index++) {
       const element = lines[index];
       if (!members.includes(element)){
         members.push(element);
       }
+    }
+    if(members.length > 2){
+      this.isGroupChat = true;
     }
     return members;
   }
@@ -75,6 +80,7 @@ export class MessageParsingService {
     });
   }
 
+  //needs rewrite. maybe allow user to input correct date format
   public parseOldFormat(text: string): void {
     var lines: string[] = text.split(("\n"));
     lines.forEach(line => {
