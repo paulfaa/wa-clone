@@ -22,7 +22,7 @@ describe('MessageParsingService', () => {
         const expectedDate = new Date(2022, 10, 10, 11, 11, 11);
 
         // Act
-        service.parse(testFile);
+        service.parseNewFormat(testFile);
         const messages = service.getAllMessages();
 
         // Assert
@@ -30,7 +30,7 @@ describe('MessageParsingService', () => {
         expect(messages[0].messageContents).toEqual("Hello");
         expect(messages[0].author).toEqual("User1");
         expect(messages[0].messageDate).toEqual(expectedDate);
+        expect(service.chatMembers.length).toEqual(1);
       });
   });
-
 });

@@ -8,7 +8,11 @@ export class MessageParsingService {
 
   private messages: Message[];
   chatOwner: string = '';
+  chatMembers: string[];
   useOldFormat: boolean;
+
+  // everything after nth character:
+  //   (?<=^.{n}).* 
 
   //add function called once to get index of userName to get substring each time
   //instead of using regex on each line
@@ -16,6 +20,7 @@ export class MessageParsingService {
 
   constructor() {
     this.messages = [];
+    this.chatMembers = [];
     this.useOldFormat = false;
    }
 
@@ -23,32 +28,39 @@ export class MessageParsingService {
     return this.messages;
   }
 
-  private getAllChatMembers(): string[]{
-    var members: string[] = [];
-    //look at first x lines of chat and add unique members to array
-    return members;
+  private addChatMember(member: string): void{
+    if (!this.chatMembers.includes(member)){
+      this.chatMembers.push(member);
+    }
   }
   
-  private checkIsNewFormat(): boolean {
+  private parse(text: string): void {
     //look at first char of text and determine format
     const firstChar: string = "a";
     if (firstChar == "["){
-      return true;
+      this.parseNewFormat(text);
     }
-    else {return false}
+    else {
+      this.parseOldFormat(text);
+    }
   }
 
-  public parse(text: string): void {
+  //^(?:[^:]*:){3}\s*(\S.*)
+
+  public parseNewFormat(text: string): void {
     var lines: string[] = [text];
-    const contentsRegex = new RegExp(/:.*:(.*)/);
+    const contentsRegex = new RegExp(/(?<=(.*:){3}).*/);
     const senderRegex = new RegExp(/\:(.*)/);
     lines.forEach(line => {
       //might be more efficient to trim string
       var date = new Date(line.substring(1, 8));
       const time = new Date (line.substring(11, 18));
       date.setTime(time.getTime());
-      const sender = line.match(senderRegex)?.at(0);
-      const messageContents = line.match(contentsRegex);
+      line = line.substring(21);
+      const splitString = line.split(':')
+      const sender = splitString[0];
+      this.addChatMember(sender);
+      const messageContents = splitString[1,:];
       const isChatOwner = sender?.toString() == this.chatOwner;
       this.messages.push(new Message(date, sender!.toString(), messageContents!.toString(), isChatOwner));
     });
@@ -63,6 +75,7 @@ export class MessageParsingService {
       const time = new Date (line.substring(10, 15));
       date.setTime(time.getTime()); 
       //const sender = line.match(senderRegex)
+      //this.addChatMember(sender);
       //const messageContents = line.match(contentsRegex);
       //const isChatOwner = sender?.toString() == this.chatOwner;
       //this.messages.push(new Message(date, sender!.toString(), messageContents!.toString(), isChatOwner));
