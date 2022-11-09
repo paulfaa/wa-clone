@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Message } from '../models/message';
+import { MessageParsingService } from '../services/message-parsing.service';
 
 @Component({
   selector: 'app-chat-view',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatViewComponent implements OnInit {
 
-  constructor() { }
+  messages: Message[];
+  private messageParsingService: MessageParsingService;
+
+  constructor() {
+    this.messages = [];
+    this.messageParsingService = new MessageParsingService();
+  }
 
   ngOnInit(): void {
+    this.messages = this.messageParsingService.getAllMessages();
   }
 
 }

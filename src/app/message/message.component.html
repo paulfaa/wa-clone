@@ -1,4 +1,4 @@
-<div id="messageBubble">
+<div [ngClass]="{'ownMessage':isChatOwner, 'otherMessage':!isChatOwner}" id="messageBubble">
   Message contents
   <div id="sender"> {{author}} </div>
   <p> {{messageContents}} </p>
