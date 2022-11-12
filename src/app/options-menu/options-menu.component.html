@@ -1,14 +1,13 @@
 <div>
-    <mat-radio-group aria-label="Select a format">
+    <!-- <mat-radio-group aria-label="Select a format">
         <span><mat-radio-button value="false">New Format :</mat-radio-button> [10/10/22, 11:11:11] User1: Hello </span>
         <span><mat-radio-button value="true">Old Format :</mat-radio-button> 10/10/22, 11:11 - User1: Hello </span>
-    </mat-radio-group>
+    </mat-radio-group> -->
 
     <mat-form-field appearance="fill">
         <mat-label>Select chat owner</mat-label>
-        <mat-select [(value)]="selected">
-          <mat-option value="option1">User 1</mat-option>
-          <mat-option value="option2">User 2</mat-option>
+        <mat-select [(value)]="selectedUser">
+          <mat-option *ngFor="let user of users" [value]="user">{{ user }}</mat-option>
         </mat-select>
       </mat-form-field>
 </div>

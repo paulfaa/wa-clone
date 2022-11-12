@@ -1,2 +1,5 @@
 [10/10/22, 11:11:11] User1: Hello
-[10/10/22, 11:11:11] User2: Hi
+[10/10/22, 11:11:12] User2: Hi
+[10/10/22, 11:11:13] User1: This is a looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong message
+[10/10/22, 11:11:14] User2: Ok there there there there there is a
+[10/10/22, 11:11:15] User1: Lorem Ipsum

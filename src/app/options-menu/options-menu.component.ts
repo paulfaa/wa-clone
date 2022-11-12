@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OptionsMenuComponent implements OnInit {
 
-  selected = 'option2';
+  //move this to popup to within file upload component
 
-  constructor() { }
+  users: string[];
+  selectedUser = '';
+
+  constructor() {
+    this.users = ["user1", "set these dynamically"];
+  }
 
   ngOnInit(): void {
   }

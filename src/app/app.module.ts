@@ -11,6 +11,8 @@ import { ChatViewComponent } from './chat-view/chat-view.component';
 import { OptionsMenuComponent } from './options-menu/options-menu.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
+
 
 
 @NgModule({
@@ -28,7 +30,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatRadioModule,
     MatSelectModule,
     MatIconModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

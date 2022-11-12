@@ -1,6 +1,11 @@
 <app-date-popup></app-date-popup>
 
-<p>chat-view works!</p>
+<!-- <ng-template ngFor let-item [ngForOf]="messages" let-i="index">
+    <app-message></app-message>
+</ng-template> -->
 
-<!-- ngFor message in messages... -->
-<app-message></app-message>
+<app-message
+    *ngFor="let m of messages"
+    [message]="m"
+    >
+</app-message>
