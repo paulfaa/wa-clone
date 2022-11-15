@@ -19,31 +19,33 @@ describe('MessageParsingService', () => {
   describe('getAllChatMembers()', () => {
     it('Returns a list of all members in the chat', () => {
       //Arrange
-      const linesToReview = [
-        "Person1 hello",
-        "Person2 hello"
+      const names = [
+        "Person1",
+        "Person2",
+        "Person1"
       ]
 
       //Act
-      const result = service.getAllChatMembers(10, linesToReview);
+      const result = service.getAllChatMembers(names);
       const isGroupChat = service.isGroupChat;
 
       //Assert
-      expect(isGroupChat).toBe(true);
+      expect(isGroupChat).toBe(false);
+      expect(result.length).toBe(2);
       expect(result[0]).toEqual("Person1");
       expect(result[1]).toEqual("Person2");
     });
     it('Sets isGroupChat to true if 3 or more members', () => {
       //Arrange
-      const linesToReview = [
-        "Person1 hello",
-        "Person2 hello",
-        "Person3 hello"
+      const names = [
+        "Person1",
+        "Person2",
+        "Person3"
       ]
 
       //Act
-      const result = service.getAllChatMembers(10, linesToReview);
-      const isGroupChat = service.isGroupChat;
+      const result = service.getAllChatMembers(names);
+      const isGroupChat = service.isGroupChat;     
 
       //Assert
       expect(result.length).toBe(3);

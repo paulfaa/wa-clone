@@ -47,28 +47,19 @@ export class MessageParsingService {
     }
   }
 
-  public getAllChatMembers(linesToReview: number, lines: string[]): string[] {
-    var members: string[] = [];
-    for (let index = 0; index < linesToReview; index++) {
-      const element = lines[index];
-      if (!members.includes(element)){
-        members.push(element);
+  public getAllChatMembers(members: string[]): string[] {
+    var m: string[] = [];
+    for (let index = 0; index < members.length; index++) {
+      const member = members[index];
+      if (member !== undefined && !m.includes(member)){
+        m.push(member);
       }
     }
-    if(members.length > 2){
+      
+    if(m.length > 2){
       this.isGroupChat = true;
     }
-    return members;
-  }
-  
-  private checkIsNewFormat(text: string): boolean {
-    //look at first char of text and determine format
-    if (text[0] == "["){
-      return true;
-    }
-    else{
-      return false;
-    }
+    return m;
   }
 
   public parseNewFormat(text: string): void {

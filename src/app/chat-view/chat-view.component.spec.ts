@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Message } from '../models/message';
 import { MessageParsingService } from '../services/message-parsing.service';
-
 import { ChatViewComponent } from './chat-view.component';
 
 describe('ChatViewComponent', () => {
@@ -16,8 +15,15 @@ describe('ChatViewComponent', () => {
     })
     .compileComponents();
 
+    var mockMessages: Message[] = [];
+        mockMessages.push(new Message(new Date(), "User1", "Message contents....", true))
+        mockMessages.push(new Message(new Date(), "User1", "Lorum Ipsum", true))
+        mockMessages.push(new Message(new Date(), "User2", "Hello world...", false))
+        mockMessages.push(new Message(new Date(), "User1", "Message contents 2 ....", true))
+
     fixture = TestBed.createComponent(ChatViewComponent);
     component = fixture.componentInstance;
+    component.messages = mockMessages;
     fixture.detectChanges();
   });
 
@@ -28,17 +34,14 @@ describe('ChatViewComponent', () => {
   describe('page', () => {
     it('displays the message objects contained in the array', () => {
         // Arrange
-        var mockMessages: Message[] = [];
-        mockMessages.push(new Message(new Date(), "User1", "Message contents....", true))
-        mockMessages.push(new Message(new Date(), "User1", "Lorum Ipsum", true))
-        mockMessages.push(new Message(new Date(), "User2", "Hello world...", false))
-        mockMessages.push(new Message(new Date(), "User1", "Message contents 2 ....", true))
+        
 
         // Act
-        const messageCount = fixture.debugElement.queryAll(By.css("<app-message>")).length;
+        const messageCount = fixture.debugElement.queryAll(By.css('app-message')).length;
+        const messageCount1 = fixture.debugElement.queryAll(By.css('.messageBubble')).length;
 
         // Assert
-        expect(messageCount).toEqual(4);
+        expect(messageCount1).toEqual(4);
         
     });
 
@@ -46,8 +49,7 @@ describe('ChatViewComponent', () => {
       // Arrange
 
       // Act
-      const message = fixture.debugElement.query(By.css("<app-message>"));
-      const ownMessage = message.query(By.css(".ownMessage"))
+      const ownMessage = fixture.debugElement.query(By.css('.ownMessage'));
 
       // Assert
       expect(ownMessage).toBeTruthy();

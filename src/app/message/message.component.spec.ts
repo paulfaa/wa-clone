@@ -6,17 +6,18 @@ import { MessageComponent } from './message.component';
 describe('MessageComponent', () => {
   let component: MessageComponent;
   let fixture: ComponentFixture<MessageComponent>;
-  const message = new Message(new Date(), "Me", "Good morning", true);
+  const sampleMessage = new Message(new Date(), "Me", "Good morning", true);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ MessageComponent ],
-      imports: [ Message ],
+      providers: [ Message ],
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(MessageComponent);
     component = fixture.componentInstance;
+    component.message = sampleMessage;
     fixture.detectChanges();
   });
 
