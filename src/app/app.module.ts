@@ -13,8 +13,6 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

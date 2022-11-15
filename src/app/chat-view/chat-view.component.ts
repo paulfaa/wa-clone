@@ -10,15 +10,22 @@ import { MessageParsingService } from '../services/message-parsing.service';
 export class ChatViewComponent implements OnInit {
 
   messages: Message[];
-  private messageParsingService: MessageParsingService;
+  //private messageParsingService: MessageParsingService;
 
   constructor() {
     this.messages = [];
-    this.messageParsingService = new MessageParsingService();
+    //this.messageParsingService = new MessageParsingService();
   }
 
   ngOnInit(): void {
-    this.messages = this.messageParsingService.getAllMessages();
+    //this.messages = this.messageParsingService.getAllMessages();
+    const mockMessages: Message[] = [
+    new Message(new Date(), "User1", "Message contents....", true),
+    new Message(new Date(), "User1", "Lorum Ipsum", true),
+    new Message(new Date(), "User2", "Hello world...", false),
+    new Message(new Date(), "User1", "Message contents 2 ....", true)
+    ]
+    this.messages = mockMessages;
   }
 
 }
