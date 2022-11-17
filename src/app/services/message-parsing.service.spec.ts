@@ -111,4 +111,29 @@ describe('MessageParsingService', () => {
       expect(messages.length).toEqual(5);
     });
   });
+
+  describe('parseOldFormat()', () => {
+    it('converts the provided text file to an array of message objects', () => {
+      // Arrange
+      service['chatOwner'] = "he";
+      const testFile = "2015.12.30 - 16:44:20; he: Ja ich weiss";
+      var expectedDate = new Date('2015-12-30');
+      expectedDate.setHours(16);
+      expectedDate.setMinutes(44);
+      expectedDate.setSeconds(20);
+
+      // Act
+      service.parse(testFile);
+      const messages = service.getAllMessages();
+
+      // Assert
+      expect(messages).not.toBeNull();
+      expect(messages[0].messageContents).toEqual("Ja ich weiss");
+      expect(messages[0].author).toEqual("he");
+      console.log("Actualdate : " + messages[0].messageDate)
+      console.log("Expecteddate : " + expectedDate)
+      expect(messages[0].messageDate).toEqual(expectedDate);
+      expect(messages[0].isChatOwner).toBe(true);
+    });
+  });  
 });

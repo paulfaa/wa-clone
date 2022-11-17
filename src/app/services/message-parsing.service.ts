@@ -95,21 +95,31 @@ export class MessageParsingService {
     });
   }
 
-  //needs rewrite. maybe allow user to input correct date format
   public parseOldFormat(text: string): void {
     var lines: string[] = text.split(("\n"));
     lines.forEach(line => {
-      var splitLine  = line.split(":");
-      var date = new Date(line.substring(0,7));
-      const timeStamp = line.substring(10, 15).split("/");
-      date.setHours(parseInt(timeStamp[0]));
-      date.setMinutes(parseInt(timeStamp[1]));
-      date.setSeconds(parseInt(timeStamp[2]));
-      const author = splitLine[2].slice(4);
-      splitLine = splitLine.slice(3);
-      const messageContents = splitLine.join(":").trimStart();
-      const isChatOwner = author?.toString() == this.chatOwner;
-      this.messages.push(new Message(date, author, messageContents, isChatOwner));
+      if (line[0] == "2" && line[1] == "0" && line[2] == "1"){
+        const date = line.substring(0,10).split(".").map(function(d) {
+          return parseInt(d);
+        });
+        console.log("Dates: " + date)
+        const time = line.substring(13,21).split(":").map(function(t) {
+          return parseInt(t);
+        });
+        //new date() not working properly, should not have to set twice
+        const messageDate = new Date(date[0], date[1], date[2], time[0], time[1], time[2]);
+        messageDate.setFullYear(date[0])
+        //messageDate.setMonth(date[1]) //setting month breaks it
+        console.log("date set in service: " + messageDate)
+        const author = line.slice(23).split(":")[0]
+        const contents = line.slice(24 + author.length).trimStart();
+        const isChatOwner = author == this.chatOwner;
+        this.messages.push(new Message(messageDate, author, contents, isChatOwner));
+      }
+      //if line is not a new message, append to previous
+      else{
+        this.messages[this.messages.length-1].messageContents = this.messages[this.messages.length-1].messageContents + line;
+      }
     });
   }
 }
