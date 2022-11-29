@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MessageParsingService } from '../services/message-parsing.service';
 
 @Component({
   selector: 'file-upload',
@@ -9,8 +10,11 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 export class FileUploadComponent implements OnInit {
 
   fileName = '';
+  messageParsingService: MessageParsingService;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {
+    this.messageParsingService = new MessageParsingService();
+   }
 
   ngOnInit(): void {
   }
@@ -43,8 +47,9 @@ export class FileUploadComponent implements OnInit {
         const formData = new FormData();
         formData.append("thumbnail", file);
         const fileContent = await this.readFileContent(file);
-        console.log(this.fileName)
-        console.log(fileContent);
+        console.log(this.fileName);
+        console.log("FileContent: " + fileContent);
+        this.messageParsingService.parseOldFormat(fileContent);
     }
   }
 }

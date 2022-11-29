@@ -98,6 +98,7 @@ export class MessageParsingService {
   public parseOldFormat(text: string): void {
     var lines: string[] = text.split(("\n"));
     lines.forEach(line => {
+      console.log("splitLine: " + line)
       if (line[0] == "2" && line[1] == "0" && line[2] == "1"){
         const date = line.substring(0,10).split(".").map(function(d) {
           return parseInt(d);
@@ -106,10 +107,7 @@ export class MessageParsingService {
         const time = line.substring(13,21).split(":").map(function(t) {
           return parseInt(t);
         });
-        //new date() not working properly, should not have to set twice
-        const messageDate = new Date(date[0], date[1], date[2], time[0], time[1], time[2]);
-        messageDate.setFullYear(date[0])
-        //messageDate.setMonth(date[1]) //setting month breaks it
+        const messageDate = new Date(date[0], date[1]-1, date[2], time[0], time[1], time[2]);
         console.log("date set in service: " + messageDate)
         const author = line.slice(23).split(":")[0]
         const contents = line.slice(24 + author.length).trimStart();

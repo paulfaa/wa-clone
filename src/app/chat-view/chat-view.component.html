@@ -9,3 +9,8 @@
     [message]=m
 >
 </app-message>
+
+<div *ngFor="let m of messages">
+    <!-- <app-message [message]=m></app-message> -->
+    {{m.messageContents}}
+</div>
