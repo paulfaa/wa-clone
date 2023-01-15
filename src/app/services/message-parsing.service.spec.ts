@@ -64,7 +64,7 @@ describe('MessageParsingService', () => {
       expectedDate.setSeconds(11);
 
       // Act
-      service.parse(testFile);
+      service.parseText(testFile);
       const messages = service.getAllMessages();
 
       // Assert
@@ -84,7 +84,7 @@ describe('MessageParsingService', () => {
       expectedDate.setTime(9999);
 
       // Act
-      service.parse(testFile);
+      service.parseText(testFile);
       const messages = service.getAllMessages();
 
       // Assert
@@ -103,7 +103,7 @@ describe('MessageParsingService', () => {
       [10/10/22, 11:11:15] User1: Lorem Ipsum`
 
       // Act
-      service.parse(testFile);
+      service.parseText(testFile);
       const messages = service.getAllMessages();
 
       // Assert
@@ -123,7 +123,7 @@ describe('MessageParsingService', () => {
       expectedDate.setSeconds(20);
 
       // Act
-      service.parse(testFile);
+      service.parseText(testFile);
       const messages = service.getAllMessages();
 
       // Assert
@@ -136,4 +136,21 @@ describe('MessageParsingService', () => {
       expect(messages[0].isChatOwner).toBe(true);
     });
   });  
+
+  describe('parseJson()', () => {
+    it('converts the provided json file to an array of message objects', () => {
+      //Arrange
+
+      //Act
+
+      //Assert
+    });
+    it('fails gracefully if there is a parsing error', () => {
+      //Arrange
+
+      //Act
+
+      //Assert
+    });
+  }); 
 });
