@@ -42,14 +42,19 @@ export class FileUploadComponent implements OnInit {
     const fileReader = new FileReader();
 
     if (file) {
-
+        console.log(file.type + " uploaded");
         this.fileName = file.name;
         const formData = new FormData();
         formData.append("thumbnail", file);
         const fileContent = await this.readFileContent(file);
         console.log(this.fileName);
         console.log("FileContent: " + fileContent);
-        this.messageParsingService.parseOldFormat(fileContent);
+        if(file.type == "application/json"){
+          this.messageParsingService.parseJson(fileContent);
+        }
+        if(file.type == "text/plain"){
+          this.messageParsingService.parseText(fileContent);
+        }
     }
   }
 }
