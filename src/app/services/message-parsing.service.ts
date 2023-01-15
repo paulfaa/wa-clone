@@ -35,8 +35,14 @@ export class MessageParsingService {
       this.chatMembers.push(member);
     }
   }
+
+  public parseJson(jsonString: string) {
+    let jsonObj = JSON.parse(jsonString);
+    const name = jsonObj.chats[0].contactName;
+    console.log(jsonObj.chats[0].messages)
+  }
   
-  public parse(text: string): void {
+  public parseText(text: string): void {
     //look at first char of text and determine format
     const firstChar = text[0];
     if (firstChar == "["){
