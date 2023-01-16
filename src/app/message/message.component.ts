@@ -11,15 +11,13 @@ export class MessageComponent implements OnInit {
   @Input() message!: Message;
 
   messageDate: Date;
-  author: string;
   messageContents: string;
   isChatOwner: boolean;
 
   constructor(message: Message) { 
-    this.messageDate = message.messageDate;
-    this.author = message.author;
-    this.messageContents = message.messageContents;
-    this.isChatOwner = message.isChatOwner;
+    this.messageDate = message.timestamp;
+    this.messageContents = message.text;
+    this.isChatOwner = message.fromMe;
   }
 
   ngOnInit(): void {

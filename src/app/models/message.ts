@@ -1,13 +1,12 @@
 export class Message {
-    messageDate: Date;
-    author: string;
-    messageContents: string;
-    isChatOwner: boolean;
+    timestamp: Date;
+    fromMe: boolean;
+    type?: string;
+    text: string;
 
-    constructor(date: Date, author: string, contents: string, isChatOwner: boolean) {
-        this.messageDate = date;
-        this.author = author;
-        this.messageContents = contents;
-        this.isChatOwner = isChatOwner;
+    constructor(timestamp: Date, fromMe: boolean, text: string) {
+        this.timestamp = timestamp;
+        this.fromMe = fromMe;
+        this.text = text;
     }
 }

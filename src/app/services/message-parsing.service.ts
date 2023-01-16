@@ -98,7 +98,7 @@ export class MessageParsingService {
         var splitLines = line.split(":");
         splitLines = splitLines.slice(3);
         const contents = splitLines.join(":").trimStart();
-        var previousContents = this.messages[this.messages.length - 1].messageContents;
+        var previousContents = this.messages[this.messages.length - 1].text;
         previousContents = previousContents + contents;
       }
       else {
@@ -141,7 +141,7 @@ export class MessageParsingService {
       }
       //if line is not a new message, append to previous
       else {
-        this.messages[this.messages.length - 1].messageContents = this.messages[this.messages.length - 1].messageContents + line;
+        this.messages[this.messages.length - 1].text = this.messages[this.messages.length - 1].text + line;
       }
     });
   }

@@ -69,11 +69,10 @@ describe('MessageParsingService', () => {
 
       // Assert
       expect(messages).not.toBeNull();
-      expect(messages[0].messageContents).toEqual("Hello");
-      expect(messages[0].author).toEqual("User1");
+      expect(messages[0].text).toEqual("Hello");
       console.log("Expected" + expectedDate)
-      expect(messages[0].messageDate).toEqual(expectedDate);
-      expect(messages[0].isChatOwner).toBe(true);
+      expect(messages[0].timestamp).toEqual(expectedDate);
+      expect(messages[0].fromMe).toBe(true);
     });
 
     it('sets isChatOwner correctly', () => {
@@ -89,8 +88,7 @@ describe('MessageParsingService', () => {
 
       // Assert
       expect(messages).not.toBeNull();
-      expect(messages[0].author).toEqual("User1");
-      expect(messages[0].isChatOwner).toBe(false);
+      expect(messages[0].fromMe).toBe(false);
     });
 
     it('can parse multiline files', () => {
@@ -128,12 +126,11 @@ describe('MessageParsingService', () => {
 
       // Assert
       expect(messages).not.toBeNull();
-      expect(messages[0].messageContents).toEqual("Ja ich weiss");
-      expect(messages[0].author).toEqual("he");
-      console.log("Actualdate : " + messages[0].messageDate)
+      expect(messages[0].text).toEqual("Ja ich weiss");
+      console.log("Actualdate : " + messages[0].timestamp)
       console.log("Expecteddate : " + expectedDate)
-      expect(messages[0].messageDate).toEqual(expectedDate);
-      expect(messages[0].isChatOwner).toBe(true);
+      expect(messages[0].timestamp).toEqual(expectedDate);
+      expect(messages[0].fromMe).toBe(true);
     });
   });  
 
