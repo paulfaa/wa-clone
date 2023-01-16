@@ -10,14 +10,14 @@ export class MessageComponent implements OnInit {
 
   @Input() message!: Message;
 
-  messageDate: Date;
-  messageContents: string;
-  isChatOwner: boolean;
-
+  timestamp: Date;
+  fromMe: boolean;
+  text: string;
+  
   constructor(message: Message) { 
-    this.messageDate = message.timestamp;
-    this.messageContents = message.text;
-    this.isChatOwner = message.fromMe;
+    this.timestamp = message.timestamp;
+    this.text = message.text;
+    this.fromMe = message.fromMe;
   }
 
   ngOnInit(): void {

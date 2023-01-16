@@ -38,27 +38,29 @@ export class MessageParsingService {
   public parseJson(jsonString: string) {
     let jsonObj = JSON.parse(jsonString);
     this.participant = jsonObj.chats[0].contactName;
-    jsonObj.chats[0].messages.forEach((item: any) => {
+    const firstYear = jsonObj.chats[0].messages[0].timestamp;
+    console.log(firstYear);
+    /* jsonObj.chats[0].messages.forEach((item: any) => {
       if (item.type == "text") {
-        var m = new Message(item.timestamp, "remove name from msg model", item.text, item.fromMe)
+        var m = new Message(item.timestamp, item.text, item.fromMe)
         this.messages.push(m);
       }
       else if (item.type == "text") {
-        var m = new Message(item.timestamp, "remove name from msg model", item.filename, item.fromMe)
+        var m = new Message(item.timestamp, item.filename, item.fromMe)
         this.messages.push(m);
       }
     });
-    console.log(this.messages);
+    console.log(this.messages); */
 
     //can use map/filter to remove unused fields + group msgs by year etc
-    /* const newObjectArray = jsonObj.chats[0].messages.map(item => {
+    const messageArray = jsonObj.chats[0].messages.map((item: { timestamp: any; fromMe: any; text: any; }) => {
       return {
         timestamp: item.timestamp,
+        fromMe: item.fromMe,
         text: item.text,
-        fromMe: item.fromMe
       }
     });
-    console.log(newObjectArray); */
+    console.log(messageArray);
   }
 
   public parseText(text: string): void {
@@ -115,7 +117,7 @@ export class MessageParsingService {
         splitLines = splitLines.slice(3);
         const messageContents = splitLines.join(":").trimStart();
         const isChatOwner = author?.toString() == this.chatOwner;
-        this.messages.push(new Message(date, author, messageContents, isChatOwner));
+        this.messages.push(new Message(date, isChatOwner, messageContents));
       }
     });
   }
@@ -137,7 +139,7 @@ export class MessageParsingService {
         const author = line.slice(23).split(":")[0]
         const contents = line.slice(24 + author.length).trimStart();
         const isChatOwner = author == this.chatOwner;
-        this.messages.push(new Message(messageDate, author, contents, isChatOwner));
+        this.messages.push(new Message(messageDate, isChatOwner, contents));
       }
       //if line is not a new message, append to previous
       else {

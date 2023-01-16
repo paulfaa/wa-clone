@@ -1,6 +1,5 @@
-<div [ngClass]="{'ownMessage':isChatOwner, 'otherMessage':!isChatOwner}" id="messageBubble">
+<div [ngClass]="{'ownMessage':fromMe, 'otherMessage':!fromMe}" id="messageBubble">
   Message contents
-  <div id="sender"> {{author}} </div>
-  <p> {{messageContents}} </p>
-  <div id="messageDate"> Date: {{messageDate | date:'hh:mm'}} </div>
+  <p> {{text}} </p>
+  <div id="messageDate"> Date: {{timestamp | date:'hh:mm'}} </div>
 </div>

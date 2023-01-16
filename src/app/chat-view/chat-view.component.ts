@@ -20,10 +20,10 @@ export class ChatViewComponent implements OnInit {
   ngOnInit(): void {
     //this.messages = this.messageParsingService.getAllMessages();
     const mockMessages: Message[] = [
-    new Message(new Date(), "User1", "Message contents....", true),
-    new Message(new Date(), "User1", "Lorum Ipsum", true),
-    new Message(new Date(), "User2", "Hello world...", false),
-    new Message(new Date(), "User1", "Message contents 2 ....", true)
+    new Message(new Date(), true, "Message contents...."),
+    new Message(new Date(), true, "Lorum Ipsum"),
+    new Message(new Date(), false, "Hello world..."),
+    new Message(new Date(), true, "Message contents 2 ....")
     ]
     this.messages = mockMessages;
   }
