@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Message } from '../models/message';
 
 @Component({
@@ -6,20 +6,19 @@ import { Message } from '../models/message';
   templateUrl: './message.component.html',
   styleUrls: ['./message.component.scss']
 })
-export class MessageComponent implements OnInit {
+export class MessageComponent implements OnChanges {
 
-  @Input() message!: Message;
+  @Input() timestampInput!: Date;
+  @Input() fromMeInput!: boolean;
+  @Input() textInput!: string;
 
-  timestamp: Date;
-  fromMe: boolean;
-  text: string;
+  timestamp: Date = new Date();
+  fromMe: boolean = false;
+  text: string = '';
   
-  constructor(message: Message) { 
-    this.timestamp = message.timestamp;
-    this.text = message.text;
-    this.fromMe = message.fromMe;
-  }
-
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    this.timestamp = this.timestampInput;
+    this.fromMe = this.fromMeInput;
+    this.text = this.textInput;
   }
 }

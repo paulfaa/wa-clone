@@ -53,14 +53,14 @@ export class MessageParsingService {
     console.log(this.messages); */
 
     //can use map/filter to remove unused fields + group msgs by year etc
-    const messageArray = jsonObj.chats[0].messages.map((item: { timestamp: any; fromMe: any; text: any; }) => {
+    this.messages = jsonObj.chats[0].messages.map((item: { timestamp: any; fromMe: any; text: any; }) => {
       return {
         timestamp: item.timestamp,
         fromMe: item.fromMe,
         text: item.text,
       }
     });
-    console.log(messageArray);
+    console.log(this.messages);
   }
 
   public parseText(text: string): void {

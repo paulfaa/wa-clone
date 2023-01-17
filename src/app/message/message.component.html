@@ -1,5 +1,4 @@
-<div [ngClass]="{'ownMessage':fromMe, 'otherMessage':!fromMe}" id="messageBubble">
-  Message contents
-  <p> {{text}} </p>
-  <div id="messageDate"> Date: {{timestamp | date:'hh:mm'}} </div>
+<div [ngClass]="fromMe ? 'ownMessage' : 'otherMessage'" class="messageBubble">
+  <div class="messageText"> {{this.text}} </div>
+  <div class="messageDate"> {{timestamp | date:'hh:mm'}} </div>
 </div>

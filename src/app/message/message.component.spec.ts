@@ -6,7 +6,7 @@ import { MessageComponent } from './message.component';
 describe('MessageComponent', () => {
   let component: MessageComponent;
   let fixture: ComponentFixture<MessageComponent>;
-  const sampleMessage = new Message(new Date(), "Me", "Good morning", true);
+  const sampleMessage = new Message(new Date(), true, "Good morning");
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -17,7 +17,7 @@ describe('MessageComponent', () => {
 
     fixture = TestBed.createComponent(MessageComponent);
     component = fixture.componentInstance;
-    component.message = sampleMessage;
+    component.text = sampleMessage.text;
     fixture.detectChanges();
   });
 

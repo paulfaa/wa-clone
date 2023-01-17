@@ -1,8 +1,21 @@
-#messageBubble{
+.messageBubble{
+    display: block;
+    margin: 5px;
     border-radius: 25px;
-    background-color: cornflowerblue;
+    //background-color: cornflowerblue;
     min-height: 70px;
+    min-width: 50%;
     max-width: 80%;
+}
+.messageText{
+    font-family: Helvetica;
+    position: relative;
+    top: 10px;
+    left:30px;
+    min-height: 30px;
+    max-height: 90px;
+    min-width: 30%;
+    max-width: 70%;
 }
 .ownMessage{
     background-color: rgb(171, 212, 95);
@@ -12,7 +25,11 @@
     background-color: rgb(226, 230, 221);
     float: left;
 }
-#messageDate {
-    bottom: 50px;
+.messageDate {
+    font-family: Helvetica;
+    font-size: small;
+    position: relative;
     float: right;
+    right: 10px;
+    top: 10px;
 }

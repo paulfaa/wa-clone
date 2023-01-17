@@ -6,11 +6,7 @@
 
 <app-message
     *ngFor="let m of messages"
-    [message]=m
+    [textInput]="m.text"
+    [timestampInput]=m.timestamp
 >
 </app-message>
-
-<div *ngFor="let m of messages">
-    <!-- <app-message [message]=m></app-message> -->
-    {{m.text}}
-</div>
