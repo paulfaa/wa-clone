@@ -13,8 +13,9 @@ export class ChatViewComponent implements OnInit {
   private messageParsingService: MessageParsingService;
 
   constructor() {
-    this.messages = [];
     this.messageParsingService = new MessageParsingService();
+    this.messages = this.messageParsingService.getAllMessages();
+    console.log(this.messages);
   }
 
   ngOnInit(): void {
@@ -27,7 +28,6 @@ export class ChatViewComponent implements OnInit {
     ]
     this.messages.push(new Message(new Date(), true, "Message contents 1 ...."));
     this.messages.push(new Message(new Date(), false, "Message contents 2 ...."));
-    //this.messages = mockMessages;
   }
 
 }

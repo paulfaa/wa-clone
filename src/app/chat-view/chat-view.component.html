@@ -1,12 +1,9 @@
 <app-date-popup></app-date-popup>
 
-<!-- <ng-template ngFor let-item [ngForOf]="messages" let-i="index">
-    <app-message></app-message>
-</ng-template> -->
-
 <app-message
     *ngFor="let m of messages"
+    [timestampInput]="m.timestamp"
+    [fromMeInput]="m.fromMe"
     [textInput]="m.text"
-    [timestampInput]=m.timestamp
 >
 </app-message>

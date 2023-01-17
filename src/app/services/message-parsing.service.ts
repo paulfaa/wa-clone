@@ -60,7 +60,7 @@ export class MessageParsingService {
         text: item.text,
       }
     });
-    console.log(this.messages);
+    console.log("result of parsing: " , this.messages);
   }
 
   public parseText(text: string): void {
