@@ -4,6 +4,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { ChatViewComponent } from './chat-view/chat-view.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'upload', pathMatch: 'full' },
   { path: 'upload', component: FileUploadComponent },
   { path: 'view', component: ChatViewComponent },
 ];

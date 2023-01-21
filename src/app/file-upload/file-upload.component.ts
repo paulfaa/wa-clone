@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageParsingService } from '../services/message-parsing.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'file-upload',
@@ -12,7 +13,8 @@ export class FileUploadComponent implements OnInit {
   fileName = '';
   messageParsingService: MessageParsingService;
 
-  constructor(public dialog: MatDialog) {
+  constructor(private router: Router, public dialog: MatDialog) {
+    
     this.messageParsingService = new MessageParsingService();
    }
 
@@ -55,6 +57,7 @@ export class FileUploadComponent implements OnInit {
         if(file.type == "text/plain"){
           this.messageParsingService.parseText(fileContent);
         }
+        this.router.navigate(['view']);
     }
   }
 }
