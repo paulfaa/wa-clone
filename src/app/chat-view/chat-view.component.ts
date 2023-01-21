@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { Message } from '../models/message';
 import { MessageParsingService } from '../services/message-parsing.service';
+import { ParseEvent } from '../services/parse-event';
 
 @Component({
   selector: 'app-chat-view',
@@ -9,26 +10,32 @@ import { MessageParsingService } from '../services/message-parsing.service';
   styleUrls: ['./chat-view.component.scss']
 })
 export class ChatViewComponent implements OnInit {
+  private _serviceSubscription;
+  messages: Message[] = [];
+  obMessages = Observable<Message[]>;
+  //private messageParsingService: MessageParsingService;
 
-  messages: Message[];
-  private messageParsingService: MessageParsingService;
-
-  constructor() {
-    this.messageParsingService = new MessageParsingService();
-    this.messages = this.messageParsingService.getAllMessages();
-    console.log(this.messages);
+  constructor(private messageParsingService: MessageParsingService) {
+    //this.messages = [];
+    this._serviceSubscription = this.messageParsingService.onParseComplete.subscribe({
+      next: (event: ParseEvent) => {
+          console.log('Received message', event.message);
+          this.messages.push(event.message);
+          console.log('chat view component msgs1: ', this.messages);
+      }
+    })  
   }
 
   ngOnInit(): void {
-    this.messages = this.messageParsingService.getAllMessages();
+    console.log('chat view component msgs: ', this.messages);
     const mockMessages: Message[] = [
     new Message(new Date(), true, "Message contents...."),
     new Message(new Date(), true, "Lorum Ipsum"),
     new Message(new Date(), false, "Hello world..."),
     new Message(new Date(), true, "Message contents 2 ....")
     ]
-    this.messages.push(new Message(new Date(), true, "Message contents 1 ...."));
-    this.messages.push(new Message(new Date(), false, "Message contents 2 ...."));
+    //this.messages.push(new Message(new Date(), true, "Message contents 1 ...."));
+    //this.messages.push(new Message(new Date(), false, "Message contents 2 ...."));
   }
 
 }

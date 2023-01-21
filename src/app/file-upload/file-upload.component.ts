@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageParsingService } from '../services/message-parsing.service';
 import { Router } from '@angular/router';
@@ -11,11 +11,11 @@ import { Router } from '@angular/router';
 export class FileUploadComponent implements OnInit {
 
   fileName = '';
-  messageParsingService: MessageParsingService;
+  //@Output() onParseComplete = new EventEmitter<any>();
 
-  constructor(private router: Router, public dialog: MatDialog) {
+  constructor(private messageParsingService: MessageParsingService, private router: Router, public dialog: MatDialog) {
     
-    this.messageParsingService = new MessageParsingService();
+    //this.messageParsingService = new MessageParsingService();
    }
 
   ngOnInit(): void {
@@ -50,13 +50,14 @@ export class FileUploadComponent implements OnInit {
         formData.append("thumbnail", file);
         const fileContent = await this.readFileContent(file);
         console.log(this.fileName);
-        console.log("FileContent: " + fileContent);
+        //console.log("FileContent: " + fileContent);
         if(file.type == "application/json"){
           this.messageParsingService.parseJson(fileContent);
         }
         if(file.type == "text/plain"){
           this.messageParsingService.parseText(fileContent);
         }
+        //this.onParseComplete.emit(this.messageParsingService.getAllMessages());
         this.router.navigate(['view']);
     }
   }

@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { Message } from '../models/message';
+import { ParseEvent } from './parse-event';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageParsingService {
 
+  public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
   private messages: Message[];
   chatOwner: string = '';
   participant: string = '';
@@ -54,12 +56,16 @@ export class MessageParsingService {
 
     //can use map/filter to remove unused fields + group msgs by year etc
     this.messages = jsonObj.chats[0].messages.map((item: { timestamp: any; fromMe: any; text: any; }) => {
-      return {
+      var x = {
         timestamp: item.timestamp,
         fromMe: item.fromMe,
         text: item.text,
       }
+      console.log("message to emit", x)
+      this.onParseComplete.emit(new ParseEvent(x));
+      return x;
     });
+    //this.onParseComplete.emit(this.messages);
     console.log("result of parsing: " , this.messages);
   }
 
