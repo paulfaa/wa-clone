@@ -1,13 +1,13 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Message } from '../models/message';
-import { ParseEvent } from './parse-event';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageParsingService {
 
-  public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
+  //public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
   private messages: Message[];
   chatOwner: string = '';
   participant: string = '';
@@ -21,7 +21,7 @@ export class MessageParsingService {
   //instead of using regex on each line
   //then compare subsequent to stored userName
 
-  constructor() {
+  constructor(private messageService: MessageService) {
     this.messages = [];
     this.chatMembers = [];
     this.isGroupChat = false;
@@ -39,36 +39,17 @@ export class MessageParsingService {
 
   public parseJson(jsonString: string) {
     let jsonObj = JSON.parse(jsonString);
-    this.participant = jsonObj.chats[0].contactName;
-    const firstYear = jsonObj.chats[0].messages[0].timestamp;
-    console.log(firstYear);
-    /* jsonObj.chats[0].messages.forEach((item: any) => {
-      if (item.type == "text") {
-        var m = new Message(item.timestamp, item.text, item.fromMe)
-        this.messages.push(m);
+    this.messages = jsonObj.chats[0].messages.map(
+      (item: { timestamp: any; fromMe: any; text: any }) => {
+        var msg = {
+          timestamp: item.timestamp,
+          fromMe: item.fromMe,
+          text: item.text,
+        };
+        this.messageService.addMessage(msg);
       }
-      else if (item.type == "text") {
-        var m = new Message(item.timestamp, item.filename, item.fromMe)
-        this.messages.push(m);
-      }
-    });
-    console.log(this.messages); */
-
-    //can use map/filter to remove unused fields + group msgs by year etc
-    this.messages = jsonObj.chats[0].messages.map((item: { timestamp: any; fromMe: any; text: any; }) => {
-      var x = {
-        timestamp: item.timestamp,
-        fromMe: item.fromMe,
-        text: item.text,
-      }
-      if (x.text != ""){
-        console.log("message to emit", x)
-        this.onParseComplete.emit(new ParseEvent(x));
-      }
-      return x;
-    });
-    //this.onParseComplete.emit(this.messages);
-    console.log("result of parsing: " , this.messages);
+    );
+    console.log('Messaged parsed by service: ', this.messages);
   }
 
   public parseText(text: string): void {

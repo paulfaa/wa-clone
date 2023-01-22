@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Message } from '../models/message';
 import { MessageParsingService } from '../services/message-parsing.service';
-import { ParseEvent } from '../services/parse-event';
+import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-chat-view',
@@ -10,24 +10,21 @@ import { ParseEvent } from '../services/parse-event';
   styleUrls: ['./chat-view.component.scss']
 })
 export class ChatViewComponent implements OnInit {
-  private _serviceSubscription;
+  public _serviceSubscription: Observable<Message[]>;
   selectedYear: number | undefined;
   yearMap: Map<number, Message[]>;
   yearKeys: number[];
   messages: Message[];
   obMessages = Observable<Message[]>;
 
-  constructor(private messageParsingService: MessageParsingService) {
+  constructor(private messageService: MessageService,
+              private messageParsingService: MessageParsingService
+    ) {
+    this._serviceSubscription = this.messageService.$getMessages();
+    this._serviceSubscription.subscribe((r) => console.log(r));
     this.messages = [];
     this.yearMap = new Map();
     this.yearKeys = [];
-    this._serviceSubscription = this.messageParsingService.onParseComplete.subscribe({
-      next: (event: ParseEvent) => {
-          console.log('Received message', event.message);
-          this.messages.push(event.message);
-          console.log('chat view component msgs1: ', this.messages);
-      }
-    })  
   }
 
   ngOnInit(): void {
@@ -41,7 +38,7 @@ export class ChatViewComponent implements OnInit {
     this.addMessage(new Message(new Date(2020, 10, 12), true, "Message contents...."));
     this.addMessage(new Message(new Date(2020, 10, 13), true, "Message contents...."));
     this.addMessage(new Message(new Date(2021, 10, 12), true, "Message contents...."));
-    this.setKeys();
+    //this.setKeys();
   }
 
   private setKeys(): void{
@@ -65,9 +62,7 @@ export class ChatViewComponent implements OnInit {
 
   public addMessage(message: Message): void{
     const year = message.timestamp.getFullYear();
-    console.log("year: ", year);
     if (this.yearMap.has(year) == false){
-      console.log("Adding new year to map");
       this.yearMap.set(year, new Array<Message>());
     }
     this.yearMap.get(year)!.push(message);

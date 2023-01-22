@@ -12,6 +12,7 @@ import { OptionsMenuComponent } from './options-menu/options-menu.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
+import { MessageService } from './services/message.service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     BrowserAnimationsModule,
     MatDialogModule
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
