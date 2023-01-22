@@ -8,6 +8,7 @@ describe('ChatViewComponent', () => {
   let component: ChatViewComponent;
   let fixture: ComponentFixture<ChatViewComponent>;
   let mockMessageParsingService: MessageParsingService;
+  let mockMessages: Message[];
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -15,15 +16,16 @@ describe('ChatViewComponent', () => {
     })
     .compileComponents();
 
-    var mockMessages: Message[] = [];
-        mockMessages.push(new Message(new Date(), "User1", "Message contents....", true))
-        mockMessages.push(new Message(new Date(), "User1", "Lorum Ipsum", true))
-        mockMessages.push(new Message(new Date(), "User2", "Hello world...", false))
-        mockMessages.push(new Message(new Date(), "User1", "Message contents 2 ....", true))
+    mockMessages = [];
+    mockMessages.push(new Message(new Date(), true, "Message contents...."));
+    mockMessages.push(new Message(new Date(), true, "Lorum Ipsum"));
+    mockMessages.push(new Message(new Date(), false, "Hello world..."));
+    mockMessages.push(new Message(new Date(), true, "Message contents 2 ...."));
 
     fixture = TestBed.createComponent(ChatViewComponent);
     component = fixture.componentInstance;
-    component.messages = mockMessages;
+    component.messages = [];
+    component.yearMap = new Map();
     fixture.detectChanges();
   });
 
@@ -31,10 +33,48 @@ describe('ChatViewComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('addMessage', () => {
+    it('creates a new array if one does not already exist for specified year', () => {
+      //arrange
+      const m1 = new Message(new Date(2020, 10, 12), true, "Message contents....");
+      const m2 = new Message(new Date(2021, 10, 12), true, "Lorum Ipsum");
+      const m3 =new Message(new Date(2022, 10, 12), false, "Hello world...");
+
+      //act
+      component.addMessage(m1);
+      component.addMessage(m2);
+      component.addMessage(m3);
+
+      //assert
+      expect(component.yearMap.size).toEqual(3);
+      expect(component.yearMap.has("2020")).toBeTrue();
+      expect(component.yearMap.has("2021")).toBeTrue();
+      expect(component.yearMap.get("2021")![0]).toEqual(m2);
+    });
+    it('appends messages to specified year if array already exists', () => {
+      //arrange
+      const m1 = new Message(new Date(2020, 10, 12), true, "Message contents....");
+      const m2 = new Message(new Date(2020, 10, 13), true, "Lorum Ipsum");
+      const m3 =new Message(new Date(2020, 10, 14), false, "Hello world...");
+      const m4 =new Message(new Date(2020, 10, 15), false, "Lorum lorum..");
+
+      //act
+      component.addMessage(m1);
+      component.addMessage(m2);
+      component.addMessage(m3);
+      component.addMessage(m4);
+
+      //assert
+      expect(component.yearMap.size).toEqual(1);
+      expect(component.yearMap.get("2020")!.length).toBe(4);
+      expect(component.yearMap.get("2020")![3]).toEqual(m4);
+    });
+  });
+
   describe('page', () => {
     it('displays the message objects contained in the array', () => {
         // Arrange
-        
+        component.messages = mockMessages;
 
         // Act
         const messageCount = fixture.debugElement.queryAll(By.css('app-message')).length;
@@ -47,6 +87,7 @@ describe('ChatViewComponent', () => {
 
     it('applies CSS correctly based on isChatOwner variable', () => {
       // Arrange
+      component.messages = mockMessages;
 
       // Act
       const ownMessage = fixture.debugElement.query(By.css('.ownMessage'));

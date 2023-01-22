@@ -11,12 +11,13 @@ import { ParseEvent } from '../services/parse-event';
 })
 export class ChatViewComponent implements OnInit {
   private _serviceSubscription;
-  messages: Message[] = [];
+  yearMap: Map<string, Message[]>;
+  messages: Message[];
   obMessages = Observable<Message[]>;
-  //private messageParsingService: MessageParsingService;
 
   constructor(private messageParsingService: MessageParsingService) {
-    //this.messages = [];
+    this.messages = [];
+    this.yearMap = new Map();
     this._serviceSubscription = this.messageParsingService.onParseComplete.subscribe({
       next: (event: ParseEvent) => {
           console.log('Received message', event.message);
@@ -38,4 +39,13 @@ export class ChatViewComponent implements OnInit {
     //this.messages.push(new Message(new Date(), false, "Message contents 2 ...."));
   }
 
+  addMessage(message: Message): void{
+    const year = message.timestamp.getFullYear().toString();
+    console.log("year: ", year);
+    if (this.yearMap.has(year) == false){
+      console.log("Adding new year to map");
+      this.yearMap.set(year, new Array<Message>());
+    }
+    this.yearMap.get(year)!.push(message);
+  }
 }
