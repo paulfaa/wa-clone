@@ -17,10 +17,10 @@ describe('ChatViewComponent', () => {
     .compileComponents();
 
     mockMessages = [];
-    mockMessages.push(new Message(new Date(), true, "Message contents...."));
-    mockMessages.push(new Message(new Date(), true, "Lorum Ipsum"));
-    mockMessages.push(new Message(new Date(), false, "Hello world..."));
-    mockMessages.push(new Message(new Date(), true, "Message contents 2 ...."));
+    mockMessages.push(new Message(new Date(2020, 10, 12), true, "Message contents...."));
+    mockMessages.push(new Message(new Date(2020, 10, 12), true, "Lorum Ipsum"));
+    mockMessages.push(new Message(new Date(2020, 10, 12), false, "Hello world..."));
+    mockMessages.push(new Message(new Date(2020, 10, 12), true, "Message contents 2 ...."));
 
     fixture = TestBed.createComponent(ChatViewComponent);
     component = fixture.componentInstance;
@@ -68,6 +68,23 @@ describe('ChatViewComponent', () => {
       expect(component.yearMap.size).toEqual(1);
       expect(component.yearMap.get(2020)!.length).toBe(4);
       expect(component.yearMap.get(2020)![3]).toEqual(m4);
+    });
+  });
+
+  describe('getMessagesForSelectedYear', () => {
+    it('returns array containing all messages for the specified year', () => {
+      //arrange
+      component.setSelectedYear(2020);
+      component.messages = mockMessages;
+      const message2022 = new Message(new Date(2022, 10, 12), false, "Hello world...");
+      component.messages.push(message2022);
+
+      //act
+      const actualResult = component.getMessagesForSelectedYear();
+
+      //assert
+      expect(actualResult).toBe(mockMessages);
+      expect(actualResult.includes(message2022)).toBe(false);
     });
   });
 

@@ -44,17 +44,27 @@ export class ChatViewComponent implements OnInit {
     this.setKeys();
   }
 
-  public setSelectedYear(year: number): void{
-    this.selectedYear = year;
-  }
-
   private setKeys(): void{
     this.yearKeys = Array.from(this.yearMap.keys());
     console.log(this.yearKeys)
   }
 
-  addMessage(message: Message): void{
-    const year = Number(message.timestamp.getFullYear().toString());
+  public setSelectedYear(year: number): void{
+    this.selectedYear = year;
+  }
+
+  public getMessagesForSelectedYear(): Message[]{
+    try{
+      return this.yearMap.get(this.selectedYear!)!;
+    }
+    catch(e){
+      console.log("No messages for year" + this.selectedYear + e);
+      throw(e);
+    }
+  }
+
+  public addMessage(message: Message): void{
+    const year = message.timestamp.getFullYear();
     console.log("year: ", year);
     if (this.yearMap.has(year) == false){
       console.log("Adding new year to map");
