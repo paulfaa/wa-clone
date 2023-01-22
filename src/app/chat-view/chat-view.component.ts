@@ -11,13 +11,16 @@ import { ParseEvent } from '../services/parse-event';
 })
 export class ChatViewComponent implements OnInit {
   private _serviceSubscription;
-  yearMap: Map<string, Message[]>;
+  selectedYear: number | undefined;
+  yearMap: Map<number, Message[]>;
+  yearKeys: number[];
   messages: Message[];
   obMessages = Observable<Message[]>;
 
   constructor(private messageParsingService: MessageParsingService) {
     this.messages = [];
     this.yearMap = new Map();
+    this.yearKeys = [];
     this._serviceSubscription = this.messageParsingService.onParseComplete.subscribe({
       next: (event: ParseEvent) => {
           console.log('Received message', event.message);
@@ -35,12 +38,23 @@ export class ChatViewComponent implements OnInit {
     new Message(new Date(), false, "Hello world..."),
     new Message(new Date(), true, "Message contents 2 ....")
     ]
-    //this.messages.push(new Message(new Date(), true, "Message contents 1 ...."));
-    //this.messages.push(new Message(new Date(), false, "Message contents 2 ...."));
+    this.addMessage(new Message(new Date(2020, 10, 12), true, "Message contents...."));
+    this.addMessage(new Message(new Date(2020, 10, 13), true, "Message contents...."));
+    this.addMessage(new Message(new Date(2021, 10, 12), true, "Message contents...."));
+    this.setKeys();
+  }
+
+  public setSelectedYear(year: number): void{
+    this.selectedYear = year;
+  }
+
+  private setKeys(): void{
+    this.yearKeys = Array.from(this.yearMap.keys());
+    console.log(this.yearKeys)
   }
 
   addMessage(message: Message): void{
-    const year = message.timestamp.getFullYear().toString();
+    const year = Number(message.timestamp.getFullYear().toString());
     console.log("year: ", year);
     if (this.yearMap.has(year) == false){
       console.log("Adding new year to map");

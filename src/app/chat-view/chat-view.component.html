@@ -1,5 +1,14 @@
 <app-date-popup></app-date-popup>
 
+<table class="year-picker">
+    <tr>
+        <td *ngFor="let year of yearKeys"
+        (click)="setSelectedYear(year)"
+        [ngClass]="year == selectedYear ? 'selected' : 'unselected'"> {{year}}
+        </td>
+    </tr>
+</table>
+
 <app-message
     *ngFor="let m of messages"
     [timestampInput]="m.timestamp"

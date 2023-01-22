@@ -47,9 +47,9 @@ describe('ChatViewComponent', () => {
 
       //assert
       expect(component.yearMap.size).toEqual(3);
-      expect(component.yearMap.has("2020")).toBeTrue();
-      expect(component.yearMap.has("2021")).toBeTrue();
-      expect(component.yearMap.get("2021")![0]).toEqual(m2);
+      expect(component.yearMap.has(2020)).toBeTrue();
+      expect(component.yearMap.has(2021)).toBeTrue();
+      expect(component.yearMap.get(2021)![0]).toEqual(m2);
     });
     it('appends messages to specified year if array already exists', () => {
       //arrange
@@ -66,8 +66,8 @@ describe('ChatViewComponent', () => {
 
       //assert
       expect(component.yearMap.size).toEqual(1);
-      expect(component.yearMap.get("2020")!.length).toBe(4);
-      expect(component.yearMap.get("2020")![3]).toEqual(m4);
+      expect(component.yearMap.get(2020)!.length).toBe(4);
+      expect(component.yearMap.get(2020)![3]).toEqual(m4);
     });
   });
 
