@@ -61,8 +61,10 @@ export class MessageParsingService {
         fromMe: item.fromMe,
         text: item.text,
       }
-      console.log("message to emit", x)
-      this.onParseComplete.emit(new ParseEvent(x));
+      if (x.text != ""){
+        console.log("message to emit", x)
+        this.onParseComplete.emit(new ParseEvent(x));
+      }
       return x;
     });
     //this.onParseComplete.emit(this.messages);

@@ -1,4 +1,4 @@
 <div [ngClass]="fromMe ? 'ownMessage' : 'otherMessage'" class="messageBubble">
   <div class="messageText"> {{this.text}} </div>
-  <div class="messageDate"> {{timestamp | date:'hh:mm'}} </div>
+  <div class="messageDate"> {{timestamp | date:'short'}} </div>
 </div>

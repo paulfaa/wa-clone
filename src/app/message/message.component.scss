@@ -2,9 +2,8 @@
     display: block;
     margin: 5px;
     border-radius: 25px;
-    //background-color: cornflowerblue;
-    min-height: 70px;
-    min-width: 50%;
+    min-height: 40px;
+    min-width: 55%;
     max-width: 80%;
 }
 .messageText{
@@ -12,8 +11,8 @@
     position: relative;
     top: 10px;
     left:30px;
-    min-height: 30px;
-    max-height: 90px;
+    min-height: 20px;
+    max-height: 300px;
     min-width: 30%;
     max-width: 70%;
 }
@@ -31,5 +30,5 @@
     position: relative;
     float: right;
     right: 10px;
-    top: 10px;
+    bottom: 10px;
 }
