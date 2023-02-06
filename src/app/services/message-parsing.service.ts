@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { catchError } from 'rxjs';
 import { Message } from '../models/message';
 import { MessageService } from './message.service';
 
@@ -38,18 +39,18 @@ export class MessageParsingService {
   }
 
   public parseJson(jsonString: string) {
-    let jsonObj = JSON.parse(jsonString);
-    this.messages = jsonObj.chats[0].messages.map(
-      (item: { timestamp: any; fromMe: any; text: any }) => {
-        var msg = {
-          timestamp: item.timestamp,
-          fromMe: item.fromMe,
-          text: item.text,
-        };
-        this.messageService.addMessage(msg);
-      }
-    );
-    console.log('Messaged parsed by service: ', this.messages);
+      let jsonObj = JSON.parse(jsonString);
+      this.messages = jsonObj.chats[0].messages.map(
+        (item: { timestamp: any; fromMe: any; text: any }) => {
+          var msg = {
+            timestamp: item.timestamp,
+            fromMe: item.fromMe,
+            text: item.text,
+          };
+          this.messageService.addMessage(msg);
+        }
+      );
+      console.log('Messaged parsed by service: ', this.messages);
   }
 
   public parseText(text: string): void {

@@ -50,15 +50,18 @@ export class FileUploadComponent implements OnInit {
         formData.append("thumbnail", file);
         const fileContent = await this.readFileContent(file);
         console.log(this.fileName);
-        //console.log("FileContent: " + fileContent);
-        if(file.type == "application/json"){
-          this.messageParsingService.parseJson(fileContent);
+        try{
+          if(file.type == "application/json"){
+            this.messageParsingService.parseJson(fileContent);
+          }
+          if(file.type == "text/plain"){
+            this.messageParsingService.parseText(fileContent);
+          }
+          this.router.navigate(['view']);
         }
-        if(file.type == "text/plain"){
-          this.messageParsingService.parseText(fileContent);
+        catch(e){
+          console.error("Error parsing uploaded file: ", e);
         }
-        //this.onParseComplete.emit(this.messageParsingService.getAllMessages());
-        this.router.navigate(['view']);
     }
   }
 }
