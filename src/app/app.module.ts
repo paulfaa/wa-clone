@@ -11,8 +11,10 @@ import { ChatViewComponent } from './chat-view/chat-view.component';
 import { OptionsMenuComponent } from './options-menu/options-menu.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MessageService } from './services/message.service';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { MessageService } from './services/message.service';
     DatePopupComponent,
     ChatViewComponent,
     OptionsMenuComponent,
-    FileUploadComponent
+    FileUploadComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,8 @@ import { MessageService } from './services/message.service';
     MatSelectModule,
     MatIconModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]
