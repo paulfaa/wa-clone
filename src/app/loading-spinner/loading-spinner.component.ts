@@ -9,6 +9,8 @@ export class LoadingSpinnerComponent implements OnInit {
 
   constructor() { }
 
+  @Input() value : number | undefined;
+
   ngOnInit(): void {
   }
 

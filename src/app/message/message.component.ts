@@ -15,6 +15,7 @@ export class MessageComponent implements OnChanges {
   fromMe: boolean = false;
   text: string = '';
   
+  //ngOnChanges(): void {
   ngOnChanges(changes: SimpleChanges): void {
     this.timestamp = this.timestampInput;
     this.fromMe = this.fromMeInput;

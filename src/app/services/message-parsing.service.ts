@@ -14,6 +14,7 @@ export class MessageParsingService {
   participant: string = '';
   chatMembers: string[];
   isGroupChat: boolean;
+  messageCount: number;
 
   // everything after nth character:
   //   (?<=^.{n}).* 
@@ -26,6 +27,7 @@ export class MessageParsingService {
     this.messages = [];
     this.chatMembers = [];
     this.isGroupChat = false;
+    this.messageCount = 0;
   }
 
   public getAllMessages() {
@@ -40,6 +42,7 @@ export class MessageParsingService {
 
   public parseJson(jsonString: string) {
       let jsonObj = JSON.parse(jsonString);
+      this.messageCount = Object.keys(jsonObj.chats[0].messages).length
       this.messages = jsonObj.chats[0].messages.map(
         (item: { timestamp: any; fromMe: any; text: any }) => {
           var msg = {

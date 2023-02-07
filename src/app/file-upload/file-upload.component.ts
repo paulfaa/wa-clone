@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MessageParsingService } from '../services/message-parsing.service';
 import { Router } from '@angular/router';
+import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'file-upload',
@@ -13,9 +14,10 @@ export class FileUploadComponent implements OnInit {
   fileName: string | undefined;
   showError: boolean = false;
 
-  constructor(private messageParsingService: MessageParsingService, private router: Router, public dialog: MatDialog) {
-    
-   }
+  constructor(private messageParsingService: MessageParsingService, 
+              private router: Router,
+              public dialog: MatDialog
+              ) {}
 
   ngOnInit(): void {
   }
@@ -66,31 +68,3 @@ export class FileUploadComponent implements OnInit {
     }
   }
 }
-
-/*   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-      width: '250px',
-      data: {name: this.name, animal: this.animal},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
-    });
-  }
-}
-
-@Component({
-  selector: 'dialog-overview-example-dialog',
-  templateUrl: 'dialog-overview-example-dialog.html',
-})
-export class DialogOverviewExampleDialog {
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-} */
