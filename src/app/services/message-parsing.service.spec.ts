@@ -1,14 +1,21 @@
 import { TestBed } from '@angular/core/testing';
 import { readFileSync } from 'fs';
 import { MessageParsingService } from './message-parsing.service';
+import { MessageService } from './message.service';
 
 describe('MessageParsingService', () => {
   let service: MessageParsingService;
+  let mockMessageService: jasmine.SpyObj<MessageService>;
+  mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getMessages']);
+  //mockMessageService.$getMessages.and.returnValue(null);
+
+  const messageServiceSpy = jasmine.createSpyObj('MessageService', ['addMessage']);
+  const validJson: any = require('../../assets/test.json');
 
   beforeEach(() => {
-    service = new MessageParsingService();
+    service = new MessageParsingService(messageServiceSpy);
     service['messages'] = [];
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({providers: [MessageService]});
     service = TestBed.inject(MessageParsingService);
   });
 
@@ -136,18 +143,12 @@ describe('MessageParsingService', () => {
 
   describe('parseJson()', () => {
     it('converts the provided json file to an array of message objects', () => {
-      //Arrange
-
       //Act
+      console.log("test ", validJson);
+      //service.parseJson(validJson);
 
       //Assert
-    });
-    it('fails gracefully if there is a parsing error', () => {
-      //Arrange
-
-      //Act
-
-      //Assert
+      expect(messageServiceSpy.addMessage()).toHaveBeenCalledTimes(3);
     });
   }); 
 });

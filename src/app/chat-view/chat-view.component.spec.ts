@@ -2,17 +2,22 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Message } from '../models/message';
 import { MessageParsingService } from '../services/message-parsing.service';
+import { MessageService } from '../services/message.service';
 import { ChatViewComponent } from './chat-view.component';
 
 describe('ChatViewComponent', () => {
   let component: ChatViewComponent;
   let fixture: ComponentFixture<ChatViewComponent>;
+  let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockMessageParsingService: MessageParsingService;
   let mockMessages: Message[];
 
+  mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getMessages']);
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatViewComponent ]
+      declarations: [ ChatViewComponent ],
+      providers: [{ provide: MessageService, useValue: mockMessageService }]
     })
     .compileComponents();
 

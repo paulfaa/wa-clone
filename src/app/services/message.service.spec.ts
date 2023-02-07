@@ -6,8 +6,11 @@ describe('MessageService', () => {
   let service: MessageService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(MessageService);
+    service = new MessageService();
+    TestBed.configureTestingModule({
+      declarations: [MessageService]
+    })
+    .compileComponents();
   });
 
   it('should be created', () => {
