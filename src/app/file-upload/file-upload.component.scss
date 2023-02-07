@@ -1,6 +1,13 @@
 .file-input {
     display: none;
 }
+.upload-error {
+  padding-top: 25px;
+  color: red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 div {
   font-family: Helvetica;
 }

@@ -10,12 +10,11 @@ import { Router } from '@angular/router';
 })
 export class FileUploadComponent implements OnInit {
 
-  fileName = '';
-  //@Output() onParseComplete = new EventEmitter<any>();
+  fileName: string | undefined;
+  showError: boolean = false;
 
   constructor(private messageParsingService: MessageParsingService, private router: Router, public dialog: MatDialog) {
     
-    //this.messageParsingService = new MessageParsingService();
    }
 
   ngOnInit(): void {
@@ -57,9 +56,11 @@ export class FileUploadComponent implements OnInit {
           if(file.type == "text/plain"){
             this.messageParsingService.parseText(fileContent);
           }
+          this.showError = false;
           this.router.navigate(['view']);
         }
         catch(e){
+          this.showError = true;
           console.error("Error parsing uploaded file: ", e);
         }
     }
