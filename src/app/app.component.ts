@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +11,14 @@ export class AppComponent {
   fileContent = '';
   // example - https://stackblitz.com/edit/angular-file-read?file=app%2Fapp.component.ts
 
+  constructor(private router: Router) {}
+
   @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef | undefined;
   file: any;
+
+  public isViewRoute() {
+    return this.router.url === '/view';
+  }
 
   // public onChange(fileList: FileList): void {
   //   let file = fileList[0];

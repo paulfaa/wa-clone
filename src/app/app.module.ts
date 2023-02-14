@@ -15,6 +15,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MessageService } from './services/message.service';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     ChatViewComponent,
     OptionsMenuComponent,
     FileUploadComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +35,8 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     MatIconModule,
     BrowserAnimationsModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatToolbarModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

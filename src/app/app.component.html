@@ -1,4 +1,10 @@
-<h1><a routerLink="/upload" routerLinkActive="active" ariaCurrentWhenActive="page">WA Viewer</a></h1>
+<mat-toolbar>
+    <a routerLink="/upload" routerLinkActive="active" ariaCurrentWhenActive="page">WA Viewer</a>
+    <span class="spacer"></span>
+    <button *ngIf="isViewRoute()" mat-icon-button>
+        <mat-icon>menu</mat-icon>
+    </button>
+</mat-toolbar>
 
 <!-- <options-menu></options-menu> -->
 
