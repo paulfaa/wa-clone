@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { MessageService } from './services/message.service';
 
 @Component({
   selector: 'app-root',
@@ -11,13 +12,21 @@ export class AppComponent {
   fileContent = '';
   // example - https://stackblitz.com/edit/angular-file-read?file=app%2Fapp.component.ts
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private messageService: MessageService
+  ){}
 
   @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef | undefined;
   file: any;
 
   public isViewRoute() {
     return this.router.url === '/view';
+  }
+
+  public callClearMessages():void{
+    if(this.isViewRoute()){
+      this.messageService.clearAllMessages();
+    }
   }
 
   // public onChange(fileList: FileList): void {

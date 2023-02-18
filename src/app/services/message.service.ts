@@ -7,15 +7,16 @@ export class MessageService {
   private _serviceSubscription: any;
   $messages: BehaviorSubject<Message[]> = new BehaviorSubject<Message[]>([]);
   $progressValue: BehaviorSubject<number> = new BehaviorSubject<number>(0);
-  messages: Message[];
 
-  constructor() {
-    this.messages = [];
-  }
+  constructor() {}
 
   public addMessage(message: Message) {
     //console.log('Received message from parseEvent', message);
     this.$messages.next([...this.$messages.getValue(), message]);
+  }
+
+  public clearAllMessages(): void {
+    this.$messages = new BehaviorSubject<Message[]>([]);
   }
 
   public $getMessages(): Observable<Message[]> {
