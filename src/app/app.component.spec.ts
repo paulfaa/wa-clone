@@ -1,21 +1,42 @@
-import { ComponentFixture, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { MatDialogModule } from '@angular/material/dialog';
+import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { ChatViewComponent } from './chat-view/chat-view.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { MessageService } from './services/message.service';
 
 describe('AppComponent', () => {
+
+  const routes: Routes = [
+    {path: '', redirectTo: '/upload', pathMatch: 'full'},
+    {path: 'upload', component: FileUploadComponent},
+    {path: 'view', component: ChatViewComponent}
+  ];
+
   let fixture: ComponentFixture<AppComponent>;
   let component: AppComponent;
+  let router: Router;
+  let mockMessageService: jasmine.SpyObj<MessageService>;
+
+  mockMessageService = jasmine.createSpyObj('mockMessageService', ['clearAllMessages']);
+  mockMessageService.clearAllMessages.and.callFake;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule.withRoutes(routes),
+        MatDialogModule
       ],
       declarations: [
         AppComponent
       ],
+      providers: [{ provide: MessageService, useValue: mockMessageService }]
     }).compileComponents().then(() => {
       fixture = TestBed.createComponent(AppComponent);
       component = fixture.componentInstance;
+      router = TestBed.get(Router);
     });
   });
 
@@ -32,10 +53,26 @@ describe('AppComponent', () => {
   });
 
   describe('callClearMessages()', () => {
-    it('Calls clearMessages() in the message service if the current route is /view', () => {
+    it('Calls clearMessages() in the message service if the current route is /view', fakeAsync(() => {
       //Arrange
       spyOn(component, 'callClearMessages');
-      //component['router'].url = '/view';
+      router.navigate(['/view']);
+      let link = fixture.debugElement.nativeElement.querySelector('a');
+
+      //Act
+      link.click();
+
+      //Assert
+      tick();
+      expect(router.url).toEqual('/view'); //failing here
+	    expect(component.callClearMessages).toHaveBeenCalled();
+      expect(mockMessageService.clearAllMessages).toHaveBeenCalled();
+    }));
+    it('Calls does not call clearMessages() if the current route not /view', fakeAsync(() => {
+      //Arrange
+      //mockMessageService.clearAllMessages();
+      spyOn(component, 'callClearMessages');
+      router.navigate(['/upload']);
       let link = fixture.debugElement.nativeElement.querySelector('a');
 
       //Act
@@ -44,20 +81,7 @@ describe('AppComponent', () => {
       //Assert
       tick();
 	    expect(component.callClearMessages).toHaveBeenCalled();
-      expect(component['messageService'].clearAllMessages).toHaveBeenCalled();
-    });
-    it('Calls does not call clearMessages() if the current route not /view', () => {
-      //Arrange
-      spyOn(component, 'callClearMessages');
-      let link = fixture.debugElement.nativeElement.querySelector('a');
-
-      //Act
-      link.click();
-
-      //Assert
-      tick();
-	    expect(component.callClearMessages).not.toHaveBeenCalled();
-      expect(component['messageService'].clearAllMessages).not.toHaveBeenCalled();
-    });
+      expect(mockMessageService.clearAllMessages).not.toHaveBeenCalled();
+    }));
   });
 });

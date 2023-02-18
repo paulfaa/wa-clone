@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { of } from 'rxjs';
 import { Message } from '../models/message';
 import { MessageParsingService } from '../services/message-parsing.service';
 import { MessageService } from '../services/message.service';
