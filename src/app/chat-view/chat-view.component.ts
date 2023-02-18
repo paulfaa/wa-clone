@@ -15,7 +15,6 @@ export class ChatViewComponent implements OnInit {
   yearMap: Map<number, Message[]>;
   yearKeys: number[];
   messages: Message[];
-  obMessages = Observable<Message[]>;
 
   constructor(private messageService: MessageService,
               private messageParsingService: MessageParsingService
