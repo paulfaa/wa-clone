@@ -8,21 +8,35 @@
                     "id": "35A8984427489ACE786A9F5DFA81E7",
                     "fromMe": true,
                     "type": "text",
-                    "text": "Hello!"
+                    "text": "Hello! 😛"
                 },
                 {
                     "timestamp": "2022-12-11T21:34:04Z",
                     "id": "009715FBED647B52CD4EA6AE9A7CA4",
                     "fromMe": false,
                     "type": "text",
-                    "text": "How are you?"
+                    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eget nisi faucibus nulla porttitor imperdiet. Nunc eget nibh dui. Fusce cursus, erat nec tempus euismod, erat mi porttitor felis, id dignissim purus purus et enim. Donec posuere quam eget sem vestibulum rutrum in non dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus congue diam in interdum interdum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In tincidunt magna et tempus aliquam. Donec nec lorem velit. Donec feugiat faucibus dui, quis viverra sapien."
                 },
                 {
-                    "timestamp": "2022-12-11T21:34:23Z",
+                    "timestamp": "2022-12-12T22:34:23Z",
                     "id": "479AFD522FEC7444991CCA578EDF9F",
                     "fromMe": false,
                     "type": "text",
-                    "text": "What are you doing today?"
+                    "text": "What are you doing today? \n Long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long "
+                },
+                {
+                    "timestamp": "2022-12-11T25:34:04Z",
+                    "id": "009715FBED647B52CD4EA6AE9A7CA4",
+                    "fromMe": true,
+                    "type": "text",
+                    "text": "Duis at tellus at odio ultricies elementum non dictum ipsum. Praesent vulputate at nisi sed viverra. Pellentesque sed maximus ante, at hendrerit diam. Integer auctor pharetra malesuada. Phasellus maximus, nisl sit amet suscipit pellentesque, ligula tortor cursus purus, nec suscipit velit sem et purus. Phasellus id hendrerit leo. Quisque rutrum fermentum commodo. Curabitur ut fringilla tortor. Nunc quis rutrum lorem. Vestibulum quis porta mauris."
+                },
+                {
+                    "timestamp": "2022-12-19T19:00:12Z",
+                    "id": "35A8984427489ACE786A9F5DFA81E7",
+                    "fromMe": true,
+                    "type": "text",
+                    "text": "Vestibulum venenatis lacus non nibh commodo convallis. Cras vel dictum felis. Ut fermentum tincidunt mi ac malesuada. Etiam ornare pulvinar ante. Maecenas quis erat magna. Fusce luctus ultricies ante, et feugiat erat accumsan a. Praesent eleifend lectus velit, at iaculis neque commodo at. Proin vitae mattis tortor. Donec lacinia metus ut vulputate faucibus. Proin blandit pulvinar ornare. Aenean tincidunt elit nec risus tempus, vel elementum orci lobortis. Proin id nibh a neque commodo varius non vitae nisi. Ut erat neque, sagittis quis hendrerit eget, pharetra quis nunc. Donec nec ligula a risus tincidunt tristique nec vitae elit. Etiam vel facilisis magna."
                 }
             ]
         }
