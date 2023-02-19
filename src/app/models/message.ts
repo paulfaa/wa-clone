@@ -3,6 +3,7 @@ export class Message {
     fromMe: boolean;
     type?: string;
     text: string;
+    $isFavourite?: boolean = false;
 
     constructor(timestamp: Date, fromMe: boolean, text: string) {
         this.timestamp = timestamp;

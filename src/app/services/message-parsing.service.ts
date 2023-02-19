@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { catchError } from 'rxjs';
 import { Message } from '../models/message';
+import { FavouritesService } from './favourites.service';
 import { MessageService } from './message.service';
 
 @Injectable({
@@ -23,7 +23,7 @@ export class MessageParsingService {
   //instead of using regex on each line
   //then compare subsequent to stored userName
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private favouritesService: FavouritesService) {
     this.messages = [];
     this.chatMembers = [];
     this.isGroupChat = false;
@@ -40,6 +40,12 @@ export class MessageParsingService {
     }
   }
 
+  private checkIsFavourite(message: Message): void{
+    if(this.favouritesService.isFavourite(message)){
+      message.$isFavourite = true;
+    }
+  }
+
   public parseJson(jsonString: string) {
       let jsonObj = JSON.parse(jsonString);
       this.messageCount = Object.keys(jsonObj.chats[0].messages).length
@@ -50,6 +56,7 @@ export class MessageParsingService {
             fromMe: item.fromMe,
             text: item.text,
           };
+          this.checkIsFavourite(msg);
           this.messageService.addMessage(msg);
         }
       );

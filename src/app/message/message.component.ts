@@ -1,4 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Message } from '../models/message';
+import { FavouritesService } from '../services/favourites.service';
 
 @Component({
   selector: 'app-message',
@@ -10,6 +12,8 @@ export class MessageComponent implements OnChanges {
   @Input() timestampInput!: Date;
   @Input() fromMeInput!: boolean;
   @Input() textInput!: string;
+
+  constructor(private favouritesService: FavouritesService) {}
 
   timestamp: Date = new Date();
   fromMe: boolean = false;
@@ -27,11 +31,11 @@ export class MessageComponent implements OnChanges {
   public toggleFavourite(){
     if (this.isFavourite == true){
       this.isFavourite = false;
-      localStorage.removeItem(this.timestamp.toString());
+      this.favouritesService.removeFromFavourites(new Message(this.timestamp, this.fromMe, this.text));
     }
     else{
       this.isFavourite = true;
-      localStorage.setItem(this.timestamp.toString(), this.text);
+      this.favouritesService.addToFavourites(new Message(this.timestamp, this.fromMe, this.text));
     }
   }
 }

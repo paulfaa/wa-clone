@@ -15,14 +15,14 @@ export class FavouritesService {
   }
 
   private initService(): void{
-    var storedCoins = StorageUtils.readFromStorage('savedCoins');
-    if (storedCoins === null){ 
-      console.log('init method setting heldcoins and uniquetickers to empty list')
+    var favourites = StorageUtils.readFromStorage('favourites');
+    if (favourites === null){ 
+      console.log('init method setting favourites to empty list')
       this.favourites = [];
     }
     else {
-      console.log('setting this.heldcoins to ' + storedCoins)
-      this.favourites = StorageUtils.readFromStorage('uniqueTickers');
+      console.log('setting this.favourites to ' + favourites)
+      this.favourites = StorageUtils.readFromStorage('favourites');
     }
   }
 
@@ -30,9 +30,21 @@ export class FavouritesService {
     return this.favourites;
   }
 
+  public isFavourite(message: Message){
+    return this.favourites.includes(message);
+  }
+
   public addToFavourites(m: Message){
+    console.log("Adding message " + m.text + "to favourites");
     this.favourites.push(m);
     this.sortFavourites();
+    this.updateStorage();
+  }
+
+  public removeFromFavourites(m: Message){
+    if(this.favourites.includes(m)){
+      this.favourites.filter(item => item !== m)
+    }
     this.updateStorage();
   }
 

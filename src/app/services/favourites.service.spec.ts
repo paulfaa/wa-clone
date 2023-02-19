@@ -20,22 +20,54 @@ describe('FavouritesService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('addCoin()', () => {
-    it('adds the specified coin to the list', () => {
+  describe('addToFavourites()', () => {
+    it('adds the specified message to the list', () => {
         // Arrange
-        var coinsLength = service['favourites'].length;
-        expect(coinsLength).toEqual(0);
+        var favourites = service['favourites'].length;
+        expect(favourites).toEqual(0);
 
         // Act
         service.addToFavourites(message);
-        var coinsLength = service.getFavourites().length;
+        var favourites = service.getFavourites().length;
 
         // Assert
-        expect(coinsLength).toEqual(1);
+        expect(favourites).toEqual(1);
     });
   });
 
-  describe('getAllUniqueTickers()', () => {
+  describe('removeFromFavourites()', () => {
+    it('removes the specified message from the list', () => {
+      // Arrange
+      service.addToFavourites(message);
+      var len = service['favourites'].length;
+      expect(len).toEqual(1);
+
+      // Act
+      service.removeFromFavourites(message);
+      var favourites = service.getFavourites();
+
+      // Assert
+      expect(favourites.length).toEqual(0);
+      expect(favourites.includes(message)).toBeFalse;
+  });
+    it('does not remove the specified message if it is not in favourites', () => {
+        // Arrange
+        const otherMessage = new Message(new Date, true, "Hey");
+        service.addToFavourites(message);
+        const len = service['favourites'].length;
+        expect(len).toEqual(1);
+
+        // Act
+        service.removeFromFavourites(otherMessage);
+        var favourites = service.getFavourites();
+
+        // Assert
+        expect(favourites.length).toEqual(1);
+        expect(favourites.includes(message)).toBeTrue;
+    });
+  });
+
+  describe('getFavourites()', () => {
     it('returns empty list when no messages favourited', () => {
         // Act
         expect
