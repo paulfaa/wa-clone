@@ -11,18 +11,19 @@ export class FavouritesService {
 
   constructor() {
     this.favourites = []; 
-    this.initService();
   }
 
-  private initService(): void{
-    var favourites = StorageUtils.readFromStorage('favourites');
-    if (favourites === null){ 
-      console.log('init method setting favourites to empty list')
-      this.favourites = [];
-    }
-    else {
-      console.log('setting this.favourites to ' + favourites)
-      this.favourites = StorageUtils.readFromStorage('favourites');
+  public initStorage(currentFileName: string): void{
+    if(currentFileName != null && currentFileName != undefined && currentFileName != ""){
+      var favourites = StorageUtils.readFromStorage(currentFileName + '.favourites');
+      if (favourites === null){ 
+        console.log('init method setting favourites to empty list')
+        this.favourites = [];
+      }
+      else {
+        console.log('setting this.favourites to ' + favourites)
+        this.favourites = StorageUtils.readFromStorage(currentFileName + '.favourites');
+      }
     }
   }
 
