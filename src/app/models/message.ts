@@ -1,4 +1,5 @@
 export class Message {
+    id?: number;
     timestamp: Date;
     fromMe: boolean;
     type?: string;

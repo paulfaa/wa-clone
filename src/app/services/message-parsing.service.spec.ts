@@ -1,19 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { readFileSync } from 'fs';
+import { FavouritesService } from './favourites.service';
 import { MessageParsingService } from './message-parsing.service';
 import { MessageService } from './message.service';
 
 describe('MessageParsingService', () => {
   let service: MessageParsingService;
   let mockMessageService: jasmine.SpyObj<MessageService>;
+  let mockFavouritesService: jasmine.SpyObj<FavouritesService>;
+
   mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getMessages']);
+  mockFavouritesService = jasmine.createSpyObj('mockFavouritesService', ['isFavourite']);
   //mockMessageService.$getMessages.and.returnValue(null);
 
   const messageServiceSpy = jasmine.createSpyObj('MessageService', ['addMessage']);
   const validJson: any = require('../../assets/test.json');
 
   beforeEach(() => {
-    service = new MessageParsingService(messageServiceSpy);
+    service = new MessageParsingService(mockMessageService, mockFavouritesService);
     service['messages'] = [];
     TestBed.configureTestingModule({providers: [MessageService]});
     service = TestBed.inject(MessageParsingService);

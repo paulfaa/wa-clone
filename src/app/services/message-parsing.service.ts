@@ -9,6 +9,7 @@ import { MessageService } from './message.service';
 export class MessageParsingService {
 
   //public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
+  private index: number;
   private messages: Message[];
   chatOwner: string = '';
   participant: string = '';
@@ -24,6 +25,7 @@ export class MessageParsingService {
   //then compare subsequent to stored userName
 
   constructor(private messageService: MessageService, private favouritesService: FavouritesService) {
+    this.index = 0;
     this.messages = [];
     this.chatMembers = [];
     this.isGroupChat = false;
@@ -40,27 +42,30 @@ export class MessageParsingService {
     }
   }
 
-  private checkIsFavourite(message: Message): void{
-    if(this.favouritesService.isFavourite(message)){
+  private checkIsFavourite(message: Message): void {
+    if (this.favouritesService.isFavourite(message)) {
       message.$isFavourite = true;
     }
   }
 
   public parseJson(jsonString: string) {
-      let jsonObj = JSON.parse(jsonString);
-      this.messageCount = Object.keys(jsonObj.chats[0].messages).length
-      this.messages = jsonObj.chats[0].messages.map(
-        (item: { timestamp: any; fromMe: any; text: any }) => {
-          var msg = {
-            timestamp: item.timestamp,
-            fromMe: item.fromMe,
-            text: item.text,
-          };
-          this.checkIsFavourite(msg);
-          this.messageService.addMessage(msg);
-        }
-      );
-      console.log('Messaged parsed by service: ', this.messages);
+    this.index = 0;
+    let jsonObj = JSON.parse(jsonString);
+    this.messageCount = Object.keys(jsonObj.chats[0].messages).length
+    this.messages = jsonObj.chats[0].messages.map(
+      (item: { timestamp: any; fromMe: any; text: any }) => {
+        var msg = {
+          id: this.index,
+          timestamp: item.timestamp,
+          fromMe: item.fromMe,
+          text: item.text,
+        };
+        this.index = this.index + 1;
+        this.checkIsFavourite(msg);
+        console.log("After parese " + msg)
+        this.messageService.addMessage(msg);
+      }
+    );
   }
 
   public parseText(text: string): void {

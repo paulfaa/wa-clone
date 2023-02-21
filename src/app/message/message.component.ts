@@ -12,9 +12,11 @@ export class MessageComponent implements OnChanges {
   @Input() timestampInput!: Date;
   @Input() fromMeInput!: boolean;
   @Input() textInput!: string;
+  @Input() favouriteInput!: boolean;
 
   constructor(private favouritesService: FavouritesService) {}
 
+  id?: number;
   timestamp: Date = new Date();
   fromMe: boolean = false;
   text: string = '';

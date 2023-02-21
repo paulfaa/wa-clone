@@ -64,7 +64,7 @@ describe('FavouritesService', () => {
         // Assert
         expect(favourites.length).toEqual(1);
         expect(favourites.includes(message)).toBeTrue;
-    });
+    }); 
   });
 
   describe('getFavourites()', () => {

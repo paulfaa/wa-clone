@@ -49,9 +49,16 @@ export class FavouritesService {
   }
 
   private sortFavourites(): void{
-    if(this.favourites != null && this.favourites.length >= 2){
-      this.favourites.sort((a,b) => b.timestamp.valueOf() - a.timestamp.valueOf());
+    try{
+      if(this.favourites != null && this.favourites.length >= 2){
+        this.favourites.sort((a,b) => b.id! - a.id!);
+      }
     }
+    catch(e){
+      console.log("Can't sort due to missing ID" + e);
+      throw(e);
+    }
+    
   }
 
   public clearFavourites(): void{
