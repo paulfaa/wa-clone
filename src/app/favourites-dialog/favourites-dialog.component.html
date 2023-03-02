@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Favourites</h1>
+
+<mat-dialog-content>
+  <div *ngFor="let msg of this.favourites" (click)="scrollToMessage(msg.id)">
+    {{ msg.timestamp }}
+    {{ msg.text }}
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="closeDialog()">Close</button>
+</mat-dialog-actions>

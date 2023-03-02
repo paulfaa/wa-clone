@@ -16,6 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MessageService } from './services/message.service';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     OptionsMenuComponent,
     FileUploadComponent,
     LoadingSpinnerComponent,
+    FavouritesDialogComponent,
   ],
   imports: [
     BrowserModule,

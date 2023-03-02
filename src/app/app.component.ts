@@ -1,6 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog.component';
 import { MessageService } from './services/message.service';
+
 
 @Component({
   selector: 'app-root',
@@ -10,10 +13,10 @@ import { MessageService } from './services/message.service';
 export class AppComponent {
   title = 'wa';
   fileContent = '';
-  // example - https://stackblitz.com/edit/angular-file-read?file=app%2Fapp.component.ts
 
   constructor(private router: Router,
-              private messageService: MessageService
+              private messageService: MessageService,
+              private dialog: MatDialog
   ){}
 
   @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef | undefined;
@@ -27,6 +30,17 @@ export class AppComponent {
     if(this.isViewRoute()){
       this.messageService.clearAllMessages();
     }
+  }
+
+  openFavouritesDialog(): void {
+    let dialogRef = this.dialog.open(FavouritesDialogComponent, {
+      //height: '60%',
+      width: '80%',
+      data: { name: "name", animal: "animal" }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 
   // public onChange(fileList: FileList): void {
