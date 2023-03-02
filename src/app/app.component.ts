@@ -36,7 +36,8 @@ export class AppComponent {
     let dialogRef = this.dialog.open(FavouritesDialogComponent, {
       //height: '60%',
       width: '80%',
-      data: { name: "name", animal: "animal" }
+      data: { name: "name", animal: "animal" },
+      position: {top: '150px'} 
     });
   
     dialogRef.afterClosed().subscribe(result => {

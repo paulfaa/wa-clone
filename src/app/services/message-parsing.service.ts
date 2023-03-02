@@ -51,6 +51,7 @@ export class MessageParsingService {
   public parseJson(jsonString: string) {
     this.index = 0;
     let jsonObj = JSON.parse(jsonString);
+    this.participant = jsonObj.chats[0].contactName;
     this.messageCount = Object.keys(jsonObj.chats[0].messages).length
     this.messages = jsonObj.chats[0].messages.map(
       (item: { timestamp: any; fromMe: any; text: any }) => {

@@ -1,7 +1,8 @@
-<h1 mat-dialog-title>Favourites</h1>
+<h3 mat-dialog-title>Favourites</h3>
 
 <mat-dialog-content>
   <div *ngFor="let msg of this.favourites" (click)="scrollToMessage(msg.id)">
+    {{ msg.fromMe == true ? "Me" : this.name }}
     {{ msg.timestamp }}
     {{ msg.text }}
   </div>
