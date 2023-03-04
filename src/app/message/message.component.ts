@@ -29,7 +29,7 @@ export class MessageComponent implements OnChanges {
     this.timestamp = this.timestampInput;
     this.fromMe = this.fromMeInput;
     this.text = this.textInput;
-    this.isFavourite = this.isFavourite;
+    this.isFavourite = this.favouriteInput;
   }
 
   public toggleFavourite(){

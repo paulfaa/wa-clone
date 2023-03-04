@@ -42,11 +42,8 @@ export class MessageParsingService {
     }
   }
 
-  private checkIsFavourite(id: number, message: Message): void {
-    console.log(message)
-    if (this.favouritesService.isFavourite(id)) {
-      message.$isFavourite = true;
-    }
+  private checkIsFavourite(id: number): boolean {
+    return this.favouritesService.isFavourite(id);
   }
 
   public parseJson(jsonString: string) {
@@ -56,15 +53,15 @@ export class MessageParsingService {
     this.messageCount = Object.keys(jsonObj.chats[0].messages).length
     this.messages = jsonObj.chats[0].messages.map(
       (item: { timestamp: any; fromMe: any; text: any }) => {
+        var fav = this.checkIsFavourite(this.index);
         var msg = {
           id: this.index,
           timestamp: item.timestamp,
           fromMe: item.fromMe,
           text: item.text,
+          isFavourite: fav
         };
-        this.checkIsFavourite(this.index, msg);
         this.index = this.index + 1;
-        console.log("After parse " + msg.id)
         this.messageService.addMessage(msg);
       }
     );

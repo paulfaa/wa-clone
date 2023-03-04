@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Message } from '../models/message';
+import StorageUtils from '../util/storage-util';
 
 @Injectable()
 export class MessageService {
-  private _serviceSubscription: any;
   $messages: BehaviorSubject<Message[]> = new BehaviorSubject<Message[]>([]);
   $progressValue: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 

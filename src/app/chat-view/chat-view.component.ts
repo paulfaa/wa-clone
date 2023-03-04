@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Message } from '../models/message';
-import { MessageParsingService } from '../services/message-parsing.service';
 import { MessageService } from '../services/message.service';
 
 @Component({
@@ -12,15 +11,17 @@ import { MessageService } from '../services/message.service';
 export class ChatViewComponent implements OnInit {
   public _serviceSubscription: Observable<Message[]>;
   selectedYear: number | undefined;
+
+  //move map logic to messageService
   yearMap: Map<number, Message[]>;
   yearKeys: number[];
   messages: Message[];
 
-  constructor(private messageService: MessageService,
-              private messageParsingService: MessageParsingService
-    ) {
+  constructor(private messageService: MessageService) {
     this._serviceSubscription = this.messageService.$getMessages();
     this._serviceSubscription.subscribe((r) => console.log(r));
+
+    //move logic to message service
     this.messages = [];
     this.yearMap = new Map();
     this.yearKeys = [];
