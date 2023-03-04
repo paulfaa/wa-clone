@@ -7,7 +7,9 @@ import StorageUtils from '../util/storage-util';
 })
 export class FavouritesService {
 
+  //private favouritesMap = Map<number, Message>;
   private favourites: Message[];
+  private fileName: string | undefined;
 
   constructor() {
     this.favourites = []; 
@@ -15,6 +17,7 @@ export class FavouritesService {
 
   public initStorage(currentFileName: string): void{
     if(currentFileName != null && currentFileName != undefined && currentFileName != ""){
+      this.fileName = currentFileName;
       var favourites = StorageUtils.readFromStorage(currentFileName + '.favourites');
       if (favourites === null){ 
         console.log('init method setting favourites to empty list')
@@ -36,10 +39,15 @@ export class FavouritesService {
   }
 
   public addToFavourites(m: Message){
-    console.log("Adding message " + m.text + "to favourites");
-    this.favourites.push(m);
-    this.sortFavourites();
-    this.updateStorage();
+    if(!this.favourites.includes(m)){
+      console.log("Adding message " + m.text + "to favourites");
+      this.favourites.push(m);
+      this.sortFavourites();
+      this.updateStorage();
+    }
+    else{
+      console.log("Message already exists in favourites");
+    }
   }
 
   public removeFromFavourites(m: Message){
@@ -68,7 +76,7 @@ export class FavouritesService {
   }
 
   private updateStorage(): void{
-    StorageUtils.writeToStorage('favourites', this.favourites)
+    StorageUtils.writeToStorage(this.fileName + '.favourites', this.favourites)
   }
 
 }

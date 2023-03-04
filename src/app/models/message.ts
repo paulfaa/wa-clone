@@ -2,7 +2,7 @@ export class Message {
     id?: number;
     timestamp: Date;
     fromMe: boolean;
-    type?: string;
+    $type?: string;
     text: string;
     $isFavourite?: boolean = false;
 

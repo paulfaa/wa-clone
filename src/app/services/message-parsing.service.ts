@@ -43,6 +43,7 @@ export class MessageParsingService {
   }
 
   private checkIsFavourite(message: Message): void {
+    console.log(message)
     if (this.favouritesService.isFavourite(message)) {
       message.$isFavourite = true;
     }
@@ -63,7 +64,7 @@ export class MessageParsingService {
         };
         this.index = this.index + 1;
         this.checkIsFavourite(msg);
-        console.log("After parese " + msg)
+        console.log("After parse " + msg)
         this.messageService.addMessage(msg);
       }
     );
