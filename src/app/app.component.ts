@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog.component';
+import { Message } from './models/message';
 import { MessageService } from './services/message.service';
 
 
@@ -14,10 +15,15 @@ export class AppComponent {
   title = 'wa';
   fileContent = '';
 
+  test: Message[];
+
   constructor(private router: Router,
               private messageService: MessageService,
               private dialog: MatDialog
-  ){}
+  ){
+    this.test=[];
+    this.test.push(new Message(new Date, true, "test inject data"));
+  }
 
   @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef | undefined;
   file: any;
@@ -34,9 +40,8 @@ export class AppComponent {
 
   openFavouritesDialog(): void {
     let dialogRef = this.dialog.open(FavouritesDialogComponent, {
-      //height: '60%',
       width: '80%',
-      data: { name: "name", animal: "animal" },
+      data: this.test,
       position: {top: '150px'} 
     });
   

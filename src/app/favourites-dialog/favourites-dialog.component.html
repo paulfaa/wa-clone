@@ -1,11 +1,19 @@
 <h3 mat-dialog-title>Favourites</h3>
 
 <mat-dialog-content>
-  <div *ngFor="let msg of this.favourites" (click)="scrollToMessage(msg.id)">
-    {{ msg.fromMe == true ? "Me" : this.name }}
-    {{ msg.timestamp }}
-    {{ msg.text }}
+  <div *ngIf="favourites.length; else noFavourites">
+    <div *ngFor="let msg of this.favourites" (click)="scrollToMessage(msg.id)">
+      <!--create new component for these-->
+      {{ msg.fromMe == true ? "Me" : this.name }}
+      {{ msg.timestamp | date: 'medium'}}
+      {{ msg.text }}
+    </div>
   </div>
+  <ng-template #noFavourites>
+    <div>
+      No messages are favourited!
+    </div>
+  </ng-template>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

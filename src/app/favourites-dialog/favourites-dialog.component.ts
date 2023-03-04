@@ -11,23 +11,15 @@ import { MessageParsingService } from '../services/message-parsing.service';
 export class FavouritesDialogComponent implements OnInit {
 
   public name = '';
-
-  public favourites: Message[] = [
-    new Message(new Date(2020, 10, 12), true, "Message contents...."),
-    new Message(new Date(2020, 10, 12), true, "Lorum Ipsum"),
-    new Message(new Date(2020, 10, 12), false, "Hello world..."),
-    new Message(new Date(2020, 10, 12), true, "Message contents 2 ...."),
-    new Message(new Date(2020, 10, 12), true, "Message contents...."),
-    new Message(new Date(2020, 10, 12), true, "Lorum Ipsum"),
-    new Message(new Date(2020, 10, 12), false, "Hello world..."),
-    new Message(new Date(2020, 10, 12), true, "Message contents 2 ....")
-  ];
+  public favourites: Message[];
 
   constructor(
     private messageParsingService: MessageParsingService,
     public dialogRef: MatDialogRef<FavouritesDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any, //inject favourites on open
-  ) {}
+    @Inject(MAT_DIALOG_DATA) public data: Message[], //inject favourites on open
+  ) {
+    this.favourites = data;
+  }
 
   ngOnInit(): void {
     this.name = this.messageParsingService.participant;
