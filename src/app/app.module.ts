@@ -17,6 +17,7 @@ import { MessageService } from './services/message.service';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog
     BrowserAnimationsModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatCardModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

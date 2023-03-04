@@ -2,12 +2,15 @@
 
 <mat-dialog-content>
   <div *ngIf="favourites.length; else noFavourites">
-    <div *ngFor="let msg of this.favourites" (click)="scrollToMessage(msg.id)">
-      <!--create new component for these-->
-      {{ msg.fromMe == true ? "Me" : this.name }}
-      {{ msg.timestamp | date: 'medium'}}
-      {{ msg.text }}
-    </div>
+    <mat-card *ngFor="let msg of this.favourites" (click)="scrollToMessage(msg.id)">
+      <mat-card-header>
+        <mat-card-title>{{ msg.fromMe == true ? "Me" : this.name }}</mat-card-title>
+        <mat-card-subtitle>{{ msg.timestamp | date:"medium" }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        {{ msg.text }}
+      </mat-card-content>
+    </mat-card>
   </div>
   <ng-template #noFavourites>
     <div>

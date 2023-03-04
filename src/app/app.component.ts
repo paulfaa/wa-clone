@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog.component';
 import { Message } from './models/message';
 import { MessageService } from './services/message.service';
+import { MessageBuilder } from './util/message-builder';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class AppComponent {
               private dialog: MatDialog
   ){
     this.test=[];
-    this.test.push(new Message(new Date, true, "test inject data"));
+    this.test.push(new MessageBuilder().id(1).timestamp(new Date).fromMe(true).text("Test dialog injection").build());
+    this.test.push(new MessageBuilder().id(4).timestamp(new Date).fromMe(false).text("ID 4").build());
   }
 
   @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef | undefined;

@@ -31,12 +31,17 @@ export class FavouritesDialogComponent implements OnInit {
 
   public scrollToMessage(messageId: number | undefined){
     this.closeDialog();
-    if(messageId && messageId != null){
-      let el = document.getElementById(messageId.toString());
-      el!.scrollIntoView({behavior: 'smooth'});
+    try{
+      if(messageId && messageId != null){
+        console.log(messageId)
+        let el = document.getElementById(messageId.toString());
+        console.log(el)
+        el!.scrollIntoView({behavior: 'smooth'});
+      }
     }
-    else{
-      console.log("HTML element with id " + messageId + " doesn't exist");
+    catch(e){
+      console.log("Element not found on page" + e);
+      throw(e);
     }
   }
 }
