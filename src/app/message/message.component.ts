@@ -9,6 +9,7 @@ import { FavouritesService } from '../services/favourites.service';
 })
 export class MessageComponent implements OnChanges {
 
+  @Input() idInput!: number;
   @Input() timestampInput!: Date;
   @Input() fromMeInput!: boolean;
   @Input() textInput!: string;
@@ -24,6 +25,7 @@ export class MessageComponent implements OnChanges {
   
   //ngOnChanges(): void {
   ngOnChanges(changes: SimpleChanges): void {
+    this.id = this.idInput;
     this.timestamp = this.timestampInput;
     this.fromMe = this.fromMeInput;
     this.text = this.textInput;
@@ -31,13 +33,14 @@ export class MessageComponent implements OnChanges {
   }
 
   public toggleFavourite(){
+    console.log("id of message clicked: ", this.id);
     if (this.isFavourite == true){
       this.isFavourite = false;
-      this.favouritesService.removeFromFavourites(new Message(this.timestamp, this.fromMe, this.text));
+      this.favouritesService.removeFromFavourites(this.id!);
     }
     else{
       this.isFavourite = true;
-      this.favouritesService.addToFavourites(new Message(this.timestamp, this.fromMe, this.text));
+      this.favouritesService.addToFavourites(this.id!, new Message(this.timestamp, this.fromMe, this.text));
     }
   }
 }

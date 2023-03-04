@@ -11,7 +11,8 @@
 
 <app-message
     *ngFor="let m of this._serviceSubscription | async"
-    [attr.id]="m.id"
+    [attr.id]="m.id!"
+    [idInput]="m.id!"
     [timestampInput]="m.timestamp"
     [fromMeInput]="m.fromMe"
     [textInput]="m.text"

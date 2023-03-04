@@ -42,9 +42,9 @@ export class MessageParsingService {
     }
   }
 
-  private checkIsFavourite(message: Message): void {
+  private checkIsFavourite(id: number, message: Message): void {
     console.log(message)
-    if (this.favouritesService.isFavourite(message)) {
+    if (this.favouritesService.isFavourite(id)) {
       message.$isFavourite = true;
     }
   }
@@ -62,9 +62,9 @@ export class MessageParsingService {
           fromMe: item.fromMe,
           text: item.text,
         };
+        this.checkIsFavourite(this.index, msg);
         this.index = this.index + 1;
-        this.checkIsFavourite(msg);
-        console.log("After parse " + msg)
+        console.log("After parse " + msg.id)
         this.messageService.addMessage(msg);
       }
     );
