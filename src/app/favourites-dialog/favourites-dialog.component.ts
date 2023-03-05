@@ -16,7 +16,7 @@ export class FavouritesDialogComponent implements OnInit {
   constructor(
     private messageParsingService: MessageParsingService,
     public dialogRef: MatDialogRef<FavouritesDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Message[], //inject favourites on open
+    @Inject(MAT_DIALOG_DATA) public data: Message[],
   ) {
     this.favourites = data;
   }

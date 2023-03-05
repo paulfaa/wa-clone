@@ -13,18 +13,17 @@ import { MessageBuilder } from './util/message-builder';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'wa';
   fileContent = '';
 
-  test: Message[];
+  favourites: Message[];
 
   constructor(private router: Router,
               private messageService: MessageService,
               private dialog: MatDialog
   ){
-    this.test=[];
-    this.test.push(new MessageBuilder().id(1).timestamp(new Date).fromMe(true).text("Test dialog injection").build());
-    this.test.push(new MessageBuilder().id(4).timestamp(new Date).fromMe(false).text("ID 4").build());
+    this.favourites=[];
+    this.favourites.push(new MessageBuilder().id(1).timestamp(new Date).fromMe(true).text("Test dialog injection").build());
+    this.favourites.push(new MessageBuilder().id(4).timestamp(new Date).fromMe(false).text("ID 4").build());
   }
 
   @ViewChild("fileDropRef", { static: false }) fileDropEl: ElementRef | undefined;
@@ -40,10 +39,11 @@ export class AppComponent {
     }
   }
 
-  openFavouritesDialog(): void {
+  public openFavouritesDialog(): void {
     let dialogRef = this.dialog.open(FavouritesDialogComponent, {
       width: '80%',
-      data: this.test,
+      data: this.favourites,
+      //data: this.messageService.getFavourites(),  //todo
       position: {top: '150px'} 
     });
   

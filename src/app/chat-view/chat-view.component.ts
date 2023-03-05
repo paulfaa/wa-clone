@@ -19,7 +19,7 @@ export class ChatViewComponent implements OnInit {
 
   constructor(private messageService: MessageService) {
     this._serviceSubscription = this.messageService.$getMessages();
-    this._serviceSubscription.subscribe((r) => console.log(r));
+    this._serviceSubscription.subscribe();
 
     //move logic to message service
     this.messages = [];

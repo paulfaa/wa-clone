@@ -46,13 +46,19 @@ export class MessageParsingService {
     return this.favouritesService.isFavourite(id);
   }
 
+  private getImageName(contents: string): void {
+    //if type == image
+    // get caption
+    //return caption /n filename
+  }
+
   public parseJson(jsonString: string) {
     this.index = 0;
-    let jsonObj = JSON.parse(jsonString);
+    var jsonObj = JSON.parse(jsonString);
     this.participant = jsonObj.chats[0].contactName;
     this.messageCount = Object.keys(jsonObj.chats[0].messages).length
-    this.messages = jsonObj.chats[0].messages.map(
-      (item: { timestamp: any; fromMe: any; text: any }) => {
+    jsonObj.chats[0].messages.map(
+      (item: { timestamp: any; fromMe: any; text: any; type: any; filename: any; caption:any}) => {
         var fav = this.checkIsFavourite(this.index);
         var msg = {
           id: this.index,
