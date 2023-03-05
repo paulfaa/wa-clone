@@ -65,7 +65,7 @@ export class MessageParsingService {
           timestamp: item.timestamp,
           fromMe: item.fromMe,
           text: item.text,
-          isFavourite: fav
+          $isFavourite: fav
         };
         this.index = this.index + 1;
         this.messageService.addMessage(msg);

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Message } from '../models/message';
-import StorageUtils from '../util/storage-util';
 
 @Injectable()
 export class MessageService {
@@ -11,7 +10,6 @@ export class MessageService {
   constructor() {}
 
   public addMessage(message: Message) {
-    //console.log('Received message from parseEvent', message);
     this.$messages.next([...this.$messages.getValue(), message]);
   }
 

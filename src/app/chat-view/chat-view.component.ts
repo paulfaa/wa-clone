@@ -28,17 +28,8 @@ export class ChatViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('chat view component msgs: ', this.messages);
-    const mockMessages: Message[] = [
-    new Message(new Date(), true, "Message contents...."),
-    new Message(new Date(), true, "Lorum Ipsum"),
-    new Message(new Date(), false, "Hello world..."),
-    new Message(new Date(), true, "Message contents 2 ....")
-    ]
-    this.addMessage(new Message(new Date(2020, 10, 12), true, "Message contents...."));
-    this.addMessage(new Message(new Date(2020, 10, 13), true, "Message contents...."));
-    this.addMessage(new Message(new Date(2021, 10, 12), true, "Message contents...."));
-    //this.setKeys();
+    //console.log('chat view component msgs: ', this.messages);
+
   }
 
   private setKeys(): void{

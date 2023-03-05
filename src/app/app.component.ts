@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog.component';
@@ -36,7 +36,6 @@ export class AppComponent {
       position: {top: '150px'} 
     });
   
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    dialogRef.afterClosed().subscribe(() => {});
   } 
 }

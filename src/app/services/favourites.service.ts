@@ -18,13 +18,12 @@ export class FavouritesService {
     if(currentFileName != null && currentFileName != undefined && currentFileName != ""){
       this.fileName = currentFileName;
       var favourites = StorageUtils.readFromStorage(currentFileName + '.favourites');
-      if (favourites === null){ 
-        console.log('init method setting favourites to empty map')
-        //this.favouritesMap = [];
-      }
-      else {
+      if (favourites != null){ 
         console.log('setting this.favourites to ' + favourites)
         this.favouritesMap = StorageUtils.readFromStorage(currentFileName + '.favourites');
+      }
+      else{
+        console.log("no saved data found")
       }
     }
   }
@@ -51,6 +50,7 @@ export class FavouritesService {
 
   public removeFromFavourites(id: number){
     if(this.favouritesMap.has(id)){
+      console.log("Removing message id " + id + " from favourites");
       this.favouritesMap.delete(id);
     }
     this.updateStorage();
@@ -76,5 +76,4 @@ export class FavouritesService {
   private updateStorage(): void{
     StorageUtils.writeToStorage(this.fileName + '.favourites', this.favouritesMap)
   }
-
 }
