@@ -60,11 +60,15 @@ export class MessageParsingService {
     jsonObj.chats[0].messages.map(
       (item: { timestamp: any; fromMe: any; text: any; type: any; filename: any; caption:any}) => {
         var fav = this.checkIsFavourite(this.index);
+        var text = item.text;
+        if(text == null || text == undefined){
+          text = item.caption + " - " + item.filename;
+        }
         var msg = {
           id: this.index,
           timestamp: item.timestamp,
           fromMe: item.fromMe,
-          text: item.text,
+          text: text,
           $isFavourite: fav
         };
         this.index = this.index + 1;

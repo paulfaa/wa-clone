@@ -55,7 +55,7 @@ export class FavouritesService {
     }
     this.updateStorage();
   }
-
+ 
   /* private sortFavourites(): void{
     try{
       if(this.favouritesMap != null && this.favouritesMap.length >= 2){
