@@ -29,13 +29,13 @@ export class AppComponent {
   }
 
   public openFavouritesDialog(): void {
-    var savedFavourites = Array.from(this.favouritesService.getFavourites().values());
+    var savedFavourites = Array.from(this.favouritesService.getFavourites().values()); //todo list should be ordered by daye
     let dialogRef = this.dialog.open(FavouritesDialogComponent, {
       width: '80%',
       data: savedFavourites,
       position: {top: '150px'} 
     });
   
-    dialogRef.afterClosed().subscribe(() => {});
+    //dialogRef.afterClosed().subscribe(() => {});
   } 
 }
