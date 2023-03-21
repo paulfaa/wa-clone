@@ -1,5 +1,6 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
@@ -27,7 +28,8 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes(routes),
-        MatDialogModule
+        MatDialogModule,
+        MatToolbarModule
       ],
       declarations: [
         AppComponent
@@ -46,12 +48,6 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'wa'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('wa');
-  });
-
   describe('callClearMessages()', () => {
     it('Calls clearMessages() in the message service if the current route is /view', fakeAsync(() => {
       //Arrange
@@ -68,7 +64,7 @@ describe('AppComponent', () => {
 	    expect(component.callClearMessages).toHaveBeenCalled();
       expect(mockMessageService.clearAllMessages).toHaveBeenCalled();
     }));
-    it('Calls does not call clearMessages() if the current route not /view', fakeAsync(() => {
+    it('Does not call clearMessages() if the current route not /view', fakeAsync(() => {
       //Arrange
       //mockMessageService.clearAllMessages();
       spyOn(component, 'callClearMessages');

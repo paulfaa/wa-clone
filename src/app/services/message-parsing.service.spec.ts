@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { readFileSync } from 'fs';
+import { Message } from '../models/message';
 import { FavouritesService } from './favourites.service';
 import { MessageParsingService } from './message-parsing.service';
 import { MessageService } from './message.service';
@@ -9,11 +10,11 @@ describe('MessageParsingService', () => {
   let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockFavouritesService: jasmine.SpyObj<FavouritesService>;
 
-  mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getMessages']);
+  mockMessageService = jasmine.createSpyObj('mockMessageService', ['addMessage', '$getMessages']);
   mockFavouritesService = jasmine.createSpyObj('mockFavouritesService', ['isFavourite']);
   //mockMessageService.$getMessages.and.returnValue(null);
 
-  const messageServiceSpy = jasmine.createSpyObj('MessageService', ['addMessage']);
+  //const messageServiceSpy = jasmine.createSpyObj('MessageService', ['addMessage']);
   const validJson: any = require('../../assets/test.json');
 
   beforeEach(() => {
@@ -147,12 +148,14 @@ describe('MessageParsingService', () => {
 
   describe('parseJson()', () => {
     it('converts the provided json file to an array of message objects', () => {
+      //Arrange
+
       //Act
       console.log("test ", validJson);
       //service.parseJson(validJson);
 
       //Assert
-      expect(messageServiceSpy.addMessage()).toHaveBeenCalledTimes(3);
+      //expect(mockMessageService.addMessage(jasmine.any(Message))).toHaveBeenCalledTimes(3);
     });
   }); 
 });

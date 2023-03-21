@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { MessageService } from '../services/message.service';
 
 import { FileUploadComponent } from './file-upload.component';
@@ -13,9 +14,10 @@ describe('FileUploadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MatDialogModule, MatIconModule],
       declarations: [ FileUploadComponent ],
       providers: [{ provide: MessageService, useValue: mockMessageService }],
-      imports: [MatDialogModule],
+      
     })
     .compileComponents();
 

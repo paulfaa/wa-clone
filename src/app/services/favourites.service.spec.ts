@@ -6,14 +6,14 @@ import { FavouritesService } from './favourites.service';
 
 describe('FavouritesService', () => {
   let service: FavouritesService;
-  const message = new Message(new Date(), true, "Hello");
+  const sampleMessage = new Message(new Date(), true, "Hello");
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(FavouritesService);
   });
   afterEach(() => {
-    service['favourites'] = [];
+    service['favouritesMap'] = new Map<number, Message>();
     service.clearFavourites();
   });
 
@@ -54,47 +54,47 @@ describe('FavouritesService', () => {
   describe('addToFavourites()', () => {
     it('adds the specified message to the list', () => {
       // Arrange
-      var favourites = service['favourites'].length;
-      expect(favourites).toEqual(0);
+      var favouritesMap = service['favouritesMap'];
+      expect(favouritesMap.size).toEqual(0);
 
       // Act
-      service.addToFavourites(message);
-      var favourites = service.getFavourites().length;
+      service.addToFavourites(1, sampleMessage);
 
       // Assert
-      expect(favourites).toEqual(1);
+      expect(favouritesMap.size).toEqual(1);
+      expect(favouritesMap.get(1)).toEqual(sampleMessage);
     });
   });
 
   describe('removeFromFavourites()', () => {
     it('removes the specified message from the list', () => {
       // Arrange
-      service.addToFavourites(message);
-      var len = service['favourites'].length;
+      service.addToFavourites(1, sampleMessage);
+      var len = service['favouritesMap'].size;
       expect(len).toEqual(1);
 
       // Act
-      service.removeFromFavourites(message);
+      service.removeFromFavourites(1);
       var favourites = service.getFavourites();
 
       // Assert
-      expect(favourites.length).toEqual(0);
-      expect(favourites.includes(message)).toBeFalse;
+      expect(favourites.size).toEqual(0);
+      expect(favourites.has(1)).toBeFalse;
     });
     it('does not remove the specified message if it is not in favourites', () => {
       // Arrange
       const otherMessage = new Message(new Date, true, "Hey");
-      service.addToFavourites(message);
-      const len = service['favourites'].length;
+      service.addToFavourites(1, sampleMessage);
+      const len = service['favouritesMap'].size;
       expect(len).toEqual(1);
 
       // Act
-      service.removeFromFavourites(otherMessage);
+      service.removeFromFavourites(2);
       var favourites = service.getFavourites();
 
       // Assert
-      expect(favourites.length).toEqual(1);
-      expect(favourites.includes(message)).toBeTrue;
+      expect(favourites.size).toEqual(1);
+      expect(favourites.has(1)).toBeTrue;
     });
   });
 
@@ -105,36 +105,36 @@ describe('FavouritesService', () => {
       var favourites = service.getFavourites();
 
       // Assert
-      expect(favourites.length).toEqual(0);
+      expect(favourites.size).toEqual(0);
     });
-    it('returns the amount of messages favourited', () => {
+    it('returns all messages which are favourited', () => {
       // Arrange
-      service.addToFavourites(message);
-      service.addToFavourites(message);
-      service.addToFavourites(message);
+      service.addToFavourites(1, sampleMessage);
+      service.addToFavourites(2, sampleMessage);
+      service.addToFavourites(3, sampleMessage);
 
       // Act
       var favourites = service.getFavourites();
 
       // Assert 
-      expect(favourites.length).toEqual(3);
-      expect(favourites.includes(message)).toBe(true);
+      expect(favourites.size).toEqual(3);
+      expect(favourites.has(1)).toBe(true);
     });
   });
 
   describe('clearFavourites()', () => {
     it('removes all favourites', () => {
       // Arrange
-      service.addToFavourites(message);
-      var favourites = service['favourites'].length;
-      expect(favourites).toEqual(1);
+      service.addToFavourites(1, sampleMessage);
+      var favourites = service['favouritesMap'];
+      expect(favourites.size).toEqual(1);
 
       // Act
       service.clearFavourites();
-      favourites = service['favourites'].length;
+      const newSize = service['favouritesMap'].size;
 
       // Assert
-      expect(favourites).toEqual(0);
+      expect(newSize).toEqual(0);
     });
   });
 });
