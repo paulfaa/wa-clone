@@ -10,7 +10,7 @@ import { MessageParsingService } from '../services/message-parsing.service';
 })
 export class FavouritesDialogComponent implements OnInit {
 
-  public name = '';
+  public name: string | undefined;
   public favourites: Message[];
 
   constructor(
