@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
+import { MessageComponent } from '../message/message.component';
 import { Message } from '../models/message';
 import { MessageParsingService } from '../services/message-parsing.service';
 import { MessageService } from '../services/message.service';
@@ -17,7 +18,7 @@ describe('ChatViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatViewComponent ],
+      declarations: [ ChatViewComponent, MessageComponent ],
       providers: [{ provide: MessageService, useValue: mockMessageService }]
     })
     .compileComponents();
