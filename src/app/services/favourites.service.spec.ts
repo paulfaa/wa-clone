@@ -25,22 +25,24 @@ describe('FavouritesService', () => {
     it('does not try to read storage if fileName is not defined', () => {
       // Arrange
       const invalidName = "";
+      const storageSpy = spyOn(StorageUtils, 'readFromStorage');
 
       // Act
-      service.initStorage(invalidName + '.favourites')
+      service.initStorage(invalidName);
 
       // Assert
-      expect(StorageUtils.readFromStorage(invalidName + '.favourites')).not.toHaveBeenCalled();
+      expect(storageSpy).not.toHaveBeenCalled();
     });
-    it('does not try to read storage if fileName is not defined', () => {
+    it('tries to read from storage if fileName is defined', () => {
       // Arrange
       const validName = "myFile.json";
+      const storageSpy = spyOn(StorageUtils, 'readFromStorage');
 
       // Act
-      service.initStorage(validName + '.favourites')
+      service.initStorage(validName)
 
       // Assert
-      expect(StorageUtils.readFromStorage(validName + '.favourites')).toHaveBeenCalled();
+      expect(storageSpy).toHaveBeenCalledWith(validName + '.favourites');
     });
     it('loads data from storage if fileName matches', () => {
       // Arrange

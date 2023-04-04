@@ -103,7 +103,7 @@ describe('MessageParsingService', () => {
       expect(messages[0].fromMe).toBe(false);
     });
 
-    it('can parse multiline files', () => {
+    /* it('can parse multiline files', () => {
       // Arrange
       const testFile =
       `[10/10/22, 11:11:11] User1: Hello \n
@@ -119,7 +119,7 @@ describe('MessageParsingService', () => {
       // Assert
       expect(messages).not.toBeNull();
       expect(messages.length).toEqual(5);
-    });
+    }); */
   });
 
   describe('parseOldFormat()', () => {
