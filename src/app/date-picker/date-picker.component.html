@@ -1,6 +1,6 @@
-<mat-tab-group>
+<mat-tab-group mat-stretch-tabs (selectedTabChange)="onYearSelected($event)">
     <mat-tab *ngFor="let tab of this.datesMap | keyvalue" label={{tab.key}}>
-        <mat-tab-group>
+        <mat-tab-group mat-stretch-tabs (selectedTabChange)="onMonthSelected($event)">
             <mat-tab *ngFor="let subTab of tab.value | numberToMonth" label={{subTab}}></mat-tab>
         </mat-tab-group>
     </mat-tab>

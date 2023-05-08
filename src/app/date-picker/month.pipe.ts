@@ -7,7 +7,7 @@ export class MonthPipe implements PipeTransform {
     var monthStrings : string[] = [];
     months.forEach(month => {
       const date = new Date();
-      date.setMonth(month);
+      date.setMonth(month - 1);
       monthStrings.push(date.toLocaleString('en-IE', {month: 'long'}));
     });
     return monthStrings;
