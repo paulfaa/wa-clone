@@ -18,6 +18,9 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
 import {MatToolbarModule} from '@angular/material/toolbar';
 import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog.component';
 import {MatCardModule} from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { DatePickerComponent } from './date-picker/date-picker.component';
+import { MonthPipe } from './date-picker/month.pipe';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,8 @@ import {MatCardModule} from '@angular/material/card';
     FileUploadComponent,
     LoadingSpinnerComponent,
     FavouritesDialogComponent,
+    DatePickerComponent,
+    MonthPipe,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +45,8 @@ import {MatCardModule} from '@angular/material/card';
     MatDialogModule,
     MatProgressSpinnerModule,
     MatToolbarModule,
-    MatCardModule
+    MatCardModule,
+    MatTabsModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

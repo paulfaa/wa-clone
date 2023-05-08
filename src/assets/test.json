@@ -4,21 +4,28 @@
             "contactName": "Test",
             "messages": [
                 {
-                    "timestamp": "2022-12-11T17:00:12Z",
+                    "timestamp": "2014-12-11T17:00:12Z",
+                    "id": "35A8984427489ACE786A9F5DFA81E7",
+                    "fromMe": true,
+                    "type": "text",
+                    "text": "Old Message"
+                },
+                {
+                    "timestamp": "2020-10-11T17:00:12Z",
                     "id": "35A8984427489ACE786A9F5DFA81E7",
                     "fromMe": true,
                     "type": "text",
                     "text": "Hello! 😛"
                 },
                 {
-                    "timestamp": "2022-12-11T21:34:04Z",
+                    "timestamp": "2021-10-11T21:34:04Z",
                     "id": "009715FBED647B52CD4EA6AE9A7CA4",
                     "fromMe": false,
                     "type": "text",
                     "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eget nisi faucibus nulla porttitor imperdiet. Nunc eget nibh dui. Fusce cursus, erat nec tempus euismod, erat mi porttitor felis, id dignissim purus purus et enim. Donec posuere quam eget sem vestibulum rutrum in non dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vivamus congue diam in interdum interdum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In tincidunt magna et tempus aliquam. Donec nec lorem velit. Donec feugiat faucibus dui, quis viverra sapien."
                 },
                 {
-                    "timestamp": "2022-12-12T22:34:23Z",
+                    "timestamp": "2022-11-12T22:34:23Z",
                     "id": "479AFD522FEC7444991CCA578EDF9F",
                     "fromMe": false,
                     "type": "text",
