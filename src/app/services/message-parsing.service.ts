@@ -11,6 +11,7 @@ export class MessageParsingService {
   //public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
   private index: number;
   private messages: Message[];
+  datesMap : Map<number, number[]>;
   chatOwner: string = '';
   participant: string = '';
   chatMembers: string[];
@@ -30,6 +31,7 @@ export class MessageParsingService {
     this.chatMembers = [];
     this.isGroupChat = false;
     this.messageCount = 0;
+    this.datesMap = new Map<number, number[]>();
   }
 
   public getAllMessages() {
@@ -52,6 +54,23 @@ export class MessageParsingService {
     //return caption /n filename
   }
 
+  private populateDateMap(date: Date): void {
+    console.log(date.toString())
+    let dateObject = new Date(date);
+    let year = dateObject.getFullYear();
+    let month = dateObject.getMonth() + 1;
+    let storedMonths = this.datesMap.get(year);
+    if(storedMonths == undefined){
+      this.datesMap.set(year, [month])
+    }
+    else{
+      if(storedMonths.includes(month) == false){
+        storedMonths.push(month)
+      this.datesMap.set(year, storedMonths)
+      }
+    }
+  }
+
   public parseJson(jsonString: string) {
     this.index = 0;
     var jsonObj = JSON.parse(jsonString);
@@ -64,6 +83,7 @@ export class MessageParsingService {
         if(text == null || text == undefined){
           text = item.caption + " - " + item.filename;
         }
+        this.populateDateMap(item.timestamp);
         var msg = {
           id: this.index,
           timestamp: item.timestamp,
