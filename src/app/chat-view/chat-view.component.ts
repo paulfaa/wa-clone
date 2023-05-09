@@ -77,4 +77,8 @@ export class ChatViewComponent implements OnInit {
     }
     this.yearMap.get(year)!.push(message);
   }
+
+  public updateDateFilter(event: any){
+    console.log("emitted ", event)
+  }
 }
