@@ -17,15 +17,18 @@ export class DatePickerComponent implements OnInit {
 
   constructor(private messageParsingService: MessageParsingService) {
     this.datesMap = new Map<number, number[]>;
-    this.datesMap.set(2011, [1,2,4,6])
-    this.datesMap.set(2015, [11,12])
-    this.datesMap.set(2016, [5,8,9])
+    //this.datesMap = messageParsingService.datesMap;
+    //this.datesMap.set(2011, [1,2,4,6])
+    //this.datesMap.set(2015, [11,12])
+    //this.datesMap.set(2016, [5,8,9])
    }
 
   ngOnInit(): void {
     var [firstKey] = this.datesMap.keys();
     this.selectedYear = firstKey;
-    this.selectedMonth = this.datesMap.get(firstKey)![0];
+    if(this.datesMap.has(firstKey)){
+      this.selectedMonth = this.datesMap.get(firstKey)![0];
+    }
   }
 
   public onYearSelected(tabChangeEvent: MatTabChangeEvent){
