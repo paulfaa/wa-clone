@@ -5,6 +5,7 @@ import { MessageService } from '../services/message.service';
 import { MonthPipe } from './month.pipe';
 import { By } from '@angular/platform-browser';
 import { MatTabGroup, MatTab, MatTabsModule } from '@angular/material/tabs';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
 
 describe('DatePickerComponent', () => {
   let component: DatePickerComponent;
@@ -20,7 +21,8 @@ describe('DatePickerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ DatePickerComponent, MonthPipe ],
       imports: [MatTabsModule],
-      providers: [{ provide: MessageService, useValue: mockMessageService }]
+      providers: [{ provide: MessageService, useValue: mockMessageService }],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 

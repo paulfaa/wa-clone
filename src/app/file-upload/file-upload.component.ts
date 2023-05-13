@@ -23,7 +23,7 @@ export class FileUploadComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  readFileContent(file: File): Promise<string> {
+  public readFileContent(file: File): Promise<string> {
     return new Promise<string>((resolve) => {
       if (!file) {
         resolve('');
@@ -40,8 +40,7 @@ export class FileUploadComponent implements OnInit {
     });
   }
 
-  async onFileSelected(event: any) {
-
+  public async onFileSelected(event: any) {
     const file: File = event.target.files[0];
     const fileReader = new FileReader();
 

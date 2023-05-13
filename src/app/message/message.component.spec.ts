@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Message } from '../models/message';
 import { FavouritesService } from '../services/favourites.service';
-
 import { MessageComponent } from './message.component';
 
 describe('MessageComponent', () => {
