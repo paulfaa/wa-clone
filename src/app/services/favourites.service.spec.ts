@@ -6,7 +6,7 @@ import { FavouritesService } from './favourites.service';
 
 describe('FavouritesService', () => {
   let service: FavouritesService;
-  const sampleMessage = new Message(new Date(), true, "Hello");
+  const sampleMessage = new Message(new Date(), true, "Hello", 1);
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -60,7 +60,7 @@ describe('FavouritesService', () => {
       expect(favouritesMap.size).toEqual(0);
 
       // Act
-      service.addToFavourites(1, sampleMessage);
+      service.addToFavourites(sampleMessage);
 
       // Assert
       expect(favouritesMap.size).toEqual(1);
@@ -71,7 +71,7 @@ describe('FavouritesService', () => {
   describe('removeFromFavourites()', () => {
     it('removes the specified message from the list', () => {
       // Arrange
-      service.addToFavourites(1, sampleMessage);
+      service.addToFavourites(sampleMessage);
       var len = service['favouritesMap'].size;
       expect(len).toEqual(1);
 
@@ -85,18 +85,19 @@ describe('FavouritesService', () => {
     });
     it('does not remove the specified message if it is not in favourites', () => {
       // Arrange
-      const otherMessage = new Message(new Date, true, "Hey");
-      service.addToFavourites(1, sampleMessage);
+      const invalidId = 2;
+      service.addToFavourites(sampleMessage);
       const len = service['favouritesMap'].size;
       expect(len).toEqual(1);
 
       // Act
-      service.removeFromFavourites(2);
+      service.removeFromFavourites(invalidId);
       var favourites = service.getFavourites();
 
       // Assert
       expect(favourites.size).toEqual(1);
       expect(favourites.has(1)).toBeTrue;
+      expect(favourites.has(invalidId)).toBeFalse;
     });
   });
 
@@ -111,9 +112,11 @@ describe('FavouritesService', () => {
     });
     it('returns all messages which are favourited', () => {
       // Arrange
-      service.addToFavourites(1, sampleMessage);
-      service.addToFavourites(2, sampleMessage);
-      service.addToFavourites(3, sampleMessage);
+      const otherMessage1 = new Message(new Date, true, "Hey", 2);
+      const otherMessage2 = new Message(new Date, true, "Hey", 3);
+      service.addToFavourites(sampleMessage);
+      service.addToFavourites(otherMessage1);
+      service.addToFavourites(otherMessage2);
 
       // Act
       var favourites = service.getFavourites();
@@ -127,7 +130,7 @@ describe('FavouritesService', () => {
   describe('clearFavourites()', () => {
     it('removes all favourites', () => {
       // Arrange
-      service.addToFavourites(1, sampleMessage);
+      service.addToFavourites(sampleMessage);
       var favourites = service['favouritesMap'];
       expect(favourites.size).toEqual(1);
 

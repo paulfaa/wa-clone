@@ -6,6 +6,7 @@ import { Message } from '../models/message';
 import { MessageParsingService } from '../services/message-parsing.service';
 import { MessageService } from '../services/message.service';
 import { ChatViewComponent } from './chat-view.component';
+import { DatePickerComponent } from '../date-picker/date-picker.component';
 
 describe('ChatViewComponent', () => {
   let component: ChatViewComponent;
@@ -18,7 +19,7 @@ describe('ChatViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatViewComponent, MessageComponent ],
+      declarations: [ ChatViewComponent, MessageComponent, DatePickerComponent ],
       providers: [{ provide: MessageService, useValue: mockMessageService }]
     })
     .compileComponents();

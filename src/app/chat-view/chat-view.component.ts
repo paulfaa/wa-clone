@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { filter, flatMap, map, Observable, of } from 'rxjs';
 import { Message } from '../models/message';
 import { MessageService } from '../services/message.service';
+import { FavouritesService } from '../services/favourites.service';
 
 @Component({
   selector: 'app-chat-view',
@@ -18,7 +19,7 @@ export class ChatViewComponent implements OnInit {
   yearKeys: number[];
   messages: Message[];
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private favouritesService: FavouritesService) {
     this._serviceSubscription = this.messageService.$getMessages();
 /*     this._serviceSubscription = this._serviceSubscription.pipe(
       map(messages =>
@@ -38,7 +39,6 @@ export class ChatViewComponent implements OnInit {
 
   ngOnInit(): void {
     //console.log('chat view component msgs: ', this.messages);
-
   }
 
   public updateSubscription(year: number): void {
@@ -80,5 +80,15 @@ export class ChatViewComponent implements OnInit {
 
   public updateDateFilter(event: any){
     console.log("emitted ", event)
+  }
+
+  public toggleFavourite(eventMessage: Message){
+    var id = eventMessage.id;
+    if(id && this.favouritesService.isFavourite(id)){
+      this.favouritesService.removeFromFavourites(id);
+    }
+    else{
+      this.favouritesService.addToFavourites(eventMessage);
+    }
   }
 }

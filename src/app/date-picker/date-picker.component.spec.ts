@@ -4,7 +4,7 @@ import { DatePickerComponent } from './date-picker.component';
 import { MessageService } from '../services/message.service';
 import { MonthPipe } from './month.pipe';
 import { By } from '@angular/platform-browser';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTabGroup, MatTab, MatTabsModule } from '@angular/material/tabs';
 
 describe('DatePickerComponent', () => {
   let component: DatePickerComponent;
@@ -19,6 +19,7 @@ describe('DatePickerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ DatePickerComponent, MonthPipe ],
+      imports: [MatTabsModule],
       providers: [{ provide: MessageService, useValue: mockMessageService }]
     })
     .compileComponents();

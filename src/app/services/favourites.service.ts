@@ -36,16 +36,9 @@ export class FavouritesService {
     return this.favouritesMap.has(id);
   }
 
-  public addToFavourites(id: number, m: Message){
-    if(!this.favouritesMap.has(id)){
-      console.log("Adding message " + m.text + "to favourites");
-      this.favouritesMap.set(id, m);
-      //this.sortFavourites();
-      this.updateStorage();
-    }
-    else{
-      console.log("Message already exists in favourites");
-    }
+  public addToFavourites(m: Message){
+    this.favouritesMap.set(m.id!, m);
+    this.updateStorage();
   }
 
   public removeFromFavourites(id: number){

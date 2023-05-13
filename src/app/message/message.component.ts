@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Message } from '../models/message';
 import { FavouritesService } from '../services/favourites.service';
 
@@ -15,8 +15,9 @@ export class MessageComponent implements OnChanges {
   @Input() textInput!: string;
   @Input() favouriteInput!: boolean;
 
-  constructor(private favouritesService: FavouritesService) {}
+  @Output() toggleFavouriteEvent: EventEmitter<Message> = new EventEmitter();
 
+  constructor() {}
   id?: number;
   timestamp: Date = new Date();
   fromMe: boolean = false;
@@ -36,11 +37,10 @@ export class MessageComponent implements OnChanges {
     console.log("id of message clicked: ", this.id);
     if (this.isFavourite == true){
       this.isFavourite = false;
-      this.favouritesService.removeFromFavourites(this.id!);
     }
     else{
       this.isFavourite = true;
-      this.favouritesService.addToFavourites(this.id!, new Message(this.timestamp, this.fromMe, this.text));
     }
+    this.toggleFavouriteEvent.emit(new Message(this.timestamp, this.fromMe, this.text, this.id));
   }
 }
