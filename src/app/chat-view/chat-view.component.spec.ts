@@ -7,20 +7,26 @@ import { MessageParsingService } from '../services/message-parsing.service';
 import { MessageService } from '../services/message.service';
 import { ChatViewComponent } from './chat-view.component';
 import { DatePickerComponent } from '../date-picker/date-picker.component';
+import { FavouritesService } from '../services/favourites.service';
 
 describe('ChatViewComponent', () => {
   let component: ChatViewComponent;
   let fixture: ComponentFixture<ChatViewComponent>;
   let mockMessageService: jasmine.SpyObj<MessageService>;
+  let mockFavouritesService: jasmine.SpyObj<FavouritesService>;
   let mockMessageParsingService: MessageParsingService;
   let mockMessages: Message[];
 
   mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getMessages']);
+  mockFavouritesService = jasmine.createSpyObj('mockFavouritesService', ['isFavourite','addToFavourites', 'removeFromFavourites']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ ChatViewComponent, MessageComponent, DatePickerComponent ],
-      providers: [{ provide: MessageService, useValue: mockMessageService }]
+      providers: [
+        { provide: MessageService, useValue: mockMessageService },
+        { provide: FavouritesService, useValue: mockFavouritesService}
+      ]
     })
     .compileComponents();
 
@@ -77,6 +83,39 @@ describe('ChatViewComponent', () => {
       expect(component.yearMap.size).toEqual(1);
       expect(component.yearMap.get(2020)!.length).toBe(4);
       expect(component.yearMap.get(2020)![3]).toEqual(m4);
+    });
+  });
+
+  describe('toggleFavourite', () => {
+      var favouritedMessage: Message;
+    beforeEach(() => {
+      favouritedMessage = new Message(new Date, true, "Favourite", 12);
+      mockFavouritesService['favouritesMap'] = new Map<number, Message>([[12, favouritedMessage]]);
+    });
+    it('removes a message from favourites if it was already favourited', () => {
+      //arrange
+      mockFavouritesService.isFavourite = jasmine.createSpy().and.returnValue(true);
+      expect(mockFavouritesService['favouritesMap'].has(favouritedMessage.id!)).toBeTrue;
+
+      //act
+      component.toggleFavourite(favouritedMessage);
+
+      //assert
+      expect(mockFavouritesService.removeFromFavourites).toHaveBeenCalledWith(favouritedMessage.id!);
+      expect(mockFavouritesService['favouritesMap'].has(favouritedMessage.id!)).toBeFalse;
+    });
+    it('adds a message to favourites if it is not favourited', () => {
+      //arrange
+      const newMessage = new Message(new Date, true, "New Message", 12);
+      mockFavouritesService.isFavourite = jasmine.createSpy().and.returnValue(false);
+      expect(mockFavouritesService['favouritesMap'].has(newMessage.id!)).toBeFalse;
+
+      //act
+      component.toggleFavourite(newMessage);
+
+      //assert
+      expect(mockFavouritesService.addToFavourites).toHaveBeenCalledWith(newMessage);
+      expect(mockFavouritesService['favouritesMap'].has(newMessage.id!)).toBeTrue;
     });
   });
 

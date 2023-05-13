@@ -48,18 +48,6 @@ export class FavouritesService {
     }
     this.updateStorage();
   }
- 
-  /* private sortFavourites(): void{
-    try{
-      if(this.favouritesMap != null && this.favouritesMap.length >= 2){
-        this.favouritesMap.sort((a,b) => b.id! - a.id!);
-      }
-    }
-    catch(e){
-      console.log("Can't sort due to missing ID" + e);
-      throw(e);
-    }
-  } */
 
   public clearFavourites(): void{
     this.favouritesMap = new Map<number, Message>();
@@ -67,6 +55,7 @@ export class FavouritesService {
   }
 
   private updateStorage(): void{
+    this.favouritesMap = new Map([...this.favouritesMap].sort());
     StorageUtils.writeToStorage(this.fileName + '.favourites', this.favouritesMap)
   }
 }

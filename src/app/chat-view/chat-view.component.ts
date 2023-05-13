@@ -83,8 +83,8 @@ export class ChatViewComponent implements OnInit {
   }
 
   public toggleFavourite(eventMessage: Message){
-    var id = eventMessage.id;
-    if(id && this.favouritesService.isFavourite(id)){
+    var id = eventMessage.id!;
+    if(this.favouritesService.isFavourite(id)){
       this.favouritesService.removeFromFavourites(id);
     }
     else{

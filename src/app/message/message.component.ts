@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Message } from '../models/message';
-import { FavouritesService } from '../services/favourites.service';
 
 @Component({
   selector: 'app-message',
