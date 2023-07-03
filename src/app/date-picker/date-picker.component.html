@@ -7,7 +7,7 @@
             id="monthTabs" 
             mat-stretch-tabs
             (selectedTabChange)="onMonthSelected($event)">
-            <mat-tab *ngFor="let subTab of tab.value | numberToMonth" label={{subTab}}></mat-tab>
+            <mat-tab *ngFor="let subTab of tab.value | numberToMonth" label={{subTab}}></mat-tab> <!--need to sort this, months appearing in incorrect order-->
         </mat-tab-group>
     </mat-tab>
 </mat-tab-group>

@@ -16,11 +16,7 @@ export class DatePickerComponent implements OnInit {
   selectedMonth?: number
 
   constructor(private messageParsingService: MessageParsingService) {
-    this.datesMap = new Map<number, number[]>;
-    //this.datesMap = messageParsingService.datesMap;
-    //this.datesMap.set(2011, [1,2,4,6])
-    //this.datesMap.set(2015, [11,12])
-    //this.datesMap.set(2016, [5,8,9])
+    this.datesMap = this.messageParsingService.datesMap;
    }
 
   ngOnInit(): void {
@@ -41,5 +37,6 @@ export class DatePickerComponent implements OnInit {
   public onMonthSelected(tabChangeEvent: MatTabChangeEvent){
     this.selectedMonth = new Date(Date.parse(tabChangeEvent.tab.textLabel +" 1, 2000")).getMonth();
     this.dateSelectEvent.emit(new Date(this.selectedYear!, this.selectedMonth));
+    console.log(tabChangeEvent.tab.textLabel);
   }
 }
