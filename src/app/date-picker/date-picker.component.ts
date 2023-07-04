@@ -10,13 +10,14 @@ import { MessageParsingService } from '../services/message-parsing.service';
 export class DatePickerComponent implements OnInit {
 
   @Output() dateSelectEvent: EventEmitter<Date> = new EventEmitter();
+  //@Output() mapCreatedEvent: EventEmitter<Date> = new EventEmitter();
 
-  datesMap : Map<number, number[]>;
-  selectedYear?: number;
-  selectedMonth?: number
+  protected datesMap : Map<number, number[]>;
+  private selectedYear?: number;
+  private selectedMonth?: number
 
   constructor(private messageParsingService: MessageParsingService) {
-    this.datesMap = this.messageParsingService.datesMap;
+    this.datesMap = this.messageParsingService.getDatesMap();
    }
 
   ngOnInit(): void {
@@ -25,6 +26,7 @@ export class DatePickerComponent implements OnInit {
     if(this.datesMap.has(firstKey)){
       this.selectedMonth = this.datesMap.get(firstKey)![0];
     }
+    //this.mapCreatedEvent.emit(new Date(this.selectedYear, this.selectedMonth!));
   }
 
   public onYearSelected(tabChangeEvent: MatTabChangeEvent){

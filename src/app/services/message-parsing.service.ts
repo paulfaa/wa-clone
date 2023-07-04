@@ -11,7 +11,7 @@ export class MessageParsingService {
   //public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
   private index: number;
   private messages: Message[];
-  datesMap : Map<number, number[]>;
+  private datesMap : Map<number, number[]>;
   chatOwner: string = '';
   participant: string = '';
   chatMembers: string[];
@@ -32,6 +32,10 @@ export class MessageParsingService {
     this.isGroupChat = false;
     this.messageCount = 0;
     this.datesMap = new Map<number, number[]>();
+  }
+
+  public getDatesMap(){
+    return this.datesMap;
   }
 
   public getAllMessages() {

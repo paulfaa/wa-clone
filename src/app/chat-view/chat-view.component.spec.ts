@@ -35,7 +35,7 @@ describe('ChatViewComponent', () => {
     mockMessages.push(new Message(new Date(2020, 10, 12), true, "Lorum Ipsum"));
     mockMessages.push(new Message(new Date(2020, 10, 12), false, "Hello world..."));
     mockMessages.push(new Message(new Date(2020, 10, 12), true, "Message contents 2 ...."));
-    mockMessageService.$getMessages.and.returnValue(of(mockMessages));
+    mockMessageService.$getAllMessages.and.returnValue(of(mockMessages));
 
     fixture = TestBed.createComponent(ChatViewComponent);
     component = fixture.componentInstance;
