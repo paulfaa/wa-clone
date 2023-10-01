@@ -10,9 +10,9 @@ import { Chat, WhatsappMessage } from '../models/models';
 export class MessageParsingService {
 
   //public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
-  private index: number;
   private messages: Message[];
   private datesMap : Map<number, number[]>;
+  private regex: RegExp = /([^\/]+$)/;
   chatOwner: string = '';
   participant: string = '';
   chatMembers: string[];
@@ -27,7 +27,6 @@ export class MessageParsingService {
   //then compare subsequent to stored userName
 
   constructor(private messageService: MessageService, private favouritesService: FavouritesService) {
-    this.index = 0;
     this.messages = [];
     this.chatMembers = [];
     this.isGroupChat = false;
@@ -69,19 +68,28 @@ export class MessageParsingService {
     }
   }
 
+  private formatFilename(filename?: string): string | undefined {
+    const match = filename?.match(this.regex);
+    if(match){
+      return match[0];
+    }
+    else {
+      return undefined
+    }
+  }
+
   public parseJsonString(json: string): void{
     try{
       var index = 0;
       const parsedJson: Chat = JSON.parse(json);
       const participant = parsedJson.chats[0].contactName;
-      parsedJson.chats[0].messages.map((msg : WhatsappMessage) => ({
-        ...msg,
-        isFavourite: this.checkIsFavourite(index),
-      })).forEach(msg => {
+      parsedJson.chats[0].messages.forEach((msg: WhatsappMessage) => {
+        msg.isFavourite = this.checkIsFavourite(index),
+        msg.filename = this.formatFilename(msg.filename)
         this.populateDateMap(msg.timestamp);
-        this.messageService.addMessage(msg);
         msg.messageId = index,
         index = index + 1;
+        this.messageService.addMessage(msg);
       });
     } catch(error){
       console.log("Failed to parse JSON: ", error)

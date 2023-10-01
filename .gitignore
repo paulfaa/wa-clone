@@ -17,6 +17,8 @@ bower_components/
 .idea/
 
 # misc
+src/assets/received/
+src/assets/sent/
 .sass-cache/
 connect.lock/
 coverage/
