@@ -1,29 +1,33 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, filter, map } from 'rxjs';
-import { Message } from '../models/message';
+import { WhatsappMessage } from '../models/models';
 
 @Injectable()
 export class MessageService {
-  $allMessages: BehaviorSubject<Message[]> = new BehaviorSubject<Message[]>([]);
+  $allMessages: BehaviorSubject<WhatsappMessage[]> = new BehaviorSubject<WhatsappMessage[]>([]);
   $progressValue: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor() {}
 
-  public addMessage(message: Message) {
+  public addMessage(message: WhatsappMessage) {
     this.$allMessages.next([...this.$allMessages.getValue(), message]);
   }
 
-  public clearAllMessages(): void {
-    this.$allMessages = new BehaviorSubject<Message[]>([]);
+  public addMessages(messages: WhatsappMessage[]) {
+    this.$allMessages.next(messages);
   }
 
-  public $getAllMessages(): Observable<Message[]> {
+  public clearAllMessages(): void {
+    this.$allMessages = new BehaviorSubject<WhatsappMessage[]>([]);
+  }
+
+  public $getAllMessages(): Observable<WhatsappMessage[]> {
     return this.$allMessages.asObservable();
   }
 
-  public $getFilteredMessages(date: Date): Observable<Message[]> {
+  public $getFilteredMessages(date: Date): Observable<WhatsappMessage[]> {
     console.log("filtering for ", date);
-    return this.$allMessages.pipe(map((messages: Message[]) =>
+    return this.$allMessages.pipe(map((messages: WhatsappMessage[]) =>
         messages.filter(message => new Date(message.timestamp).getMonth() ==  date.getMonth()
         && new Date(message.timestamp).getFullYear() == date.getFullYear()))
       )

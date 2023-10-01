@@ -1,5 +1,6 @@
 <div [ngClass]="fromMe ? 'ownMessage' : 'otherMessage'" class="messageBubble" (click)="toggleFavourite()">
   <mat-icon *ngIf="isFavourite">star</mat-icon>
-  <div class="messageText"> {{this.text}} </div>
+  <img *ngIf="this.filename" [src]="fromMe ? 'assets/sent/' + filename : 'assets/received/' + filename" loading="lazy" alt="image">
+  <div *ngIf="this.text" class="messageText"> {{this.text}} </div>
   <div class="messageDate"> {{timestamp | date: 'dd/MM/yyyy HH:mm': 'CET'}} </div>
 </div>

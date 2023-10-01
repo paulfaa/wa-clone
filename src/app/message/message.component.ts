@@ -11,8 +11,9 @@ export class MessageComponent implements OnChanges {
   @Input() idInput!: number;
   @Input() timestampInput!: Date;
   @Input() fromMeInput!: boolean;
-  @Input() textInput!: string;
+  @Input() textInput: string | undefined;
   @Input() favouriteInput!: boolean;
+  @Input() filenameInput: string | undefined;
 
   @Output() toggleFavouriteEvent: EventEmitter<Message> = new EventEmitter();
 
@@ -21,6 +22,7 @@ export class MessageComponent implements OnChanges {
   timestamp: Date = new Date();
   fromMe: boolean = false;
   text: string = '';
+  filename?: string;
   isFavourite: boolean = false;
   
   //ngOnChanges(): void {
@@ -28,7 +30,13 @@ export class MessageComponent implements OnChanges {
     this.id = this.idInput;
     this.timestamp = this.timestampInput;
     this.fromMe = this.fromMeInput;
-    this.text = this.textInput;
+    if(this.textInput){
+      this.text = this.textInput;
+    }
+    if(this.filenameInput){
+      console.log("filename set")
+      this.filename = this.filenameInput;
+    }
     this.isFavourite = this.favouriteInput;
   }
 

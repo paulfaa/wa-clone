@@ -6,13 +6,16 @@ import { MonthPipe } from './month.pipe';
 import { By } from '@angular/platform-browser';
 import { MatTabGroup, MatTab, MatTabsModule } from '@angular/material/tabs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
+import { MessageParsingService } from '../services/message-parsing.service';
 
 describe('DatePickerComponent', () => {
   let component: DatePickerComponent;
   let fixture: ComponentFixture<DatePickerComponent>;
   let mockMessageService: jasmine.SpyObj<MessageService>;
+  let mockMessageParsingService: jasmine.SpyObj<MessageParsingService>;
 
   mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getMessages']);
+  mockMessageParsingService = jasmine.createSpyObj('mockMessageParsingService', ['getDatesMap']);
   const testDatesMap = new Map<number, number[]>();
   testDatesMap.set(2000, [1,2,3]);
   testDatesMap.set(2010, [12]);
@@ -21,13 +24,17 @@ describe('DatePickerComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ DatePickerComponent, MonthPipe ],
       imports: [MatTabsModule],
-      providers: [{ provide: MessageService, useValue: mockMessageService }],
+      providers: [
+        { provide: MessageService, useValue: mockMessageService },
+        { provide: MessageParsingService, useValue: mockMessageParsingService }
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(DatePickerComponent);
     component = fixture.componentInstance;
+    component['datesMap'] = new Map<number, number[]>();
     fixture.detectChanges();
   });
 
@@ -37,21 +44,21 @@ describe('DatePickerComponent', () => {
 
   it('ngOnInit sets selectedYear and selectedMonth to first values of datesMap', () => {
     //Arrange
-    component.datesMap = testDatesMap;
-    expect(component.selectedYear).toBe(undefined);
-    expect(component.selectedMonth).toBe(undefined);
+    component['datesMap'] = testDatesMap;
+    expect((component as any).selectedYear).toBe(undefined);
+    expect((component as any).selectedMonth).toBe(undefined);
 
     //Act
     component.ngOnInit();
 
     //Assert
-    expect(component.selectedYear).toBe(2000);
-    expect(component.selectedMonth).toBe(1);
+    expect((component as any).selectedYear).toBe(2000);
+    expect((component as any).selectedMonth).toBe(1);
   });
 
   it('creates an array of tabs corresponding to the datesMap object', () => {
     //Arrange
-    component.datesMap = testDatesMap;
+    component['datesMap'] = testDatesMap;
 
     //Act
     component.ngOnInit();
@@ -75,7 +82,7 @@ describe('DatePickerComponent', () => {
   it('emits a Date event containing the selected Year and Month when tab is clicked', waitForAsync(() => {
     //Arrange
     spyOn(component, 'onYearSelected');
-    component.datesMap = testDatesMap;
+    component['datesMap'] = testDatesMap;
     component.ngOnInit();
     const secondTab = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[1].nativeElement;
     

@@ -54,7 +54,7 @@ export class FileUploadComponent implements OnInit {
       this.favouritesService.initStorage(this.fileName);
       try {
         if (file.type == "application/json") {
-          this.messageParsingService.parseJson(fileContent);
+          this.messageParsingService.parseJsonString(fileContent);
         }
         if (file.type == "text/plain") {
           this.messageParsingService.parseText(fileContent);

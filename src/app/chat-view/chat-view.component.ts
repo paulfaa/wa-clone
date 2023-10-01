@@ -4,6 +4,7 @@ import { Message } from '../models/message';
 import { MessageService } from '../services/message.service';
 import { FavouritesService } from '../services/favourites.service';
 import { MessageParsingService } from '../services/message-parsing.service';
+import { WhatsappMessage } from '../models/models';
 
 @Component({
   selector: 'app-chat-view',
@@ -11,7 +12,7 @@ import { MessageParsingService } from '../services/message-parsing.service';
   styleUrls: ['./chat-view.component.scss']
 })
 export class ChatViewComponent implements OnInit {
-  public _serviceSubscription: Observable<Message[]> | undefined;
+  public _serviceSubscription: Observable<WhatsappMessage[]> | undefined;
   selectedYear: number | undefined;
   selectedMonth: number | undefined;
 
@@ -20,7 +21,7 @@ export class ChatViewComponent implements OnInit {
     private messageParsingService: MessageParsingService) {}
 
   ngOnInit(): void {
-    var map = this.messageParsingService.getDatesMap().entries().next().value;
+    const map = this.messageParsingService.getDatesMap().entries().next().value;
     const firstDate = new Date(map[0], map[1][0]-1);
     this._serviceSubscription = this.messageService.$getFilteredMessages(firstDate);
     this._serviceSubscription.subscribe();

@@ -13,3 +13,7 @@
 .unselected{
     background-color: grey;
 }
+.message-container {
+    display: flex;
+    flex-direction: column;
+}

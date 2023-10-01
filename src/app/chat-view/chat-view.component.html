@@ -3,14 +3,16 @@
 <app-date-picker (dateSelectEvent)="updateDateFilter($event)">
 </app-date-picker>
 
-<app-message
+<div class="message-container">
+    <app-message
     *ngFor="let m of this._serviceSubscription | async"
     (toggleFavouriteEvent)="toggleFavourite($event)"
-    [attr.id]="m.id!"
-    [idInput]="m.id!"
+    [attr.id]="m.messageId!"
+    [idInput]="m.messageId!"
     [timestampInput]="m.timestamp"
     [fromMeInput]="m.fromMe"
     [textInput]="m.text"
-    [favouriteInput]="m.$isFavourite!"
->
-</app-message>
+    [filenameInput]="m.filename"
+    [favouriteInput]="m.isFavourite!">
+    </app-message>
+</div>

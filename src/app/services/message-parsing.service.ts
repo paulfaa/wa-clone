@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Message } from '../models/message';
 import { FavouritesService } from './favourites.service';
 import { MessageService } from './message.service';
+import { Chat, WhatsappMessage } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -52,14 +53,7 @@ export class MessageParsingService {
     return this.favouritesService.isFavourite(id);
   }
 
-  private getImageName(contents: string): void {
-    //if type == image
-    // get caption
-    //return caption /n filename
-  }
-
   private populateDateMap(date: Date): void {
-    console.log(date.toString())
     let dateObject = new Date(date);
     let year = dateObject.getFullYear();
     let month = dateObject.getMonth() + 1;
@@ -75,30 +69,23 @@ export class MessageParsingService {
     }
   }
 
-  public parseJson(jsonString: string) {
-    this.index = 0;
-    var jsonObj = JSON.parse(jsonString);
-    this.participant = jsonObj.chats[0].contactName;
-    this.messageCount = Object.keys(jsonObj.chats[0].messages).length
-    jsonObj.chats[0].messages.map(
-      (item: { timestamp: any; fromMe: any; text: any; type: any; filename: any; caption:any}) => {
-        var fav = this.checkIsFavourite(this.index);
-        var text = item.text;
-        if(text == null || text == undefined){
-          text = item.caption + " - " + item.filename;
-        }
-        this.populateDateMap(item.timestamp);
-        var msg = {
-          id: this.index,
-          timestamp: item.timestamp,
-          fromMe: item.fromMe,
-          text: text,
-          $isFavourite: fav
-        };
-        this.index = this.index + 1;
+  public parseJsonString(json: string): void{
+    try{
+      var index = 0;
+      const parsedJson: Chat = JSON.parse(json);
+      const participant = parsedJson.chats[0].contactName;
+      parsedJson.chats[0].messages.map((msg : WhatsappMessage) => ({
+        ...msg,
+        isFavourite: this.checkIsFavourite(index),
+      })).forEach(msg => {
+        this.populateDateMap(msg.timestamp);
         this.messageService.addMessage(msg);
-      }
-    );
+        msg.messageId = index,
+        index = index + 1;
+      });
+    } catch(error){
+      console.log("Failed to parse JSON: ", error)
+    }
   }
 
   public parseText(text: string): void {
