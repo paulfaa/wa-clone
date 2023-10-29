@@ -5,14 +5,8 @@
 
 <div class="message-container">
     <app-message
-    *ngFor="let m of this._serviceSubscription | async"
-    (toggleFavouriteEvent)="toggleFavourite($event)"
-    [attr.id]="m.messageId!"
-    [idInput]="m.messageId!"
-    [timestampInput]="m.timestamp"
-    [fromMeInput]="m.fromMe"
-    [textInput]="m.text"
-    [filenameInput]="m.filename"
-    [favouriteInput]="m.isFavourite!">
+        *ngFor="let message of this._serviceSubscription | async"
+        (toggleFavouriteEvent)="toggleFavourite($event)"
+        [messageInput]="message">
     </app-message>
 </div>

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { Message } from '../models/message';
+import { WhatsappMessage } from '../models/models';
 
 @Component({
   selector: 'app-message',
@@ -8,36 +8,43 @@ import { Message } from '../models/message';
 })
 export class MessageComponent implements OnChanges {
 
-  @Input() idInput!: number;
-  @Input() timestampInput!: Date;
-  @Input() fromMeInput!: boolean;
-  @Input() textInput: string | undefined;
-  @Input() favouriteInput!: boolean;
-  @Input() filenameInput: string | undefined;
+  @Input() messageInput!: WhatsappMessage;
 
-  @Output() toggleFavouriteEvent: EventEmitter<Message> = new EventEmitter();
 
-  constructor() {}
+  @Output() toggleFavouriteEvent: EventEmitter<WhatsappMessage> = new EventEmitter();
+
   id?: number;
   timestamp: Date = new Date();
   fromMe: boolean = false;
   text: string = '';
   filename?: string;
-  isFavourite: boolean = false;
+  caption?: string;
+  duration?: number;
+  link?: string;
+  isFavourite?: boolean = false;
+
+  constructor() {}
   
   //ngOnChanges(): void {
   ngOnChanges(changes: SimpleChanges): void {
-    this.id = this.idInput;
-    this.timestamp = this.timestampInput;
-    this.fromMe = this.fromMeInput;
-    if(this.textInput){
-      this.text = this.textInput;
+    this.id = this.messageInput.messageId;
+    this.timestamp = this.messageInput.timestamp;
+    this.fromMe = this.messageInput.fromMe;
+    this.isFavourite = this.messageInput.isFavourite;
+    if(this.messageInput.text){
+      this.text = this.messageInput.text;
     }
-    if(this.filenameInput){
-      console.log("filename set")
-      this.filename = this.filenameInput;
+    else if(this.messageInput.filename){
+      this.filename = this.messageInput.filename;
+      this.caption = this.messageInput.caption;
     }
-    this.isFavourite = this.favouriteInput;
+    else if(this.messageInput.link){
+      this.link = this.messageInput.link;
+      this.caption = this.messageInput.caption;
+    }
+    else if(this.messageInput.duration){
+      this.duration = this.messageInput.duration;
+    }
   }
 
   public toggleFavourite(){
@@ -48,6 +55,6 @@ export class MessageComponent implements OnChanges {
     else{
       this.isFavourite = true;
     }
-    this.toggleFavouriteEvent.emit(new Message(this.timestamp, this.fromMe, this.text, this.id));
+    this.toggleFavouriteEvent.emit(this.messageInput);
   }
 }

@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Message } from '../models/message';
 import StorageUtils from '../util/storage-util';
+import { WhatsappMessage } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavouritesService {
 
-  private favouritesMap : Map<number, Message>;
+  private favouritesMap : Map<number, WhatsappMessage>;
   private fileName: string | undefined;
 
   constructor() {
-    this.favouritesMap = new Map<number, Message>(); 
+    this.favouritesMap = new Map<number, WhatsappMessage>(); 
   }
 
   public initStorage(currentFileName: string): void{
-    if(currentFileName != null && currentFileName != undefined && currentFileName != ""){
+    if(currentFileName && currentFileName != ""){
       this.fileName = currentFileName;
       var favourites = StorageUtils.readFromStorage(currentFileName + '.favourites');
       if (favourites != null){ 
@@ -28,7 +28,7 @@ export class FavouritesService {
     }
   }
 
-  public getFavourites(): Map<number, Message>{
+  public getFavourites(): Map<number, WhatsappMessage>{
     return this.favouritesMap;
   }
 
@@ -36,8 +36,8 @@ export class FavouritesService {
     return this.favouritesMap.has(id);
   }
 
-  public addToFavourites(m: Message){
-    this.favouritesMap.set(m.id!, m);
+  public addToFavourites(message: WhatsappMessage){
+    this.favouritesMap.set(message.messageId!, message);
     this.updateStorage();
   }
 
@@ -50,7 +50,7 @@ export class FavouritesService {
   }
 
   public clearFavourites(): void{
-    this.favouritesMap = new Map<number, Message>();
+    this.favouritesMap = new Map<number, WhatsappMessage>();
     this.updateStorage();
   }
 

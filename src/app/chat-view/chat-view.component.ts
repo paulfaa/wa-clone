@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Message } from '../models/message';
 import { MessageService } from '../services/message.service';
 import { FavouritesService } from '../services/favourites.service';
 import { MessageParsingService } from '../services/message-parsing.service';
@@ -32,8 +31,13 @@ export class ChatViewComponent implements OnInit {
     this._serviceSubscription = this.messageService.$getFilteredMessages(event);
   }
 
-  public toggleFavourite(eventMessage: Message){
-    var id = eventMessage.id!;
+  public logEvent(event: any){
+    //get messageDate from event
+    console.log(event);
+  }
+
+  public toggleFavourite(eventMessage: WhatsappMessage){
+    var id = eventMessage.messageId!;
     if(this.favouritesService.isFavourite(id)){
       this.favouritesService.removeFromFavourites(id);
     }
