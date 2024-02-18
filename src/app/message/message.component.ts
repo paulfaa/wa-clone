@@ -26,8 +26,8 @@ export class MessageComponent implements OnChanges {
   isFavourite?: boolean = false;
   type?: MessageType;
 
-  constructor() {}
-  
+  constructor() { }
+
   //ngOnChanges(): void {
   ngOnChanges(changes: SimpleChanges): void {
     this.id = this.messageInput.messageId;
@@ -38,34 +38,30 @@ export class MessageComponent implements OnChanges {
     //switch(this.type){
     //  case: 
     //}
-    if(this.messageInput.text){
+    if (this.messageInput.text) {
       this.text = this.messageInput.text;
     }
-    else if(this.messageInput.duration){
-      console.warn("msg duration", this.messageInput.duration)
+    else if (this.messageInput.duration) {
       this.duration = this.messageInput.duration;
+      this.filename = this.messageInput.filename;
+      console.log(this.filename);
     }
-    else if(this.messageInput.filename){
+    else if (this.messageInput.filename) {
       this.filename = this.messageInput.filename;
       this.caption = this.messageInput.caption;
     }
-    else if(this.messageInput.link){
+    else if (this.messageInput.link) {
       this.link = this.messageInput.link;
       this.caption = this.messageInput.caption;
     }
-    else if(this.messageInput.location){
+    else if (this.messageInput.location) {
       this.location = this.messageInput.location;
     }
   }
 
-  public toggleFavourite(){
+  public toggleFavourite(): void {
     console.log("id of message clicked: ", this.id);
-    if (this.isFavourite == true){
-      this.isFavourite = false;
-    }
-    else{
-      this.isFavourite = true;
-    }
+    this.isFavourite = !this.isFavourite;
     this.toggleFavouriteEvent.emit(this.messageInput);
   }
 }

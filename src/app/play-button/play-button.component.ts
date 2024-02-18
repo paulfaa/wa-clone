@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AudioService } from '../services/audio.service';
 
 @Component({
   selector: 'play-button',
@@ -7,13 +8,14 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@
 })
 export class PlayButtonComponent {
   @Input() durationInput!: number;
+  @Input() fileNameInput!: string;
   @Output() playButtonClicked = new EventEmitter();
   @Output() pauseButtonClicked = new EventEmitter();
 
   public isPlaying: boolean;
   public duration!: number;
 
-  constructor() {
+  constructor(private audioService: AudioService) {
     this.isPlaying = false;
   }
 
@@ -23,10 +25,14 @@ export class PlayButtonComponent {
 
   public handleClick(): void{
     if(this.isPlaying){
-      this.pauseButtonClicked.emit();
+      console.info("pause button clicked")
+      this.audioService.pauseVoiceNote();
     }
     else{
-      this.playButtonClicked.emit();
+      console.info("play button clicked")
+      var filePath = 'assets/audio/' + this.fileNameInput.match(/[^/]+$/);
+      console.log(filePath)
+      this.audioService.playVoiceNote(filePath);
     }
     this.isPlaying = !this.isPlaying;
   }

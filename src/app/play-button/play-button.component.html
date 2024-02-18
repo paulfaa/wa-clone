@@ -1,6 +1,8 @@
-<div (click)="handleClick()">
+<div>
     {{ duration * 1000 | date:'mm:ss' }}
     <img class="waveImage" src="assets/wave_sound.jpg">
-    <mat-icon *ngIf="isPlaying">pause</mat-icon>
-    <mat-icon *ngIf="!isPlaying">play_arrow</mat-icon>
+    <mat-icon (click)="handleClick()">
+        <ng-container *ngIf="isPlaying; else pauseIcon">pause</ng-container>
+        <ng-template #pauseIcon>play_arrow</ng-template>
+    </mat-icon>
 </div>

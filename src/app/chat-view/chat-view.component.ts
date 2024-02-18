@@ -14,12 +14,10 @@ export class ChatViewComponent implements OnInit {
   public _serviceSubscription: Observable<WhatsappMessage[]> | undefined;
   public selectedYear: number | undefined;
   public selectedMonth: number | undefined;
-  private audio: HTMLAudioElement;
 
   constructor(private messageService: MessageService,
     private favouritesService: FavouritesService,
     private messageParsingService: MessageParsingService) {
-    this.audio = new Audio();
   }
 
   ngOnInit(): void {
@@ -27,17 +25,6 @@ export class ChatViewComponent implements OnInit {
     const firstDate = new Date(map[0], map[1][0] - 1);
     this._serviceSubscription = this.messageService.$getFilteredMessages(firstDate);
     this._serviceSubscription.subscribe();
-  }
-
-  public playVoiceNote(pathToFile: string): void {
-    //this.audio.pause(); check if needed
-    this.audio.src = pathToFile;
-    this.audio.load();
-    this.audio.play();
-  }
-
-  public pauseVoiceNote(): void {
-    this.audio.pause();
   }
 
   public updateDateFilter(event: Date) {
