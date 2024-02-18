@@ -1,3 +1,6 @@
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
-html { background-color: slategray; }
+html { 
+    background-color: slategray;
+    font-family: Helvetica; 
+}

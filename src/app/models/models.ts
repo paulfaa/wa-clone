@@ -20,6 +20,7 @@ export interface WhatsappMessage {
     filename?: string;
     caption?: string;
     link?: string;
+    location?: string;
     isFavourite?: boolean;
 }
 

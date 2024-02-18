@@ -11,7 +11,6 @@
 }
 .messageText{
     white-space:pre-wrap;
-    font-family: Helvetica;
     position: relative;
     top: 10px;
     left:15px;
@@ -19,6 +18,14 @@
     max-height: 300px;
     min-width: 30%;
     max-width: 90%;
+}
+.captionText {
+    position: relative;
+    top: 10px;
+    left:15px;
+}
+.linkText {
+    //font-family: Helvetica;
 }
 .ownMessage{
     background-color: rgb(171, 212, 95);
@@ -35,7 +42,6 @@
     width: 100%;
     display: flex;
     justify-content: flex-end;
-    font-family: Helvetica;
     font-size: small;
     position: relative;
     right: 10px;

@@ -19,6 +19,7 @@ export class MessageComponent implements OnChanges {
   text: string = '';
   filename?: string;
   caption?: string;
+  location?: string;
   duration?: number;
   link?: string;
   isFavourite?: boolean = false;
@@ -44,6 +45,9 @@ export class MessageComponent implements OnChanges {
     }
     else if(this.messageInput.duration){
       this.duration = this.messageInput.duration;
+    }
+    else if(this.messageInput.location){
+      this.location = this.messageInput.location;
     }
   }
 

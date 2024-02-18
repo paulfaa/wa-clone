@@ -1,9 +1,10 @@
 <div [ngClass]="fromMe ? 'ownMessage' : 'otherMessage'" class="messageBubble" (click)="toggleFavourite()">
   <mat-icon *ngIf="isFavourite">star</mat-icon>
-  <img *ngIf="this.filename" [src]="fromMe ? 'assets/sent/' + filename : 'assets/received/' + filename" loading="lazy" alt="image">
-  <div *ngIf="this.caption"> {{this.caption}} </div>
+  <img *ngIf="this.filename" [src]="fromMe ? 'assets/sent/' + filename : 'assets/received/' + filename" loading="lazy" alt="image {{this.filename}}">
+  <div *ngIf="this.caption" class="captionText"> {{this.caption}} </div>
   <div *ngIf="this.text" class="messageText"> {{this.text}} </div>
   <div *ngIf="this.duration"> Audio {{this.duration}} </div>
-  <div *ngIf="this.link"> {{this.link}} </div>
+  <div *ngIf="this.location"> Location </div>
+  <div *ngIf="this.link"><a href = {{this.link}} class="linkText"></a>{{this.link}} </div> <!-- Link not appearing correctly-->
   <div class="messageDate"> {{timestamp | date: 'dd/MM/yyyy HH:mm': 'CET'}} </div>
 </div>
