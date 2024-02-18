@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { WhatsappMessage } from '../models/models';
+import { MessageType } from '../models/message-type';
 
 @Component({
   selector: 'app-message',
@@ -16,13 +17,14 @@ export class MessageComponent implements OnChanges {
   id?: number;
   timestamp: Date = new Date();
   fromMe: boolean = false;
-  text: string = '';
+  text?: string;
   filename?: string;
   caption?: string;
   location?: string;
   duration?: number;
   link?: string;
   isFavourite?: boolean = false;
+  type?: MessageType;
 
   constructor() {}
   
@@ -32,8 +34,16 @@ export class MessageComponent implements OnChanges {
     this.timestamp = this.messageInput.timestamp;
     this.fromMe = this.messageInput.fromMe;
     this.isFavourite = this.messageInput.isFavourite;
+    this.type = this.messageInput.type;
+    //switch(this.type){
+    //  case: 
+    //}
     if(this.messageInput.text){
       this.text = this.messageInput.text;
+    }
+    else if(this.messageInput.duration){
+      console.warn("msg duration", this.messageInput.duration)
+      this.duration = this.messageInput.duration;
     }
     else if(this.messageInput.filename){
       this.filename = this.messageInput.filename;
@@ -42,9 +52,6 @@ export class MessageComponent implements OnChanges {
     else if(this.messageInput.link){
       this.link = this.messageInput.link;
       this.caption = this.messageInput.caption;
-    }
-    else if(this.messageInput.duration){
-      this.duration = this.messageInput.duration;
     }
     else if(this.messageInput.location){
       this.location = this.messageInput.location;

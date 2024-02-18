@@ -21,6 +21,7 @@ import {MatCardModule} from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { MonthPipe } from './date-picker/month.pipe';
+import { PlayButtonComponent } from './play-button/play-button.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MonthPipe } from './date-picker/month.pipe';
     FavouritesDialogComponent,
     DatePickerComponent,
     MonthPipe,
+    PlayButtonComponent,
   ],
   imports: [
     BrowserModule,
