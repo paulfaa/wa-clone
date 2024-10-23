@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MessageService } from '../services/message.service';
 import { FavouritesService } from '../services/favourites.service';
@@ -19,6 +19,11 @@ export class ChatViewComponent implements OnInit {
   constructor(private messageService: MessageService,
     private favouritesService: FavouritesService,
     private messageParsingService: MessageParsingService) {
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification(){
+    this.favouritesService.downloadFavouritedMessages(); 
   }
 
   ngOnInit(): void {

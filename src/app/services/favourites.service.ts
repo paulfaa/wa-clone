@@ -9,6 +9,7 @@ export class FavouritesService {
 
   private favouritesMap : Map<number, WhatsappMessage>;
   private fileName: string | undefined;
+  private areFavouritesModified = false;
 
   constructor() {
     this.favouritesMap = new Map<number, WhatsappMessage>(); 
@@ -54,8 +55,30 @@ export class FavouritesService {
     this.updateStorage();
   }
 
+  public downloadFavouritedMessages(): void{
+    if(this.areFavouritesModified){
+      const messageArray = Array.from(this.favouritesMap.values()).map(msg => ({
+        id: msg.messageId,
+        date: msg.timestamp,
+        contents: msg.text
+      }));
+      const jsonData = JSON.stringify(messageArray, null, 2);
+      const blob = new Blob([jsonData], { type: 'application/json' });
+      const url = window.URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = this.fileName + '_msg.json';
+      anchor.style.display = 'none';
+      document.body.appendChild(anchor);
+      anchor.click();
+      window.URL.revokeObjectURL(url);
+      anchor.remove();
+    }
+  }
+
   private updateStorage(): void{
     this.favouritesMap = new Map([...this.favouritesMap].sort());
     StorageUtils.writeToStorage(this.fileName + '.favourites', this.favouritesMap)
+    this.areFavouritesModified = true;
   }
 }
