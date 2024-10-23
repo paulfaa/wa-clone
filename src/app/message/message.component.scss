@@ -37,6 +37,12 @@
     float: left;
     justify-content: flex-end;
 }
+.ownMessage.favourite{
+    background-color: rgb(124, 154, 68);
+}
+.otherMessage.favourite{
+    background-color: rgb(169, 172, 164);
+}
 .messageDate {
     color: gray;
     width: 100%;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MessageService } from '../services/message.service';
 import { FavouritesService } from '../services/favourites.service';
@@ -8,7 +8,8 @@ import { WhatsappMessage } from '../models/models';
 @Component({
   selector: 'app-chat-view',
   templateUrl: './chat-view.component.html',
-  styleUrls: ['./chat-view.component.scss']
+  styleUrls: ['./chat-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatViewComponent implements OnInit {
   public _serviceSubscription: Observable<WhatsappMessage[]> | undefined;
