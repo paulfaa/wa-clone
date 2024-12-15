@@ -12,7 +12,7 @@ export class MessageParsingService {
   //public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
   private messages: Message[];
   private datesMap : Map<number, number[]>;
-  private regex: RegExp = /([^\/]+$)/;
+  private regex: RegExp = /([^\/]+$)/; //check what this does
   chatOwner: string = '';
   participant: string = '';
   chatMembers: string[];
@@ -48,7 +48,7 @@ export class MessageParsingService {
     }
   }
 
-  private checkIsFavourite(id: number): boolean {
+  private checkIsFavourite(id: string): boolean {
     return this.favouritesService.isFavourite(id);
   }
 
@@ -78,17 +78,14 @@ export class MessageParsingService {
     }
   }
 
-  public parseJsonString(json: string): void{
+  public parseJsonString(json: string): void {
     try{
-      var index = 0;
       const parsedJson: Chat = JSON.parse(json);
       const participant = parsedJson.chats[0].contactName;
       parsedJson.chats[0].messages.forEach((msg: WhatsappMessage) => {
-        msg.isFavourite = this.checkIsFavourite(index),
-        msg.filename = this.formatFilename(msg.filename)
+        msg.isFavourite = this.checkIsFavourite(msg.id);
+        msg.filename = this.formatFilename(msg.filename);
         this.populateDateMap(msg.timestamp);
-        msg.messageId = index,
-        index = index + 1;
         this.messageService.addMessage(msg);
       });
     } catch(error){

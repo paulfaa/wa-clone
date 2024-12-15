@@ -21,7 +21,7 @@ export class DatePickerComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    var [firstKey] = this.datesMap.keys();
+    const [firstKey] = this.datesMap.keys();
     this.selectedYear = firstKey;
     if(this.datesMap.has(firstKey)){
       this.selectedMonth = this.datesMap.get(firstKey)![0];

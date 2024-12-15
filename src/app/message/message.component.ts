@@ -15,7 +15,7 @@ export class MessageComponent implements OnChanges {
 
   @Output() toggleFavouriteEvent: EventEmitter<WhatsappMessage> = new EventEmitter();
 
-  id?: number;
+  id!: string;
   timestamp: Date = new Date();
   fromMe: boolean = false;
   text?: string;
@@ -24,17 +24,17 @@ export class MessageComponent implements OnChanges {
   location?: string;
   duration?: number;
   link?: string;
-  isFavourite?: boolean = false;
+  isFavourite: boolean = false;
   type?: MessageType;
 
   constructor() { }
 
   //ngOnChanges(): void {
   ngOnChanges(changes: SimpleChanges): void {
-    this.id = this.messageInput.messageId;
+    this.id = this.messageInput.id;
     this.timestamp = this.messageInput.timestamp;
     this.fromMe = this.messageInput.fromMe;
-    this.isFavourite = this.messageInput.isFavourite;
+    this.isFavourite = this.messageInput.isFavourite!;
     this.type = this.messageInput.type;
     //switch(this.type){
     //  case: 
@@ -66,3 +66,13 @@ export class MessageComponent implements OnChanges {
     this.toggleFavouriteEvent.emit(this.messageInput);
   }
 }
+
+/* {
+  "timestamp": "2017-02-18T23:36:41Z",
+  "id": "3A59C8731D4FF5E64338E9644DE86E",
+  "fromMe": false,
+  "quotedTimestamp": "2017-02-18T23:02:39Z",
+  "quotedMessageId": "5E270509FEE2DC2EC3D58B8A5B32FC",
+  "type": "text",
+  "text": "Das"
+} */

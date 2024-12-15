@@ -7,12 +7,12 @@ import { WhatsappMessage } from '../models/models';
 })
 export class FavouritesService {
 
-  private favouritesMap : Map<number, WhatsappMessage>;
+  private favouritesMap : Map<string, WhatsappMessage>;
   private fileName: string | undefined;
   private areFavouritesModified = false;
 
   constructor() {
-    this.favouritesMap = new Map<number, WhatsappMessage>(); 
+    this.favouritesMap = new Map<string, WhatsappMessage>(); 
   }
 
   public initStorage(currentFileName: string): void{
@@ -29,20 +29,20 @@ export class FavouritesService {
     }
   }
 
-  public getFavourites(): Map<number, WhatsappMessage>{
+  public getFavourites(): Map<string, WhatsappMessage>{
     return this.favouritesMap;
   }
 
-  public isFavourite(id: number){
+  public isFavourite(id: string){
     return this.favouritesMap.has(id);
   }
 
   public addToFavourites(message: WhatsappMessage){
-    this.favouritesMap.set(message.messageId!, message);
+    this.favouritesMap.set(message.id!, message);
     this.updateStorage();
   }
 
-  public removeFromFavourites(id: number){
+  public removeFromFavourites(id: string){
     if(this.favouritesMap.has(id)){
       console.log("Removing message id " + id + " from favourites");
       this.favouritesMap.delete(id);
@@ -51,14 +51,14 @@ export class FavouritesService {
   }
 
   public clearFavourites(): void{
-    this.favouritesMap = new Map<number, WhatsappMessage>();
+    this.favouritesMap = new Map<string, WhatsappMessage>();
     this.updateStorage();
   }
 
   public downloadFavouritedMessages(): void{
     if(this.areFavouritesModified){
       const messageArray = Array.from(this.favouritesMap.values()).map(msg => ({
-        id: msg.messageId,
+        id: msg.id,
         date: msg.timestamp,
         contents: msg.text
       }));
@@ -77,7 +77,11 @@ export class FavouritesService {
   }
 
   private updateStorage(): void{
-    this.favouritesMap = new Map([...this.favouritesMap].sort());
+    const entriesArray = Array.from(this.favouritesMap.entries());
+    entriesArray.sort(([, msgA], [, msgB]) => {
+        return msgB.timestamp.getTime() - msgA.timestamp.getTime();
+    });
+    this.favouritesMap = new Map(entriesArray);
     StorageUtils.writeToStorage(this.fileName + '.favourites', this.favouritesMap)
     this.areFavouritesModified = true;
   }

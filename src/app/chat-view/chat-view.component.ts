@@ -31,9 +31,13 @@ export class ChatViewComponent implements OnInit {
     this._serviceSubscription.subscribe();
   }
 
-  public updateDateFilter(event: Date) {
-    console.log("emitted ", event);
+  public updateDateFilter(event: Date): void {
+    console.log("dateSelectEvent emitted ", event);
     this._serviceSubscription = this.messageService.$getFilteredMessages(event);
+    //need to also traverse all filtered msgs and apply whether favourited or not
+    //can create a set of all favourited msgs
+    //const favouritedIds = this.favouritesService.getFavourites().keys();
+    //favouritedIds.
   }
 
   public logEvent(event: any): void {
@@ -42,7 +46,7 @@ export class ChatViewComponent implements OnInit {
   }
 
   public toggleFavourite(eventMessage: WhatsappMessage): void {
-    const id = eventMessage.messageId!;
+    const id = eventMessage.id!;
     if (this.favouritesService.isFavourite(id)) {
       this.favouritesService.removeFromFavourites(id);
     }

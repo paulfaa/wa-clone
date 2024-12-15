@@ -11,7 +11,7 @@ export interface ChatDetails {
 }
 
 export interface WhatsappMessage {
-    messageId: number;
+    id: string;
     timestamp: Date;
     fromMe: boolean;
     type: MessageType;
@@ -21,7 +21,40 @@ export interface WhatsappMessage {
     caption?: string;
     link?: string;
     location?: string;
+    quotedMessageId?: string;
     isFavourite?: boolean;
+}
+
+interface BaseMessage {
+    id: string;
+    timestamp: Date;
+    fromMe: boolean;
+    type: MessageType;
+    quotedMessageId?: string;
+    isFavourite: boolean;
+}
+
+interface TextMessage extends BaseMessage {
+    text: string;
+}
+
+interface LinkMessage extends BaseMessage {
+    link: string;
+    caption?: string;
+}
+
+interface LocationMessage extends BaseMessage {
+    location: string;
+}
+
+interface ImageMessage extends BaseMessage {
+    filename: string;
+    caption?: string;
+}
+
+interface AudioMessage extends BaseMessage {
+    filename: string;
+    duration: number;
 }
 
 //todo

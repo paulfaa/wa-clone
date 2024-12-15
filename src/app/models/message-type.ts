@@ -1,7 +1,8 @@
 export enum MessageType {
     text = "text",
     audio = "audio",
-    video = "video",
+    image = "image",
     link = "link",
-    contact = "contact"
+    contact = "contact",
+    location = "location"
 }
