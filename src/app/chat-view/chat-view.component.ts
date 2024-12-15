@@ -27,9 +27,7 @@ export class ChatViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const map = this.messageParsingService.getDatesMap().entries().next().value;
-    const firstDate = new Date(map[0], map[1][0] - 1);
-    this._serviceSubscription = this.messageService.$getFilteredMessages(firstDate);
+    this._serviceSubscription = this.messageService.$getFilteredMessages(this.getFirstDate());
     this._serviceSubscription.subscribe();
   }
 
@@ -38,18 +36,28 @@ export class ChatViewComponent implements OnInit {
     this._serviceSubscription = this.messageService.$getFilteredMessages(event);
   }
 
-  public logEvent(event: any) {
+  public logEvent(event: any): void {
     //get messageDate from event
     console.log(event);
   }
 
-  public toggleFavourite(eventMessage: WhatsappMessage) {
-    var id = eventMessage.messageId!;
+  public toggleFavourite(eventMessage: WhatsappMessage): void {
+    const id = eventMessage.messageId!;
     if (this.favouritesService.isFavourite(id)) {
       this.favouritesService.removeFromFavourites(id);
     }
     else {
       this.favouritesService.addToFavourites(eventMessage);
+    }
+  }
+
+  private getFirstDate(): Date{
+    const map = this.messageParsingService.getDatesMap().entries().next().value;
+    if(map != undefined){
+      return new Date(map[0], map[1][0] - 1);
+    }
+    else{
+      throw new Error("Couldn't get first date - datesMap is undefined.");
     }
   }
 }

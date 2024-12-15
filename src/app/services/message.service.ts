@@ -26,11 +26,16 @@ export class MessageService {
   }
 
   public $getFilteredMessages(date: Date): Observable<WhatsappMessage[]> {
-    console.log("filtering for ", date);
-    return this.$allMessages.pipe(map((messages: WhatsappMessage[]) =>
-        messages.filter(message => new Date(message.timestamp).getMonth() ==  date.getMonth()
-        && new Date(message.timestamp).getFullYear() == date.getFullYear()))
+    console.log("Filtering for", date);
+    return this.$allMessages.pipe(
+      map((messages: WhatsappMessage[]) =>
+        messages.filter(message => {
+          const messageDate = new Date(message.timestamp);
+          return messageDate.getMonth() === date.getMonth() &&
+                 messageDate.getFullYear() === date.getFullYear();
+        })
       )
+    );
   }
 
   public $getLoadingPercentage(totalMessages: number): Observable<number> {

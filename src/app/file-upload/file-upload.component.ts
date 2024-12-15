@@ -42,7 +42,6 @@ export class FileUploadComponent implements OnInit {
 
   public async onFileSelected(event: any) {
     const file: File = event.target.files[0];
-    const fileReader = new FileReader();
 
     if (file) {
       console.log(file.type + " uploaded");
@@ -51,7 +50,6 @@ export class FileUploadComponent implements OnInit {
       formData.append("thumbnail", file);
       const fileContent = await this.readFileContent(file);
       console.log(this.fileName);
-      this.favouritesService.initStorage(this.fileName);
       try {
         if (file.type == "application/json") {
           this.messageParsingService.parseJsonString(fileContent);
@@ -59,6 +57,7 @@ export class FileUploadComponent implements OnInit {
         if (file.type == "text/plain") {
           this.messageParsingService.parseText(fileContent);
         }
+        this.favouritesService.initStorage(this.fileName);
         this.showError = false;
         this.router.navigate(['view']);
       }
