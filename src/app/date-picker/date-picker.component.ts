@@ -12,33 +12,38 @@ export class DatePickerComponent implements OnInit {
   @Output() dateSelectEvent: EventEmitter<Date> = new EventEmitter();
   //@Output() mapCreatedEvent: EventEmitter<Date> = new EventEmitter();
 
-  protected datesMap : Map<number, number[]>;
+  protected yearMonthMap : Map<number, Set<number>>;
   private selectedYear?: number;
   private selectedMonth?: number
 
   constructor(private messageParsingService: MessageParsingService) {
-    this.datesMap = this.messageParsingService.getDatesMap();
+    this.yearMonthMap = this.messageParsingService.getYearMonthMap();
    }
 
   ngOnInit(): void {
-    const [firstKey] = this.datesMap.keys();
+    const [firstKey] = this.yearMonthMap.keys();
     this.selectedYear = firstKey;
-    if(this.datesMap.has(firstKey)){
-      this.selectedMonth = this.datesMap.get(firstKey)![0];
-    }
+    this.selectedMonth = this.getFirstMonth(this.selectedYear);
     //this.mapCreatedEvent.emit(new Date(this.selectedYear, this.selectedMonth!));
   }
 
   public onYearSelected(tabChangeEvent: MatTabChangeEvent){
     this.selectedYear = Number(tabChangeEvent.tab.textLabel);
-    this.selectedMonth = this.datesMap.get(this.selectedYear)![0] - 1;
+    this.selectedMonth = this.selectedMonth = this.getFirstMonth(this.selectedYear); //need to update tests
+    //this.selectedMonth = this.yearMonthMap.get(this.selectedYear)![0] - 1;
     this.dateSelectEvent.emit(new Date(this.selectedYear, this.selectedMonth));
     console.log(tabChangeEvent.tab.textLabel);
   }
 
   public onMonthSelected(tabChangeEvent: MatTabChangeEvent){
-    this.selectedMonth = new Date(Date.parse(tabChangeEvent.tab.textLabel +" 1, 2000")).getMonth();
+    this.selectedMonth = new Date(Date.parse(tabChangeEvent.tab.textLabel +" 1, 2000")).getMonth() + 1;
     this.dateSelectEvent.emit(new Date(this.selectedYear!, this.selectedMonth));
     console.log(tabChangeEvent.tab.textLabel);
+  }
+
+  private getFirstMonth(year: number): number{
+    const monthSet = this.yearMonthMap.get(year)!;
+    const monthArray = Array.from(monthSet);
+    return Math.min(...monthArray);
   }
 }

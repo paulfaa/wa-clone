@@ -57,5 +57,8 @@ interface AudioMessage extends BaseMessage {
     duration: number;
 }
 
-//todo
-//date needs to take daylight saving into account
+export interface Quote extends BaseMessage {
+    content: any;
+    quotedMessageId?: string;
+    isFavourite: boolean;
+}

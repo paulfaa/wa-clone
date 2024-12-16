@@ -11,7 +11,8 @@ export class MessageParsingService {
 
   //public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
   private messages: Message[];
-  private datesMap : Map<number, number[]>;
+  private yearMonthMap : Map<number, Set<number>>;
+  private quoteIds: Set<string>;
   private regex: RegExp = /([^\/]+$)/; //check what this does
   chatOwner: string = '';
   participant: string = '';
@@ -31,11 +32,12 @@ export class MessageParsingService {
     this.chatMembers = [];
     this.isGroupChat = false;
     this.messageCount = 0;
-    this.datesMap = new Map<number, number[]>();
+    this.yearMonthMap = new Map<number, Set<number>>();
+    this.quoteIds = new Set<string>();
   }
 
-  public getDatesMap(){
-    return this.datesMap;
+  public getYearMonthMap(){
+    return this.yearMonthMap;
   }
 
   public getAllMessages() {
@@ -52,21 +54,17 @@ export class MessageParsingService {
     return this.favouritesService.isFavourite(id);
   }
 
-  private populateDateMap(date: Date): void {
+  private populateYearMonthMap(date: Date): void {
     let dateObject = new Date(date);
     let year = dateObject.getFullYear();
     let month = dateObject.getMonth() + 1;
-    let storedMonths = this.datesMap.get(year);
-    if(storedMonths == undefined){
-      this.datesMap.set(year, [month])
+    let storedMonths = this.yearMonthMap.get(year);
+    if (!storedMonths) {
+        this.yearMonthMap.set(year, new Set([month]));
+    } else {
+        storedMonths.add(month);
     }
-    else{
-      if(storedMonths.includes(month) == false){
-        storedMonths.push(month)
-      this.datesMap.set(year, storedMonths)
-      }
-    }
-  }
+}
 
   private formatFilename(filename?: string): string | undefined {
     const match = filename?.match(this.regex);
@@ -80,16 +78,25 @@ export class MessageParsingService {
 
   public parseJsonString(json: string): void {
     try{
-      const parsedJson: Chat = JSON.parse(json);
-      const participant = parsedJson.chats[0].contactName;
-      parsedJson.chats[0].messages.forEach((msg: WhatsappMessage) => {
-        msg.isFavourite = this.checkIsFavourite(msg.id);
-        msg.filename = this.formatFilename(msg.filename);
-        this.populateDateMap(msg.timestamp);
+        const parsedJson: Chat = JSON.parse(json);
+        parsedJson.chats[0].messages.reverse().forEach((msg: WhatsappMessage) => {  //work from end of array to get quotes first
+        msg.filename = this.formatFilename(msg.filename)
+        msg.id = msg.id
+        //check quotes set to see if it contains msg.id, if so, set quote field on
+        if(msg.quotedMessageId){
+          this.quoteIds.add(msg.quotedMessageId);
+          //this.messageService.addQuote(msg)
+          //create map for quote lookup where id is key. can strip unneeded fields
+        }
+        this.populateYearMonthMap(msg.timestamp);
+        //Populate date map after all msgs have been processed instead
         this.messageService.addMessage(msg);
       });
     } catch(error){
       console.log("Failed to parse JSON: ", error)
+    }
+    finally{
+      //set both maps to null once parse is complete
     }
   }
 

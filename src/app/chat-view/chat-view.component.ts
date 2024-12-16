@@ -4,6 +4,7 @@ import { MessageService } from '../services/message.service';
 import { FavouritesService } from '../services/favourites.service';
 import { MessageParsingService } from '../services/message-parsing.service';
 import { WhatsappMessage } from '../models/models';
+import DateUtils from '../util/date-util';
 
 @Component({
   selector: 'app-chat-view',
@@ -56,12 +57,10 @@ export class ChatViewComponent implements OnInit {
   }
 
   private getFirstDate(): Date{
-    const map = this.messageParsingService.getDatesMap().entries().next().value;
-    if(map != undefined){
-      return new Date(map[0], map[1][0] - 1);
-    }
-    else{
-      throw new Error("Couldn't get first date - datesMap is undefined.");
-    }
+    const yearMonthMap = this.messageParsingService.getYearMonthMap();
+    const date = DateUtils.getFirstDateFromMap(yearMonthMap);
+    this.selectedYear = date.getFullYear();
+    this.selectedMonth = date.getMonth() + 1; //getMonth is 0 index
+    return date;
   }
 }
