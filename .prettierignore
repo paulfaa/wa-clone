@@ -1,0 +1,11 @@
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+.browserslistrc
+
+src/assets/
+
+# Ignore artifacts:
+build
+coverage
