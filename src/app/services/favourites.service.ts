@@ -38,7 +38,7 @@ export class FavouritesService {
   }
 
   public addToFavourites(message: WhatsappMessage){
-    this.favouritesMap.set(message.id!, message);
+    this.favouritesMap.set(message.id, message);
     this.updateStorage();
   }
 

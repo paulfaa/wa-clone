@@ -12,7 +12,6 @@ export class MessageComponent implements OnChanges {
 
   @Input() messageInput!: WhatsappMessage;
 
-
   @Output() toggleFavouriteEvent: EventEmitter<WhatsappMessage> = new EventEmitter();
 
   id!: string;

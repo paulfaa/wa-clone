@@ -8,6 +8,9 @@ import { MessageService } from '../services/message.service';
 import { ChatViewComponent } from './chat-view.component';
 import { DatePickerComponent } from '../date-picker/date-picker.component';
 import { FavouritesService } from '../services/favourites.service';
+import { WhatsappMessage } from '../models/models';
+import { MessageType } from '../models/message-type';
+import { sampleMessage1, sampleMessage2, sampleMessage3, sampleMessage4 } from '../test/testMessages';
 
 describe('ChatViewComponent', () => {
   let component: ChatViewComponent;
@@ -15,13 +18,13 @@ describe('ChatViewComponent', () => {
   let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockFavouritesService: jasmine.SpyObj<FavouritesService>;
   let mockMessageParsingService: jasmine.SpyObj<MessageParsingService>;
-  let mockMessages: Message[];
-  let map = new Map<number, number[]>();
-  map.set(2001, [1,2,3]);
+  let mockMessages: WhatsappMessage[];
+  let map = new Map<number, Set<number>>();
+  map.set(2001, new Set<number>([1,2,3]));
 
-  mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getAllMessages']);
+  mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getAllMessages', '$getFilteredMessages']);
   mockFavouritesService = jasmine.createSpyObj('mockFavouritesService', ['isFavourite','addToFavourites', 'removeFromFavourites']);
-  mockMessageParsingService = jasmine.createSpyObj('mockMessageParsingService', ['getDatesMap']);
+  mockMessageParsingService = jasmine.createSpyObj('mockMessageParsingService', ['getYearMonthMap']);
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -35,12 +38,13 @@ describe('ChatViewComponent', () => {
     .compileComponents();
 
     mockMessages = [];
-    mockMessages.push(new Message(new Date(2019, 10, 5), true, "Message contents...."));
-    mockMessages.push(new Message(new Date(2020, 3, 12), true, "Lorum Ipsum"));
-    mockMessages.push(new Message(new Date(2020, 10, 13), false, "Hello world..."));
-    mockMessages.push(new Message(new Date(2020, 5, 14), true, "Message contents 2 ...."));
+    mockMessages.push(sampleMessage1);
+    mockMessages.push(sampleMessage2);
+    mockMessages.push(sampleMessage3);
+    mockMessages.push(sampleMessage4);
     mockMessageService.$getAllMessages.and.returnValue(of(mockMessages));
-    mockMessageParsingService.getDatesMap.and.returnValue(map);
+    mockMessageService.$getFilteredMessages.and.returnValue(of(mockMessages));
+    mockMessageParsingService.getYearMonthMap.and.returnValue(map); 
 
     fixture = TestBed.createComponent(ChatViewComponent);
     component = fixture.componentInstance;
@@ -52,11 +56,17 @@ describe('ChatViewComponent', () => {
   });
 
   describe('toggleFavourite', () => {
-      var favouritedMessage: Message;
+      var favouritedMessage: WhatsappMessage;
 
     beforeEach(() => {
-      favouritedMessage = new Message(new Date, true, "Favourite", 12);
-      mockFavouritesService['favouritesMap'] = new Map<number, Message>([[12, favouritedMessage]]);
+      favouritedMessage = {
+        id:"aeef-45gd-45hy-jfv4",
+        timestamp: new Date(),
+        fromMe: true,
+        type: MessageType.text
+      }
+      //favouritedMessage = new WhatsappMessage(new Date, true, "Favourite", 12);
+      mockFavouritesService['favouritesMap'] = new Map<string, WhatsappMessage>([["msg-id", favouritedMessage]]);
     });
 
     it('removes a message from favourites if it was already favourited', () => {
@@ -74,7 +84,7 @@ describe('ChatViewComponent', () => {
 
     it('adds a message to favourites if it is not favourited', () => {
       //arrange
-      const newMessage = new Message(new Date, true, "New Message", 12);
+      const newMessage = sampleMessage1;
       mockFavouritesService.isFavourite = jasmine.createSpy().and.returnValue(false);
       expect(mockFavouritesService['favouritesMap'].has(newMessage.id!)).toBeFalse;
 

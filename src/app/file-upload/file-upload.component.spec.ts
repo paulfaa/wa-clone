@@ -16,7 +16,7 @@ describe('FileUploadComponent', () => {
 
   mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getMessages']);
   mockFavouritesService = jasmine.createSpyObj('mockFavouritesService', ['initStorage']);
-  mockMessageParsingService = jasmine.createSpyObj('mockMessageParsingService', ['parseJson', 'parseText']);
+  mockMessageParsingService = jasmine.createSpyObj('mockMessageParsingService', ['parseJsonString', 'parseText']);
 
   const event = {
     "target" : {
@@ -84,9 +84,9 @@ describe('FileUploadComponent', () => {
 
       //assert
       expect(component.fileName).toBe("fileName");
-      expect(mockMessageParsingService.parseJson).toHaveBeenCalled();
+      expect(mockMessageParsingService.parseJsonString).toHaveBeenCalled();
     });
-    it('calls the parseJson() method of messageService when json file is uploaded', async () => {
+    it('calls the parseJsonString() method of messageService when json file is uploaded', async () => {
       //arrange
       expect(component.fileName).toBe(undefined);
 
@@ -95,7 +95,7 @@ describe('FileUploadComponent', () => {
 
       //assert
       expect(component.fileName).toBe("fileName");
-      expect(mockMessageParsingService.parseJson).toHaveBeenCalled();
+      expect(mockMessageParsingService.parseJsonString).toHaveBeenCalled();
     });
   });
 });

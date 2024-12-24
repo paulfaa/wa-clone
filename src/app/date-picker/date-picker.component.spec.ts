@@ -15,10 +15,10 @@ describe('DatePickerComponent', () => {
   let mockMessageParsingService: jasmine.SpyObj<MessageParsingService>;
 
   mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getMessages']);
-  mockMessageParsingService = jasmine.createSpyObj('mockMessageParsingService', ['getDatesMap']);
-  const testDatesMap = new Map<number, number[]>();
-  testDatesMap.set(2000, [1,2,3]);
-  testDatesMap.set(2010, [12]);
+  mockMessageParsingService = jasmine.createSpyObj('mockMessageParsingService', ['getYearMonthMap']);
+  const testDatesMap = new Map<number, Set<number>>();
+  testDatesMap.set(2000, new Set<number>([1,2,3]));
+  testDatesMap.set(2010, new Set<number>([12]));
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -32,9 +32,9 @@ describe('DatePickerComponent', () => {
     })
     .compileComponents();
 
+    mockMessageParsingService.getYearMonthMap.and.returnValue(testDatesMap);
     fixture = TestBed.createComponent(DatePickerComponent);
     component = fixture.componentInstance;
-    component['datesMap'] = new Map<number, number[]>();
     fixture.detectChanges();
   });
 
@@ -43,11 +43,6 @@ describe('DatePickerComponent', () => {
   });
 
   it('ngOnInit sets selectedYear and selectedMonth to first values of datesMap', () => {
-    //Arrange
-    component['datesMap'] = testDatesMap;
-    expect((component as any).selectedYear).toBe(undefined);
-    expect((component as any).selectedMonth).toBe(undefined);
-
     //Act
     component.ngOnInit();
 
@@ -57,9 +52,6 @@ describe('DatePickerComponent', () => {
   });
 
   it('creates an array of tabs corresponding to the datesMap object', () => {
-    //Arrange
-    component['datesMap'] = testDatesMap;
-
     //Act
     component.ngOnInit();
     const yearTabGroup: MatTabGroup = fixture.debugElement.query(
@@ -82,7 +74,6 @@ describe('DatePickerComponent', () => {
   it('emits a Date event containing the selected Year and Month when tab is clicked', waitForAsync(() => {
     //Arrange
     spyOn(component, 'onYearSelected');
-    component['datesMap'] = testDatesMap;
     component.ngOnInit();
     const secondTab = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[1].nativeElement;
     

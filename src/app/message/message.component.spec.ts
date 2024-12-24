@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Message } from '../models/message';
 import { FavouritesService } from '../services/favourites.service';
 import { MessageComponent } from './message.component';
+import { sampleMessage1, sampleMessage2 } from '../test/testMessages';
 
 describe('MessageComponent', () => {
   let component: MessageComponent;
@@ -9,7 +10,7 @@ describe('MessageComponent', () => {
   let mockFavouritesService: jasmine.SpyObj<FavouritesService>;
 
   mockFavouritesService = jasmine.createSpyObj('mockFavouritesService', ['isFavourite']);
-  const sampleMessage = new Message(new Date(), true, "Good morning");
+  const sampleMessage = sampleMessage1;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -20,7 +21,7 @@ describe('MessageComponent', () => {
 
     fixture = TestBed.createComponent(MessageComponent);
     component = fixture.componentInstance;
-    component.text = sampleMessage.text;
+    component.messageInput = sampleMessage;
     fixture.detectChanges();
   });
 
@@ -29,13 +30,11 @@ describe('MessageComponent', () => {
   });
 
   describe('toggleFavourite()', () => {
-    var message: Message = new Message(new Date(), true, "Hi")
+    const message = sampleMessage2;
     beforeEach(() => {
-      component.timestamp = message.timestamp;
-      component.text = message.text;
-      component.fromMe = message.fromMe;
+      component.messageInput = message;
     });
-    it('sets isFavourite to false if this is favourite, and emits an event', () => {
+    it('sets isFavourite to false if this message is already favourited, and emits an event', () => {
       // Arrange
       spyOn(component.toggleFavouriteEvent, 'emit');
       component.isFavourite = true;
@@ -48,7 +47,7 @@ describe('MessageComponent', () => {
       expect(component.toggleFavouriteEvent.emit).toHaveBeenCalledWith(message);
 
      });
-     it('sets isFavourite to true if this is not, and emits an event', () => {
+     it('sets isFavourite to true if message was not favourited, and emits an event', () => {
       // Arrange
       spyOn(component.toggleFavouriteEvent, 'emit');
       component.isFavourite = false;
