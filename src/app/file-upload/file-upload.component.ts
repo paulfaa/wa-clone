@@ -42,7 +42,6 @@ export class FileUploadComponent implements OnInit {
 
   public async onFileSelected(event: any) {
     const file: File = event.target.files[0];
-
     if (file) {
       console.log(file.type + " uploaded");
       this.fileName = file.name;
@@ -51,19 +50,14 @@ export class FileUploadComponent implements OnInit {
       const fileContent = await this.readFileContent(file);
       console.log(this.fileName);
       try {
-        if (file.type == "application/json") {
-          this.messageParsingService.parseJsonString(fileContent);
-        }
-        if (file.type == "text/plain") {
-          this.messageParsingService.parseText(fileContent);
-        }
+        this.messageParsingService.parseJsonString(fileContent);
         this.favouritesService.initStorage(this.fileName);
         this.showError = false;
         this.router.navigate(['view']);
       }
-      catch (e) {
+      catch (error) {
         this.showError = true;
-        console.error("Error parsing uploaded file: ", e);
+        console.error("Error parsing uploaded file: ", error);
       }
     }
   }

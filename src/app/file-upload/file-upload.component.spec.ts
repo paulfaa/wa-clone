@@ -41,6 +41,7 @@ describe('FileUploadComponent', () => {
 
     fixture = TestBed.createComponent(FileUploadComponent);
     component = fixture.componentInstance;
+    component.fileName = undefined;
     fixture.detectChanges();
   });
 
@@ -52,7 +53,6 @@ describe('FileUploadComponent', () => {
     it('can deal with empty files', async () => {
       // Arrange
       const file = null;
-      //const file = {"File" : null, "lastModified" : null, "name" : null, "webkitRelativePath" : null, "size" : null, "type" : null, "arrayBuffer" : null, "slice" : null};
 
       // Act
       const result = await component.readFileContent(file as unknown as File);
@@ -77,25 +77,28 @@ describe('FileUploadComponent', () => {
   describe('onFileSelected()', () => {
     it('throws an exception if there is an error parsing file', async () => {
       //arrange
-      //Mockito.when(mockMessageParsingService.parseJson("")).thenThrow(new Error());
+      mockMessageParsingService.parseJsonString.and.throwError('Parsing error');
 
       //act
-      component.onFileSelected(event);
+      await component.onFileSelected(event);
 
       //assert
       expect(component.fileName).toBe("fileName");
       expect(mockMessageParsingService.parseJsonString).toHaveBeenCalled();
     });
+
     it('calls the parseJsonString() method of messageService when json file is uploaded', async () => {
       //arrange
+      const fileContent = 'Contents of the file';
       expect(component.fileName).toBe(undefined);
 
       //act
-      component.onFileSelected(event);
+      await component.onFileSelected(event);
 
       //assert
       expect(component.fileName).toBe("fileName");
-      expect(mockMessageParsingService.parseJsonString).toHaveBeenCalled();
+      expect(mockMessageParsingService.parseJsonString).toHaveBeenCalledWith(fileContent);
+      expect(mockFavouritesService.initStorage).toHaveBeenCalledWith('fileName');
     });
   });
 });

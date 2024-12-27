@@ -1,0 +1,20 @@
+{
+            "key": "userkey",
+            "contactName": "Test",
+            "messages": [
+                {
+                    "timestamp": "2014-12-11T17:00:12Z",
+                    "id": "35A8984427489ACE786A9F5DFA81E7",
+                    "fromMe": true,
+                    "type": "text",
+                    "text": "Old Message"
+                },
+                {
+                    "timestamp": "2020-10-11T17:00:12Z",
+                    "id": "35A8984427489ACE786A9F5DFA81E7",
+                    "fromMe": true,
+                    "type": "text",
+                    "text": "Hello! 😛"
+        }
+    ]
+}

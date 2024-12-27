@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Message } from '../models/message';
 import { FavouritesService } from '../services/favourites.service';
 import { MessageComponent } from './message.component';
 import { sampleMessage1, sampleMessage2 } from '../test/testMessages';
@@ -15,7 +14,7 @@ describe('MessageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ MessageComponent ],
-      providers: [ { Message, provide: FavouritesService, useValue: mockFavouritesService } ],
+      providers: [ { provide: FavouritesService, useValue: mockFavouritesService } ],
     })
     .compileComponents();
 

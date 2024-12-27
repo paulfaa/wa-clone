@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Message } from '../models/message';
 import { MessageParsingService } from '../services/message-parsing.service';
+import { WhatsappMessage } from '../models/models';
 
 @Component({
   selector: 'app-favourites-dialog',
@@ -11,12 +11,12 @@ import { MessageParsingService } from '../services/message-parsing.service';
 export class FavouritesDialogComponent implements OnInit {
 
   public name: string | undefined;
-  public favourites: Message[];
+  public favourites: WhatsappMessage[];
 
   constructor(
     private messageParsingService: MessageParsingService,
     public dialogRef: MatDialogRef<FavouritesDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Message[],
+    @Inject(MAT_DIALOG_DATA) public data: WhatsappMessage[],
   ) {
     this.favourites = data;
   }

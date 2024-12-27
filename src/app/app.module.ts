@@ -22,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { MonthPipe } from './date-picker/month.pipe';
 import { PlayButtonComponent } from './play-button/play-button.component';
+import { SetToArrayPipe } from './date-picker/set-to-array.pipe';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { PlayButtonComponent } from './play-button/play-button.component';
     FavouritesDialogComponent,
     DatePickerComponent,
     MonthPipe,
+    SetToArrayPipe,
     PlayButtonComponent,
   ],
   imports: [

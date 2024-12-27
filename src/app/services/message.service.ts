@@ -30,9 +30,8 @@ export class MessageService {
     return this.$allMessages.pipe(
       map((messages: WhatsappMessage[]) =>
         messages.filter(message => {
-          const messageDate = new Date(message.timestamp);
-          return messageDate.getMonth() === date.getMonth() &&
-                 messageDate.getFullYear() === date.getFullYear();
+          return message.timestamp.getMonth() === date.getMonth() &&
+          message.timestamp.getFullYear() === date.getFullYear();
         })
       )
     );

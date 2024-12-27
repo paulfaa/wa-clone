@@ -1,26 +1,48 @@
 import { TestBed } from '@angular/core/testing';
-import { readFileSync } from 'fs';
-import { Message } from '../models/message';
 import { FavouritesService } from './favourites.service';
 import { MessageParsingService } from './message-parsing.service';
 import { MessageService } from './message.service';
+import { WhatsappMessage } from '../models/models';
+import { sampleMessage1, sampleMessage2 } from '../test/testMessages';
 
 describe('MessageParsingService', () => {
   let service: MessageParsingService;
   let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockFavouritesService: jasmine.SpyObj<FavouritesService>;
 
-  mockMessageService = jasmine.createSpyObj('mockMessageService', ['addMessage', '$getMessages']);
-  mockFavouritesService = jasmine.createSpyObj('mockFavouritesService', ['isFavourite']);
-  //mockMessageService.$getMessages.and.returnValue(null);
+  const messageServiceSpy = jasmine.createSpyObj('mockMessageService', ['addMessages', '$getMessages']);
+  const favouritesServiceSpy = jasmine.createSpyObj('mockFavouritesService', ['isFavourite']);
 
-  //const messageServiceSpy = jasmine.createSpyObj('MessageService', ['addMessage']);
-  const validJson: any = require('../../assets/test.json');
+  const newJsonString = `
+      {
+            "key": "userkey",
+            "contactName": "Test",
+            "messages": [
+                  {
+                      "timestamp": "2019-10-05T00:00:00Z",
+                      "id": "e0f89ae3-e5ee-4611-b65b-00a8abfec642",
+                      "fromMe": true,
+                      "type": "text",
+                      "text": "Message contents..."
+                  },
+                  {
+                      "timestamp": "2020-03-12T00:00:00Z",
+                      "id": "2e419da2-a369-4915-8a78-3e76eecb714e",
+                      "fromMe": true,
+                      "type": "text",
+                      "text": "Lorum Ipsum"
+                  }
+              ]
+      }
+  `;
 
   beforeEach(() => {
-    service = new MessageParsingService(mockMessageService, mockFavouritesService);
-    service['messages'] = [];
-    TestBed.configureTestingModule({providers: [MessageService]});
+    service = new MessageParsingService(messageServiceSpy, favouritesServiceSpy);
+    TestBed.configureTestingModule({
+      providers: [
+        { provide: MessageService, useValue: messageServiceSpy },
+      ],
+    });
     service = TestBed.inject(MessageParsingService);
   });
 
@@ -63,99 +85,88 @@ describe('MessageParsingService', () => {
       expect(result.length).toBe(3);
       expect(isGroupChat).toBe(true);
     });
-  });
-
-  describe('parse()', () => {
-    it('converts the provided text file to an array of message objects', () => {
-      // Arrange
-      service['chatOwner'] = "User1";
-      const testFile = "[10/10/22, 11:11:11] User1: Hello";
-      var expectedDate = new Date('2022-10-10');
-      expectedDate.setHours(11);
-      expectedDate.setMinutes(11);
-      expectedDate.setSeconds(11);
-
-      // Act
-      service.parseText(testFile);
-      const messages = service.getAllMessages();
-
-      // Assert
-      expect(messages).not.toBeNull();
-      expect(messages[0].text).toEqual("Hello");
-      console.log("Expected" + expectedDate)
-      expect(messages[0].timestamp).toEqual(expectedDate);
-      expect(messages[0].fromMe).toBe(true);
-    });
-
-    it('sets isChatOwner correctly', () => {
-      // Arrange
-      service['chatOwner'] = "Joe";
-      const testFile = "[10/10/22, 11:11:11] User1: Hello";
-      var expectedDate = new Date('2022-10-10');
-      expectedDate.setTime(9999);
-
-      // Act
-      service.parseText(testFile);
-      const messages = service.getAllMessages();
-
-      // Assert
-      expect(messages).not.toBeNull();
-      expect(messages[0].fromMe).toBe(false);
-    });
-
-    /* it('can parse multiline files', () => {
-      // Arrange
-      const testFile =
-      `[10/10/22, 11:11:11] User1: Hello \n
-      [10/10/22, 11:11:12] User2: Hi \n
-      [10/10/22, 11:11:13] User1: This is a loooooooooooooooooooooooong message \n
-      [10/10/22, 11:11:14] User2: Ok there there there there there is a \n
-      [10/10/22, 11:11:15] User1: Lorem Ipsum`
-
-      // Act
-      service.parseText(testFile);
-      const messages = service.getAllMessages();
-
-      // Assert
-      expect(messages).not.toBeNull();
-      expect(messages.length).toEqual(5);
-    }); */
-  });
-
-  describe('parseOldFormat()', () => {
-    it('converts the provided text file to an array of message objects', () => {
-      // Arrange
-      service['chatOwner'] = "he";
-      const testFile = "2015.12.30 - 16:44:20; he: Ja ich weiss";
-      var expectedDate = new Date('2015-12-30');
-      expectedDate.setHours(16);
-      expectedDate.setMinutes(44);
-      expectedDate.setSeconds(20);
-
-      // Act
-      service.parseText(testFile);
-      const messages = service.getAllMessages();
-
-      // Assert
-      expect(messages).not.toBeNull();
-      expect(messages[0].text).toEqual("Ja ich weiss");
-      console.log("Actualdate : " + messages[0].timestamp)
-      console.log("Expecteddate : " + expectedDate)
-      expect(messages[0].timestamp).toEqual(expectedDate);
-      expect(messages[0].fromMe).toBe(true);
-    });
-  });  
+  }); 
 
   describe('parseJson()', () => {
-    it('converts the provided json file to an array of message objects', () => {
+    it('throws an error if the json is invalid', () => {
       //Arrange
-
-      //Act
-      console.log("test ", validJson);
-      //service.parseJson(validJson);
+      const invalidJsonString: string = '{ "badData": }';
 
       //Assert
-      //expect(mockMessageService.addMessage(jasmine.any(Message))).toHaveBeenCalledTimes(3);
+      expect(() => service.parseJsonString(invalidJsonString)).toThrowError(SyntaxError);
+      expect(messageServiceSpy.addMessages.calls.count()).toBe(0);
+      expect(messageServiceSpy.addMessages).not.toHaveBeenCalled();
+    });
+    
+    it('Supports old json fomat', () => {
+      //Arrange
+      const expectedMapContents = new Set<number>([10]);
+      const input =  ` 
+        {
+      "chats": [
+          {
+              "key": "userkey",
+              "contactName": "Test",
+              "messages": [
+                  {
+                      "id": "e0f89ae3-e5ee-4611-b65b-00a8abfec642",
+                      "timestamp": "2019-10-05T00:00:00Z",
+                      "fromMe": true,
+                      "type": "text",
+                      "text": "Message contents..."
+                  },
+                  {
+                      "id": "2e419da2-a369-4915-8a78-3e76eecb714e",
+                      "timestamp": "2020-03-12T00:00:00Z",
+                      "fromMe": true,
+                      "type": "text",
+                      "text": "Lorum Ipsum"
+                  }
+              ]
+          }
+      ]
+  }`;
+      const expectedArg: WhatsappMessage[] = [sampleMessage1, sampleMessage2];
+
+      //Act
+      service.parseJsonString(input);
+      const yearMonthMap = service['yearMonthMap'];
+
+      //Assert
+      expect(messageServiceSpy.addMessages).toHaveBeenCalledWith(expectedArg);
+      expect(Array.from(yearMonthMap.keys())).toEqual([2020, 2019]);
+      expect(yearMonthMap.get(2019)).toEqual(expectedMapContents);
+    });
+
+    it('Supports new json format', () => {
+      //Arrange
+      const quotes = service['quoteIds'];
+      expect(quotes.size).toBe(0);
+      const expectedQuotes = new Set<string>();
+      //const expectedQuotes = new Set<string>(["e0f89ae3-e5ee-4611-b65b-00a8abfec642","2e419da2-a369-4915-8a78-3e76eecb714e"]);
+      const expectedArg: WhatsappMessage[] = [sampleMessage1, sampleMessage2];
+
+      //Act
+      service.parseJsonString(newJsonString);
+
+      //Assert
+      expect(messageServiceSpy.addMessages).toHaveBeenCalledWith(expectedArg);
+      expect(quotes).toEqual(expectedQuotes);
     });
   }); 
+
+  it('populates a yearMonthMap corresponding to the parsed messages', () => {
+    //Arrange
+    const expectedMap = new Map<number, Set<number>>();
+    expectedMap.set(2019, new Set([10]))
+    expectedMap.set(2020, new Set([3]))
+    const serviceMap = service['yearMonthMap'];
+    expect(serviceMap.size).toBe(0)
+
+    //Act
+    service.parseJsonString(newJsonString);
+
+    //Assert
+    expect(serviceMap).toEqual(expectedMap);
+  });
 });

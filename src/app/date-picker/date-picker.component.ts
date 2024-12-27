@@ -29,14 +29,16 @@ export class DatePickerComponent implements OnInit {
 
   public onYearSelected(tabChangeEvent: MatTabChangeEvent){
     this.selectedYear = Number(tabChangeEvent.tab.textLabel);
-    this.selectedMonth = this.selectedMonth = this.getFirstMonth(this.selectedYear); //need to update tests
+    this.selectedMonth = this.getFirstMonth(this.selectedYear) - 1; //months are zero index
+    console.warn("Selected year tab: " + this.selectedYear)
+    console.warn("First month for selected year: " + this.selectedMonth)
     //this.selectedMonth = this.yearMonthMap.get(this.selectedYear)![0] - 1;
     this.dateSelectEvent.emit(new Date(this.selectedYear, this.selectedMonth));
     console.log(tabChangeEvent.tab.textLabel);
   }
 
   public onMonthSelected(tabChangeEvent: MatTabChangeEvent){
-    this.selectedMonth = new Date(Date.parse(tabChangeEvent.tab.textLabel +" 1, 2000")).getMonth() + 1;
+    this.selectedMonth = new Date(Date.parse(tabChangeEvent.tab.textLabel +" 1, 2000")).getMonth();
     this.dateSelectEvent.emit(new Date(this.selectedYear!, this.selectedMonth));
     console.log(tabChangeEvent.tab.textLabel);
   }

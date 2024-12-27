@@ -3,10 +3,12 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DatePickerComponent } from './date-picker.component';
 import { MessageService } from '../services/message.service';
 import { MonthPipe } from './month.pipe';
+import { SetToArrayPipe } from './set-to-array.pipe';
 import { By } from '@angular/platform-browser';
 import { MatTabGroup, MatTab, MatTabsModule } from '@angular/material/tabs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
 import { MessageParsingService } from '../services/message-parsing.service';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DatePickerComponent', () => {
   let component: DatePickerComponent;
@@ -22,8 +24,8 @@ describe('DatePickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DatePickerComponent, MonthPipe ],
-      imports: [MatTabsModule],
+      declarations: [ DatePickerComponent, MonthPipe, SetToArrayPipe ],
+      imports: [MatTabsModule, NoopAnimationsModule],
       providers: [
         { provide: MessageService, useValue: mockMessageService },
         { provide: MessageParsingService, useValue: mockMessageParsingService }
@@ -73,12 +75,14 @@ describe('DatePickerComponent', () => {
 
   it('emits a Date event containing the selected Year and Month when tab is clicked', waitForAsync(() => {
     //Arrange
-    spyOn(component, 'onYearSelected');
+    spyOn(component, 'onYearSelected').and.callThrough(); // Spy on the onYearSelected method
+    spyOn(component.dateSelectEvent, 'emit'); // Spy on the EventEmitter's emit method
     component.ngOnInit();
     const secondTab = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[1].nativeElement;
     
     //Act
     secondTab.click();
+    fixture.detectChanges();
 
     //Assert
     expect(component.onYearSelected).toHaveBeenCalled()

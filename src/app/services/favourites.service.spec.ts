@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { Message } from '../models/message';
 import StorageUtils from '../util/storage-util';
 
 import { FavouritesService } from './favourites.service';

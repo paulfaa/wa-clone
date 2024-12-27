@@ -1,6 +1,7 @@
 {
     "chats": [
         {
+            "key": "userkey",
             "contactName": "Test",
             "messages": [
                 {

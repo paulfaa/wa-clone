@@ -2,7 +2,7 @@
 
 <mat-dialog-content>
   <div *ngIf="favourites.length; else noFavourites">
-    <mat-card *ngFor="let msg of this.favourites" (click)="scrollToMessage(msg.id)">
+    <mat-card *ngFor="let msg of this.favourites">
       <mat-card-header>
         <mat-card-title>{{ msg.fromMe == true ? "Me" : this.name }}</mat-card-title>
         <mat-card-subtitle>{{ msg.timestamp | date:"medium" }}</mat-card-subtitle>

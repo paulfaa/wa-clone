@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { MessageComponent } from '../message/message.component';
-import { Message } from '../models/message';
 import { MessageParsingService } from '../services/message-parsing.service';
 import { MessageService } from '../services/message.service';
 import { ChatViewComponent } from './chat-view.component';
@@ -11,6 +10,8 @@ import { FavouritesService } from '../services/favourites.service';
 import { WhatsappMessage } from '../models/models';
 import { MessageType } from '../models/message-type';
 import { sampleMessage1, sampleMessage2, sampleMessage3, sampleMessage4 } from '../test/testMessages';
+import { MonthPipe } from '../date-picker/month.pipe';
+import { SetToArrayPipe } from '../date-picker/set-to-array.pipe';
 
 describe('ChatViewComponent', () => {
   let component: ChatViewComponent;
@@ -28,7 +29,7 @@ describe('ChatViewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChatViewComponent, MessageComponent, DatePickerComponent ],
+      declarations: [ ChatViewComponent, MessageComponent, DatePickerComponent, MonthPipe, SetToArrayPipe ],
       providers: [
         { provide: MessageService, useValue: mockMessageService },
         { provide: FavouritesService, useValue: mockFavouritesService },
@@ -37,11 +38,7 @@ describe('ChatViewComponent', () => {
     })
     .compileComponents();
 
-    mockMessages = [];
-    mockMessages.push(sampleMessage1);
-    mockMessages.push(sampleMessage2);
-    mockMessages.push(sampleMessage3);
-    mockMessages.push(sampleMessage4);
+    mockMessages = [sampleMessage1, sampleMessage2, sampleMessage3, sampleMessage4];
     mockMessageService.$getAllMessages.and.returnValue(of(mockMessages));
     mockMessageService.$getFilteredMessages.and.returnValue(of(mockMessages));
     mockMessageParsingService.getYearMonthMap.and.returnValue(map); 
@@ -49,6 +46,16 @@ describe('ChatViewComponent', () => {
     fixture = TestBed.createComponent(ChatViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+  });
+
+  describe('ngOnInit', () => {
+    it('calls messageService.$getFilteredMessages with the first date of the yearMonthMap', () => {
+      //Act
+      component.ngOnInit();
+
+      //Assert
+      expect(mockMessageService.$getFilteredMessages).toHaveBeenCalledWith(new Date(2001, 0));
+    });
   });
 
   it('should create', () => {
