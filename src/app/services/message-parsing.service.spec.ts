@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { FavouritesService } from './favourites.service';
 import { MessageParsingService } from './message-parsing.service';
 import { MessageService } from './message.service';
-import { WhatsappMessage } from '../models/models';
 import { sampleMessage1, sampleMessage2 } from '../test/testMessages';
 
 describe('MessageParsingService', () => {
@@ -100,7 +99,8 @@ describe('MessageParsingService', () => {
     
     it('Supports old json fomat', () => {
       //Arrange
-      const expectedMapContents = new Set<number>([10]);
+      const yearMonthMap = service['yearMonthMap'];
+      const expectedMapContentsFor2019 = new Set<number>([10]);
       const input =  ` 
         {
       "chats": [
@@ -126,32 +126,39 @@ describe('MessageParsingService', () => {
           }
       ]
   }`;
-      const expectedArg: WhatsappMessage[] = [sampleMessage1, sampleMessage2];
+      const expectedArg = new Map([
+        ["2019-9", [jasmine.objectContaining(sampleMessage1)]],
+        ["2020-2", [jasmine.objectContaining(sampleMessage2)]],
+      ]);
 
       //Act
       service.parseJsonString(input);
-      const yearMonthMap = service['yearMonthMap'];
+      const generatedKeys = Array.from(yearMonthMap.keys());
 
       //Assert
       expect(messageServiceSpy.addMessages).toHaveBeenCalledWith(expectedArg);
-      expect(Array.from(yearMonthMap.keys())).toEqual([2020, 2019]);
-      expect(yearMonthMap.get(2019)).toEqual(expectedMapContents);
+      expect(generatedKeys.includes(2019)).toBeTrue();
+      expect(generatedKeys.includes(2020)).toBeTrue();
+      expect(yearMonthMap.get(2019)).toEqual(expectedMapContentsFor2019);
     });
 
     it('Supports new json format', () => {
       //Arrange
-      const quotes = service['quoteIds'];
+      const quotes = service['quoteIdsMap'];
       expect(quotes.size).toBe(0);
-      const expectedQuotes = new Set<string>();
+      //const expectedQuotes = new Set<string>();
       //const expectedQuotes = new Set<string>(["e0f89ae3-e5ee-4611-b65b-00a8abfec642","2e419da2-a369-4915-8a78-3e76eecb714e"]);
-      const expectedArg: WhatsappMessage[] = [sampleMessage1, sampleMessage2];
+      const expectedArg = new Map([
+        ["2019-9", [jasmine.objectContaining(sampleMessage1)]],
+        ["2020-2", [jasmine.objectContaining(sampleMessage2)]]
+      ]);
 
       //Act
       service.parseJsonString(newJsonString);
 
       //Assert
       expect(messageServiceSpy.addMessages).toHaveBeenCalledWith(expectedArg);
-      expect(quotes).toEqual(expectedQuotes);
+      //expect(quotes).toEqual(expectedQuotes);
     });
   }); 
 

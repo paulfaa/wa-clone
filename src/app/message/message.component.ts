@@ -15,7 +15,7 @@ export class MessageComponent implements OnChanges {
   @Output() toggleFavouriteEvent: EventEmitter<WhatsappMessage> = new EventEmitter();
 
   id!: string;
-  timestamp: Date = new Date();
+  timestamp!: string;
   fromMe: boolean = false;
   text?: string;
   filename?: string;

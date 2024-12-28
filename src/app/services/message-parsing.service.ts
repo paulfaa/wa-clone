@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FavouritesService } from './favourites.service';
 import { MessageService } from './message.service';
-import { Chat, WhatsappMessage } from '../models/models';
+import { Chat, WhatsappMessage, YearMonth } from '../models/models';
+import DateUtils from '../util/date-util';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,9 @@ export class MessageParsingService {
 
   //public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
   private yearMonthMap : Map<number, Set<number>>;
-  private quoteIds: Set<string>;
+  private quoteMap: Map<string, Set<WhatsappMessage>>
+  private quoteIdsMap: Map<string, Set<string>>;
+  private messageMap: Map<string, WhatsappMessage[]>;
   private filenameRegex: RegExp = /([^\/]+$)/;
   chatOwner: string = '';
   participant: string = '';
@@ -23,11 +26,17 @@ export class MessageParsingService {
     this.isGroupChat = false;
     this.messageCount = 0;
     this.yearMonthMap = new Map<number, Set<number>>();
-    this.quoteIds = new Set<string>();
+    this.quoteMap = new Map<string, Set<WhatsappMessage>>();
+    this.messageMap = new Map<string, WhatsappMessage[]>();
+    this.quoteIdsMap = new Map<string, Set<string>>();
   }
 
   public getYearMonthMap(){
     return this.yearMonthMap;
+  }
+
+  public getQuoteMap(): Map<string, Set<WhatsappMessage>>{
+    return this.quoteMap;
   }
 
   private addChatMember(member: string): void {
@@ -40,23 +49,58 @@ export class MessageParsingService {
     return this.favouritesService.isFavourite(id);
   }
 
-  private populateYearMonthMap(timestamp: Date): void {
-    try{
-      //can just use existing timestamp instead of creating new one
-      let dateObject = new Date(timestamp);
-      let year = dateObject.getFullYear();
-      let month = dateObject.getMonth() + 1; //?
-      let storedMonths = this.yearMonthMap.get(year);
-      if (!storedMonths) {
-          this.yearMonthMap.set(year, new Set([month]));
-      } else {
-          storedMonths.add(month);
+  private populateQuoteMap(quoteId: string, timestamp: Date): void{
+    const keyString = DateUtils.generateYearMonthKey(timestamp);
+    const storedQuotes = this.quoteIdsMap.get(keyString);
+    if (!storedQuotes) {
+      this.quoteIdsMap.set(keyString, new Set([quoteId]));
+    } else {
+      storedQuotes.add(quoteId);
+    }
+  }
+
+  private populateMessageMap(message: WhatsappMessage): void{
+    const date = new Date(message.timestamp);
+    const key = DateUtils.generateYearMonthKey(date);
+    const messages = this.messageMap.get(key);
+    if (!messages) {
+      this.messageMap.set(key, [message]);
+    } else {
+      messages.push(message);
+    }
+  }
+
+  private messageWasQuoted(message: WhatsappMessage): boolean{
+    const key = DateUtils.generateYearMonthKey(new Date(message.timestamp));
+    if(this.quoteIdsMap.get(key)?.has(message.id)){
+      return true;
+    }
+    return false;
+  }
+
+  //parse messages in reverse order
+  //foreach
+  //if current message has quoteId/timestamp
+  //add messageId of current message to map
+  //
+
+  private populateYearMonthMap(yearMonthArrray: YearMonth[]): void {
+    yearMonthArrray.forEach((yearMonth: YearMonth) => {
+      try{
+        const year = yearMonth.year;
+        const month = yearMonth.month + 1;
+        let storedMonths = this.yearMonthMap.get(year);
+        if (!storedMonths) {
+            this.yearMonthMap.set(year, new Set([month]));
+        } else {
+            storedMonths.add(month);
+        }
       }
-    }
-    catch(error){
-      console.error("Failed to populate yearMonthMap: ", error)
-    }
-}
+      catch(error){
+        console.error("Failed to populate yearMonthMap: ", error)
+      }
+    });
+  }
 
   private formatFilename(filename?: string): string | undefined {
     const match = filename?.match(this.filenameRegex);
@@ -77,23 +121,32 @@ export class MessageParsingService {
       throw("Failed to parse JSON: " + error)
     }
     if (parsedJson.chats) {
-      messages = parsedJson.chats[0].messages.reverse();
+      messages = parsedJson.chats[0].messages;
+      //messages = parsedJson.chats[0].messages.reverse();
     } else if (parsedJson.messages) {
-      messages = parsedJson.messages.reverse();
+      messages = parsedJson.messages;
+      //messages = parsedJson.messages.reverse();
     } else {
-      throw(new Error("Invalid chat format"))
+      throw("Invalid chat format");
     }
     messages.forEach((msg: WhatsappMessage) => {
       if(msg.filename){
         msg.filename = this.formatFilename(msg.filename);
       }
       if(msg.quotedMessageId){
-        this.quoteIds.add(msg.quotedMessageId);
+        this.populateQuoteMap(msg.quotedMessageId, msg.quotedTimestamp!);
       }
-      msg.timestamp = new Date(msg.timestamp);
-      this.populateYearMonthMap(msg.timestamp);
+      this.populateMessageMap(msg);
     })
-    this.messageService.addMessages(messages.reverse())
+    const yearMonthArray: YearMonth[] = [];
+    const keys = this.messageMap.keys();
+    for (const key of keys) {
+      const yearDate = DateUtils.generateYearMonthFromKey(key);
+      yearMonthArray.push(yearDate);
+    }
+    this.populateYearMonthMap(yearMonthArray);
+    this.messageService.addMessages(this.messageMap);
+    this.messageMap = new Map<string, WhatsappMessage[]>(); //clear map once data has been passed to messageService
   }
 
   public getAllChatMembers(members: string[]): string[] {

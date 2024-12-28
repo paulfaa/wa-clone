@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { MessageService } from '../services/message.service';
 import { FavouritesService } from '../services/favourites.service';
 import { MessageParsingService } from '../services/message-parsing.service';
-import { WhatsappMessage } from '../models/models';
+import { WhatsappMessage, YearMonth } from '../models/models';
 import DateUtils from '../util/date-util';
 
 @Component({
@@ -17,7 +17,8 @@ export class ChatViewComponent implements OnInit {
   public selectedYear: number | undefined;
   public selectedMonth: number | undefined;
 
-  constructor(private messageService: MessageService,
+  constructor(
+    private messageService: MessageService,
     private favouritesService: FavouritesService,
     private messageParsingService: MessageParsingService) {
   }
@@ -28,11 +29,11 @@ export class ChatViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._serviceSubscription = this.messageService.$getFilteredMessages(this.getFirstDate());
+    this._serviceSubscription = this.messageService.$getFilteredMessages(this.getFirstYearMonth());
     this._serviceSubscription.subscribe();
   }
 
-  public updateDateFilter(event: Date): void {
+  public updateYearMonthFilter(event: YearMonth): void {
     console.log("dateSelectEvent emitted ", event);
     this._serviceSubscription = this.messageService.$getFilteredMessages(event);
     //need to also traverse all filtered msgs and apply whether favourited or not
@@ -56,11 +57,11 @@ export class ChatViewComponent implements OnInit {
     }
   }
 
-  private getFirstDate(): Date{
+  private getFirstYearMonth(): YearMonth{
     const yearMonthMap = this.messageParsingService.getYearMonthMap();
-    const date = DateUtils.getFirstDateFromMap(yearMonthMap);
-    this.selectedYear = date.getFullYear();
-    this.selectedMonth = date.getMonth() + 1; //getMonth is 0 index
-    return date;
+    const firstYearMonth = DateUtils.getFirstYearMonthFromMap(yearMonthMap);
+    this.selectedYear = firstYearMonth.year;
+    this.selectedMonth = firstYearMonth.month + 1; //getMonth is 0 index
+    return firstYearMonth;
   }
 }

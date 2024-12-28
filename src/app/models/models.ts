@@ -10,9 +10,14 @@ export interface ChatDetails {
     messages: WhatsappMessage[];
 }
 
+export interface YearMonth {
+    year: number;
+    month: number;
+}
+
 export interface WhatsappMessage {
     id: string;
-    timestamp: Date;
+    timestamp: string;
     fromMe: boolean;
     type: MessageType;
     text?: string;
@@ -22,16 +27,19 @@ export interface WhatsappMessage {
     link?: string;
     location?: string;
     quotedMessageId?: string;
+    quotedTimestamp?: Date;
     isFavourite?: boolean;
 }
 
 interface BaseMessage {
     id: string;
-    timestamp: Date;
+    timestamp: string;
     fromMe: boolean;
     type: MessageType;
     quotedMessageId?: string;
+    quotedTimestamp?: string;
     isFavourite: boolean;
+    quote?: Quote;
 }
 
 interface TextMessage extends BaseMessage {
@@ -60,5 +68,4 @@ interface AudioMessage extends BaseMessage {
 export interface Quote extends BaseMessage {
     content: any;
     quotedMessageId?: string;
-    isFavourite: boolean;
 }

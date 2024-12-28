@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { MessageParsingService } from '../services/message-parsing.service';
+import { YearMonth } from '../models/models';
 
 @Component({
   selector: 'app-date-picker',
@@ -9,7 +10,7 @@ import { MessageParsingService } from '../services/message-parsing.service';
 })
 export class DatePickerComponent implements OnInit {
 
-  @Output() dateSelectEvent: EventEmitter<Date> = new EventEmitter();
+  @Output() yearMonthSelectEvent: EventEmitter<YearMonth> = new EventEmitter();
   //@Output() mapCreatedEvent: EventEmitter<Date> = new EventEmitter();
 
   protected yearMonthMap : Map<number, Set<number>>;
@@ -33,13 +34,13 @@ export class DatePickerComponent implements OnInit {
     console.warn("Selected year tab: " + this.selectedYear)
     console.warn("First month for selected year: " + this.selectedMonth)
     //this.selectedMonth = this.yearMonthMap.get(this.selectedYear)![0] - 1;
-    this.dateSelectEvent.emit(new Date(this.selectedYear, this.selectedMonth));
+    this.yearMonthSelectEvent.emit({year: this.selectedYear, month: this.selectedMonth});
     console.log(tabChangeEvent.tab.textLabel);
   }
 
   public onMonthSelected(tabChangeEvent: MatTabChangeEvent){
     this.selectedMonth = new Date(Date.parse(tabChangeEvent.tab.textLabel +" 1, 2000")).getMonth();
-    this.dateSelectEvent.emit(new Date(this.selectedYear!, this.selectedMonth));
+    this.yearMonthSelectEvent.emit({year: this.selectedYear!, month: this.selectedMonth});
     console.log(tabChangeEvent.tab.textLabel);
   }
 

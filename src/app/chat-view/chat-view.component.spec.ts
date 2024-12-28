@@ -12,6 +12,7 @@ import { MessageType } from '../models/message-type';
 import { sampleMessage1, sampleMessage2, sampleMessage3, sampleMessage4 } from '../test/testMessages';
 import { MonthPipe } from '../date-picker/month.pipe';
 import { SetToArrayPipe } from '../date-picker/set-to-array.pipe';
+import DateUtils from '../util/date-util';
 
 describe('ChatViewComponent', () => {
   let component: ChatViewComponent;
@@ -19,9 +20,14 @@ describe('ChatViewComponent', () => {
   let mockMessageService: jasmine.SpyObj<MessageService>;
   let mockFavouritesService: jasmine.SpyObj<FavouritesService>;
   let mockMessageParsingService: jasmine.SpyObj<MessageParsingService>;
-  let mockMessages: WhatsappMessage[];
-  let map = new Map<number, Set<number>>();
-  map.set(2001, new Set<number>([1,2,3]));
+  let mockMessages: Map<string, WhatsappMessage[]>;
+  const yearMonthMap = new Map([
+    [2019, new Set<number>([10])],
+    [2020, new Set<number>([9])]
+  ]);
+  const messages2019 = [sampleMessage1];
+  const messages2020 = [sampleMessage2, sampleMessage3, sampleMessage4];
+
 
   mockMessageService = jasmine.createSpyObj('mockMessageService', ['$getAllMessages', '$getFilteredMessages']);
   mockFavouritesService = jasmine.createSpyObj('mockFavouritesService', ['isFavourite','addToFavourites', 'removeFromFavourites']);
@@ -38,10 +44,16 @@ describe('ChatViewComponent', () => {
     })
     .compileComponents();
 
-    mockMessages = [sampleMessage1, sampleMessage2, sampleMessage3, sampleMessage4];
-    mockMessageService.$getAllMessages.and.returnValue(of(mockMessages));
-    mockMessageService.$getFilteredMessages.and.returnValue(of(mockMessages));
-    mockMessageParsingService.getYearMonthMap.and.returnValue(map); 
+    mockMessages = new Map([
+      ["2019-09", messages2019],
+      ["2020-02", messages2020]
+    ]);
+    //mockMessageService.$getAllMessages.and.returnValue(of(mockMessages));
+    mockMessageService.$getFilteredMessages
+      .withArgs(DateUtils.createYearMonth(2019, 9))
+      .and.returnValue(of([sampleMessage1]));
+    //mockMessageService.$getFilteredMessages({year: 2019, month: 2020}).and.returnValue(of([sampleMessage1]));
+    mockMessageParsingService.getYearMonthMap.and.returnValue(yearMonthMap); 
 
     fixture = TestBed.createComponent(ChatViewComponent);
     component = fixture.componentInstance;
@@ -50,11 +62,13 @@ describe('ChatViewComponent', () => {
 
   describe('ngOnInit', () => {
     it('calls messageService.$getFilteredMessages with the first date of the yearMonthMap', () => {
+      //Arrange
+      const firstYearMonth = DateUtils.createYearMonth(2019, 9);
       //Act
       component.ngOnInit();
 
       //Assert
-      expect(mockMessageService.$getFilteredMessages).toHaveBeenCalledWith(new Date(2001, 0));
+      expect(mockMessageService.$getFilteredMessages).toHaveBeenCalledWith(firstYearMonth);
     });
   });
 
@@ -68,7 +82,7 @@ describe('ChatViewComponent', () => {
     beforeEach(() => {
       favouritedMessage = {
         id:"aeef-45gd-45hy-jfv4",
-        timestamp: new Date(),
+        timestamp:"2024-03-12T00:00:00Z",
         fromMe: true,
         type: MessageType.text
       }
@@ -107,21 +121,19 @@ describe('ChatViewComponent', () => {
   describe('page', () => {
     it('displays the message objects contained in the array', () => {
         // Arrange
-        component._serviceSubscription = of(mockMessages);
+        component._serviceSubscription = of(messages2020);
 
         // Act
         component.ngOnInit();
-        const messageCount = fixture.debugElement.queryAll(By.css('app-message')).length;
         const messageCount1 = fixture.debugElement.queryAll(By.css('.messageBubble')).length;
 
         // Assert
-        expect(messageCount1).toEqual(4);
-        
+        expect(messageCount1).toEqual(1);
     });
 
     it('applies CSS correctly based on isChatOwner variable', () => {
       // Arrange
-      component._serviceSubscription = of(mockMessages);
+      component._serviceSubscription = of(messages2019);
 
       // Act
       component.ngOnInit();

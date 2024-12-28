@@ -6,7 +6,6 @@ import { WhatsappMessage } from '../models/models';
   providedIn: 'root'
 })
 export class FavouritesService {
-
   private favouritesMap : Map<string, WhatsappMessage>;
   private fileName: string | undefined;
   private areFavouritesModified = false;
@@ -79,7 +78,7 @@ export class FavouritesService {
   private updateStorage(): void{
     const entriesArray = Array.from(this.favouritesMap.entries());
     entriesArray.sort(([, msgA], [, msgB]) => {
-        return msgB.timestamp.getTime() - msgA.timestamp.getTime();
+        return new Date(msgB.timestamp).getTime() - new Date(msgA.timestamp).getTime();
     });
     this.favouritesMap = new Map(entriesArray);
     StorageUtils.writeToStorage(this.fileName + '.favourites', this.favouritesMap)

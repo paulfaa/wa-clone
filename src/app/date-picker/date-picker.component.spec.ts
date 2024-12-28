@@ -9,6 +9,7 @@ import { MatTabGroup, MatTab, MatTabsModule } from '@angular/material/tabs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
 import { MessageParsingService } from '../services/message-parsing.service';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import DateUtils from '../util/date-util';
 
 describe('DatePickerComponent', () => {
   let component: DatePickerComponent;
@@ -76,7 +77,7 @@ describe('DatePickerComponent', () => {
   it('emits a Date event containing the selected Year and Month when tab is clicked', waitForAsync(() => {
     //Arrange
     spyOn(component, 'onYearSelected').and.callThrough(); // Spy on the onYearSelected method
-    spyOn(component.dateSelectEvent, 'emit'); // Spy on the EventEmitter's emit method
+    spyOn(component.yearMonthSelectEvent, 'emit'); // Spy on the EventEmitter's emit method
     component.ngOnInit();
     const secondTab = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[1].nativeElement;
     
@@ -86,6 +87,6 @@ describe('DatePickerComponent', () => {
 
     //Assert
     expect(component.onYearSelected).toHaveBeenCalled()
-    expect(component.dateSelectEvent.emit).toHaveBeenCalledWith(new Date(2010, 12));
+    expect(component.yearMonthSelectEvent.emit).toHaveBeenCalledWith(DateUtils.createYearMonth(2010,11));
   }));
 });
