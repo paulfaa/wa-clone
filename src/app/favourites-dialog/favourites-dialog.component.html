@@ -1,24 +1,28 @@
-<h3 mat-dialog-title>{{ name && name.length >=1 ? name + " - ": "" }} Favourites</h3>
+<h3 mat-dialog-title>
+    {{ name && name.length >= 1 ? name + ' - ' : '' }} Favourites
+</h3>
 
 <mat-dialog-content>
-  <div *ngIf="favourites.length; else noFavourites">
-    <mat-card *ngFor="let msg of this.favourites">
-      <mat-card-header>
-        <mat-card-title>{{ msg.fromMe == true ? "Me" : this.name }}</mat-card-title>
-        <mat-card-subtitle>{{ msg.timestamp | date:"medium" }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        {{ msg.text }}
-      </mat-card-content>
-    </mat-card>
-  </div>
-  <ng-template #noFavourites>
-    <div>
-      No messages are favourited!
+    <div *ngIf="favourites.length; else noFavourites">
+        <mat-card *ngFor="let msg of this.favourites">
+            <mat-card-header>
+                <mat-card-title>{{
+                    msg.fromMe === true ? 'Me' : this.name
+                }}</mat-card-title>
+                <mat-card-subtitle>{{
+                    msg.timestamp | date: 'medium'
+                }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                {{ msg.text }}
+            </mat-card-content>
+        </mat-card>
     </div>
-  </ng-template>
+    <ng-template #noFavourites>
+        <div>No messages are favourited!</div>
+    </ng-template>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="closeDialog()">Close</button>
+    <button mat-button (click)="closeDialog()">Close</button>
 </mat-dialog-actions>

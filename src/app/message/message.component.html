@@ -1,17 +1,34 @@
-<div [ngClass]="{
-  'ownMessage': fromMe,
-  'otherMessage': !fromMe,
-  'favourite': isFavourite
-  }"  class="messageBubble" (click)="toggleFavourite()">
-  <img *ngIf="this.filename" [src]="fromMe ? 'assets/sent/' + filename : 'assets/received/' + filename" loading="lazy"
-    alt="image {{this.filename}}">
-  <div *ngIf="this.caption" class="captionText"> {{this.caption}} </div>
-  <div *ngIf="this.text" class="messageText"> {{this.text}} </div>
-  <div *ngIf="this.duration">
-    <play-button [durationInput]="this.duration" [fileNameInput]="this.filename!"></play-button>
-  </div>
-  <div *ngIf="this.location"> Location </div>
-  <div *ngIf="this.link"><a href={{this.link}} class="linkText"></a>{{this.link}} </div>
-  <!-- Link not appearing correctly-->
-  <div class="messageDate"> {{timestamp | date: 'dd/MM/yyyy HH:mm': 'CET'}} </div>
+<div
+    [ngClass]="{
+        ownMessage: fromMe,
+        otherMessage: !fromMe,
+        favourite: isFavourite,
+    }"
+    class="messageBubble"
+    (click)="toggleFavourite()"
+>
+    <img
+        *ngIf="this.filename"
+        [src]="
+            fromMe ? 'assets/sent/' + filename : 'assets/received/' + filename
+        "
+        loading="lazy"
+        alt="image {{ this.filename }}"
+    />
+    <div *ngIf="this.caption" class="captionText">{{ this.caption }}</div>
+    <div *ngIf="this.text" class="messageText">{{ this.text }}</div>
+    <div *ngIf="this.duration">
+        <app-play-button
+            [durationInput]="this.duration"
+            [fileNameInput]="this.filename!"
+        ></app-play-button>
+    </div>
+    <div *ngIf="this.location">Location</div>
+    <div *ngIf="this.link">
+        <a href="{{ this.link }}" class="linkText"></a>{{ this.link }}
+    </div>
+    <!-- Link not appearing correctly-->
+    <div class="messageDate">
+        {{ timestamp | date: 'dd/MM/yyyy HH:mm' : 'CET' }}
+    </div>
 </div>

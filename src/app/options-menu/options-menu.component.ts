@@ -1,22 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 
 @Component({
-  selector: 'options-menu',
-  templateUrl: './options-menu.component.html',
-  styleUrls: ['./options-menu.component.scss']
+    selector: 'app-options-menu',
+    templateUrl: './options-menu.component.html',
+    styleUrls: ['./options-menu.component.scss'],
 })
-export class OptionsMenuComponent implements OnInit {
+export class OptionsMenuComponent {
+    //move this to popup to within file upload component
 
-  //move this to popup to within file upload component
+    users: string[]
+    selectedUser = ''
 
-  users: string[];
-  selectedUser = '';
-
-  constructor() {
-    this.users = ["user1", "set these dynamically"];
-  }
-
-  ngOnInit(): void {
-  }
-
+    constructor() {
+        this.users = ['user1', 'set these dynamically']
+    }
 }
