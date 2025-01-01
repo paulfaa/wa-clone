@@ -1,144 +1,206 @@
-import { TestBed } from '@angular/core/testing';
-import StorageUtils from '../util/storage-util';
+import { TestBed } from '@angular/core/testing'
+import StorageUtils from '../util/storage-util'
 
-import { FavouritesService } from './favourites.service';
-import { WhatsappMessage } from '../models/models';
-import { sampleMessage1, sampleMessage3, sampleMessage4 } from '../test/testMessages';
+import { FavouritesService } from './favourites.service'
+import { WhatsappMessage } from '../models/models'
+import {
+    sampleMessage1,
+    sampleMessage2,
+    sampleMessage3,
+    sampleMessage4,
+} from '../test/testMessages'
+import DateUtils from '../util/date-util'
 
 describe('FavouritesService', () => {
-  let service: FavouritesService;
-  const sampleMessage = sampleMessage1;
-  const id = sampleMessage.id;
+    let service: FavouritesService
+    const message1 = sampleMessage1
+    const message1Id = message1.id
+    const message1YearMonth = DateUtils.createYearMonth(2019, 9)
+    const message2 = sampleMessage2
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(FavouritesService);
-  });
-  afterEach(() => {
-    service['favouritesMap'] = new Map<string, WhatsappMessage>();
-    service.clearFavourites();
-  });
+    beforeEach(() => {
+        TestBed.configureTestingModule({})
+        service = TestBed.inject(FavouritesService)
+    })
+    afterEach(() => {
+        service['favouritesMap'] = new Map<
+            string,
+            Map<string, WhatsappMessage>
+        >()
+        service['areFavouritesModified'] = false
+    })
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(service).toBeTruthy()
+    })
 
-  describe('initStorage()', () => {
-    it('does not try to read storage if fileName is not defined', () => {
-      // Arrange
-      const invalidName = "";
-      const storageSpy = spyOn(StorageUtils, 'readFromStorage');
+    describe('initStorage()', () => {
+        it('does not try to read storage if fileName is not defined', () => {
+            // Arrange
+            const invalidName = ''
+            const storageSpy = spyOn(StorageUtils, 'readFromStorage')
 
-      // Act
-      service.initStorage(invalidName);
+            // Act
+            service.initStorage(invalidName)
 
-      // Assert
-      expect(storageSpy).not.toHaveBeenCalled();
-    });
-    it('tries to read from storage if fileName is defined', () => {
-      // Arrange
-      const validName = "myFile.json";
-      const storageSpy = spyOn(StorageUtils, 'readFromStorage');
+            // Assert
+            expect(storageSpy).not.toHaveBeenCalled()
+        })
+        it('tries to read from storage if fileName is defined', () => {
+            // Arrange
+            const validName = 'myFile.json'
+            const storageSpy = spyOn(StorageUtils, 'readFromStorage')
 
-      // Act
-      service.initStorage(validName)
+            // Act
+            service.initStorage(validName)
 
-      // Assert
-      expect(storageSpy).toHaveBeenCalledWith(validName + '.favourites');
-    });
-    it('loads data from storage if fileName matches', () => {
-      // Arrange
+            // Assert
+            expect(storageSpy).toHaveBeenCalledWith(validName + '.favourites')
+        })
+        it('loads data from storage if fileName matches', () => {
+            // Arrange
+            // Act
+            // Assert
+        })
+    })
 
-      // Act
+    describe('addToFavourites()', () => {
+        it('adds the specified message to the list', () => {
+            // Arrange
+            const favouritesMap = service['favouritesMap']
 
-      // Assert
-    });
-  });
+            expect(favouritesMap.size).toEqual(0)
 
-  describe('addToFavourites()', () => {
-    it('adds the specified message to the list', () => {
-      // Arrange
-      const favouritesMap = service['favouritesMap'];
-      expect(favouritesMap.size).toEqual(0);
+            // Act
+            service.addToFavourites(message1)
 
-      // Act
-      service.addToFavourites(sampleMessage);
+            // Assert
+            expect(favouritesMap.size).toEqual(1)
+            expect(
+                favouritesMap
+                    .get(DateUtils.yearMonthToString(message1YearMonth))!
+                    .get(message1Id)
+            ).toEqual(message1)
+        })
+    })
 
-      // Assert
-      expect(favouritesMap.size).toEqual(1);
-      expect(favouritesMap.get(id)).toEqual(sampleMessage);
-    });
-  });
+    describe('removeFromFavourites()', () => {
+        it('removes the specified message from the list', () => {
+            // Arrange
+            service.addToFavourites(message1)
+            service.addToFavourites(message2)
+            const len = service['favouritesMap'].size
+            expect(len).toEqual(2)
 
-  describe('removeFromFavourites()', () => {
-    it('removes the specified message from the list', () => {
-      // Arrange
-      service.addToFavourites(sampleMessage);
-      const len = service['favouritesMap'].size;
-      expect(len).toEqual(1);
+            // Act
+            service.removeFromFavourites(message1)
+            const favouritesOct2019 = service.getFavourites(message1YearMonth)
+            const newLen = service['favouritesMap'].size
 
-      // Act
-      service.removeFromFavourites(id);
-      const favourites = service.getFavourites();
+            // Assert
+            expect(newLen).toBe(1)
+            expect(favouritesOct2019).toBe(undefined)
+        })
 
-      // Assert
-      expect(favourites.size).toEqual(0);
-      expect(favourites.has(id)).toBeFalse;
-    });
-    it('does not remove the specified message if it is not in favourites', () => {
-      // Arrange
-      const invalidId = "does-not-exist";
-      service.addToFavourites(sampleMessage);
-      const len = service['favouritesMap'].size;
-      expect(len).toEqual(1);
+        it('does not remove the specified message if it is not in favourites', () => {
+            // Arrange
+            const invalidId = 'does-not-exist'
+            service.addToFavourites(message1)
+            const len = service['favouritesMap'].size
+            expect(len).toEqual(1)
 
-      // Act
-      service.removeFromFavourites(invalidId);
-      const favourites = service.getFavourites();
+            // Act
+            service.removeFromFavourites(message2)
+            const favourites = service.getFavourites(message1YearMonth)
 
-      // Assert
-      expect(favourites.size).toEqual(1);
-      expect(favourites.has(id)).toBeTrue;
-      expect(favourites.has(invalidId)).toBeFalse;
-    });
-  });
+            // Assert
+            expect(favourites!.size).toEqual(1)
+            expect(favourites!.has(message1Id)).toBeTrue
+            expect(favourites!.has(invalidId)).toBeFalse
+        })
 
-  describe('getFavourites()', () => {
-    it('returns empty list when no messages favourited', () => {
-      // Act
-      const favourites = service.getFavourites();
+        it('also removes the yearDate key if the message deleted was the last in that map', () => {
+            // Arrange
+            service.addToFavourites(message1)
+            const len = service['favouritesMap'].size
+            expect(len).toEqual(1)
 
-      // Assert
-      expect(favourites.size).toEqual(0);
-    });
-    it('returns all messages which are favourited', () => {
-      // Arrange
-      service.addToFavourites(sampleMessage);
-      service.addToFavourites(sampleMessage3);
-      service.addToFavourites(sampleMessage4);
+            // Act
+            service.removeFromFavourites(message1)
+            const favourites = service.getFavourites(message1YearMonth)
 
-      // Act
-      const favourites = service.getFavourites();
+            // Assert
+            expect(favourites).toBe(undefined)
+            //expect(favourites!.size).toEqual(0);
+            expect(service['favouritesMap'].get('2019-09')).toBe(undefined)
+        })
+    })
 
-      // Assert 
-      expect(favourites.size).toEqual(3);
-      expect(favourites.has(id)).toBe(true);
-    });
-  });
+    describe('getFavourites()', () => {
+        it('returns undefined when no messages favourited', () => {
+            // Arrange
+            const keyWithNoValues = DateUtils.createYearMonth(2000, 1)
 
-  describe('clearFavourites()', () => {
-    it('removes all favourites', () => {
-      // Arrange
-      service.addToFavourites(sampleMessage);
-      const favourites = service['favouritesMap'];
-      expect(favourites.size).toEqual(1);
+            // Act
+            const favourites = service.getFavourites(keyWithNoValues)
 
-      // Act
-      service.clearFavourites();
-      const newSize = service['favouritesMap'].size;
+            // Assert
+            expect(favourites).toBeUndefined
+        })
+        it('returns all messages which are favourited for the corresponding yearMonth', () => {
+            // Arrange
+            service.addToFavourites(message1)
+            service.addToFavourites(sampleMessage3)
+            service.addToFavourites(sampleMessage4)
 
-      // Assert
-      expect(newSize).toEqual(0);
-    });
-  });
-});
+            // Act
+            const favourites = service.getFavourites(message1YearMonth)
+
+            // Assert
+            expect(favourites!.size).toEqual(1)
+            expect(favourites!.has(message1Id)).toBe(true)
+        })
+    })
+
+    describe('clearFavourites()', () => {
+        it('removes all favourites', () => {
+            // Arrange
+            service.addToFavourites(message1)
+            const favourites = service['favouritesMap']
+            expect(favourites.size).toEqual(1)
+
+            // Act
+            service.clearFavourites()
+            const newSize = service['favouritesMap'].size
+
+            // Assert
+            expect(newSize).toEqual(0)
+        })
+    })
+
+    describe('getAllFavourites()', () => {
+        it('returns an array of all favourites ordered by date ascending', () => {
+            // Arrange
+            service['favouritesMap'] = new Map<
+                string,
+                Map<string, WhatsappMessage>
+            >([
+                [
+                    '2020-3',
+                    new Map<string, WhatsappMessage>([['msg-id1', message2]]),
+                ],
+                [
+                    '2019-9',
+                    new Map<string, WhatsappMessage>([['msg-id2', message1]]),
+                ],
+            ])
+
+            // Act
+            const result = service.getAllFavourites()
+
+            // Assert
+            expect(result.length).toBe(2)
+            expect(result[0]).toEqual(message1)
+        })
+    })
+})

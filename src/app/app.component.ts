@@ -1,45 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog.component';
-import { FavouritesService } from './services/favourites.service';
-import { MessageService } from './services/message.service';
+import { Component, OnInit } from '@angular/core'
+import { MatDialog } from '@angular/material/dialog'
+import { Router } from '@angular/router'
+import { FavouritesDialogComponent } from './favourites-dialog/favourites-dialog.component'
+import { FavouritesService } from './services/favourites.service'
+import { MessageService } from './services/message.service'
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+    constructor(
+        private router: Router,
+        private messageService: MessageService,
+        private dialog: MatDialog,
+        private favouritesService: FavouritesService
+    ) {}
 
-  constructor(private router: Router,
-    private messageService: MessageService,
-    private dialog: MatDialog,
-    private favouritesService: FavouritesService
-  ) {}
-
-  ngOnInit(): void {
-    this.router.navigate(['']);
-  }
-
-  public isViewRoute() {
-    return this.router.url === '/view';
-  }
-
-  public callClearMessages(): void {
-    if (this.isViewRoute()) {
-      this.messageService.clearAllMessages();
+    ngOnInit(): void {
+        this.router.navigate([''])
     }
-  }
 
-  public openFavouritesDialog(): void {
-    var savedFavourites = Array.from(this.favouritesService.getFavourites().values()); //todo list should be ordered by daye
-    let dialogRef = this.dialog.open(FavouritesDialogComponent, {
-      width: '80%',
-      data: savedFavourites,
-      position: { top: '150px' }
-    });
+    public isViewRoute() {
+        return this.router.url === '/view'
+    }
 
-    //dialogRef.afterClosed().subscribe(() => {});
-  }
+    public callClearMessages(): void {
+        if (this.isViewRoute()) {
+            this.messageService.clearAllMessages()
+        }
+    }
+
+    public openFavouritesDialog(): void {
+        var savedFavourites = Array.from(
+            this.favouritesService.getAllFavourites()
+        )
+        this.dialog.open(FavouritesDialogComponent, {
+            width: '80%',
+            data: savedFavourites,
+            position: { top: '150px' },
+        })
+    }
 }

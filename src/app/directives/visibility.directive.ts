@@ -11,7 +11,7 @@ import {
 import { Subject, delay, filter } from 'rxjs'
 
 @Directive({
-    selector: '[app-observeVisibility]',
+    selector: '[appObserveVisibility]',
 })
 export class ObserveVisibilityDirective
     implements OnDestroy, OnInit, AfterViewInit
