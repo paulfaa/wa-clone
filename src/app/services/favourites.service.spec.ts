@@ -94,12 +94,13 @@ describe('FavouritesService', () => {
 
             // Act
             service.removeFromFavourites(message1)
-            const favouritesOct2019 = service.getFavourites(message1YearMonth)
+            const favouritesOct2019 =
+                service.getFavouritedIds(message1YearMonth)
             const newLen = service['favouritesMap'].size
 
             // Assert
             expect(newLen).toBe(1)
-            expect(favouritesOct2019).toBe(undefined)
+            expect(favouritesOct2019).toEqual(new Set())
         })
 
         it('does not remove the specified message if it is not in favourites', () => {
@@ -111,7 +112,7 @@ describe('FavouritesService', () => {
 
             // Act
             service.removeFromFavourites(message2)
-            const favourites = service.getFavourites(message1YearMonth)
+            const favourites = service.getFavouritedIds(message1YearMonth)
 
             // Assert
             expect(favourites!.size).toEqual(1)
@@ -127,25 +128,25 @@ describe('FavouritesService', () => {
 
             // Act
             service.removeFromFavourites(message1)
-            const favourites = service.getFavourites(message1YearMonth)
+            const favourites = service.getFavouritedIds(message1YearMonth)
 
             // Assert
-            expect(favourites).toBe(undefined)
+            expect(favourites).toEqual(new Set())
             //expect(favourites!.size).toEqual(0);
             expect(service['favouritesMap'].get('2019-09')).toBe(undefined)
         })
     })
 
     describe('getFavourites()', () => {
-        it('returns undefined when no messages favourited', () => {
+        it('returns an empty set when no messages favourited', () => {
             // Arrange
             const keyWithNoValues = DateUtils.createYearMonth(2000, 1)
 
             // Act
-            const favourites = service.getFavourites(keyWithNoValues)
+            const favourites = service.getFavouritedIds(keyWithNoValues)
 
             // Assert
-            expect(favourites).toBeUndefined
+            expect(favourites).toEqual(new Set())
         })
         it('returns all messages which are favourited for the corresponding yearMonth', () => {
             // Arrange
@@ -154,7 +155,7 @@ describe('FavouritesService', () => {
             service.addToFavourites(sampleMessage4)
 
             // Act
-            const favourites = service.getFavourites(message1YearMonth)
+            const favourites = service.getFavouritedIds(message1YearMonth)
 
             // Assert
             expect(favourites!.size).toEqual(1)

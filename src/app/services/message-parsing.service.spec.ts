@@ -7,14 +7,9 @@ import { sampleMessage1, sampleMessage2 } from '../test/testMessages'
 describe('MessageParsingService', () => {
     let service: MessageParsingService
     let mockMessageService: jasmine.SpyObj<MessageService>
-    let mockFavouritesService: jasmine.SpyObj<FavouritesService>
-
     const messageServiceSpy = jasmine.createSpyObj('mockMessageService', [
         'addMessages',
         '$getMessages',
-    ])
-    const favouritesServiceSpy = jasmine.createSpyObj('mockFavouritesService', [
-        'isFavourite',
     ])
 
     const newJsonString = `
@@ -41,14 +36,10 @@ describe('MessageParsingService', () => {
   `
 
     beforeEach(() => {
-        service = new MessageParsingService(
-            messageServiceSpy,
-            favouritesServiceSpy
-        )
+        service = new MessageParsingService(messageServiceSpy)
         TestBed.configureTestingModule({
             providers: [
                 { provide: MessageService, useValue: messageServiceSpy },
-                { provide: FavouritesService, useValue: favouritesServiceSpy },
             ],
         })
         service = TestBed.inject(MessageParsingService)

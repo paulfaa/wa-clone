@@ -33,10 +33,11 @@ export class FavouritesService {
         }
     }
 
-    public getFavourites(
-        yearMonth: YearMonth
-    ): Map<string, WhatsappMessage> | undefined {
-        return this.favouritesMap.get(DateUtils.yearMonthToString(yearMonth))
+    public getFavouritedIds(yearMonth: YearMonth): Set<string> {
+        const favouritesForYearMonth = this.favouritesMap.get(
+            DateUtils.yearMonthToString(yearMonth)
+        )
+        return new Set(favouritesForYearMonth?.keys())
     }
 
     public getAllFavourites(): WhatsappMessage[] {

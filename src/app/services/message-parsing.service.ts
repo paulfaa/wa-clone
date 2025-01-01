@@ -20,10 +20,7 @@ export class MessageParsingService {
     isGroupChat: boolean
     messageCount: number
 
-    constructor(
-        private messageService: MessageService,
-        private favouritesService: FavouritesService
-    ) {
+    constructor(private messageService: MessageService) {
         this.chatMembers = []
         this.isGroupChat = false
         this.messageCount = 0
