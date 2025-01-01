@@ -5,6 +5,8 @@
 .browserslistrc
 
 src/assets/
+# Prettier keeps adding breaking extra comma to ngClass
+src/app/message/message.component.html
 
 # Ignore artifacts:
 build
