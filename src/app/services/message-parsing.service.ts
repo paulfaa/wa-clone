@@ -84,7 +84,7 @@ export class MessageParsingService {
         yearMonthArrray.forEach((yearMonth: YearMonth) => {
             try {
                 const year = yearMonth.year
-                const month = yearMonth.month + 1
+                const month = yearMonth.month
                 let storedMonths = this.yearMonthMap.get(year)
                 if (!storedMonths) {
                     this.yearMonthMap.set(year, new Set([month]))
@@ -107,6 +107,7 @@ export class MessageParsingService {
     }
 
     public parseJsonString(json: string): void {
+        var counter = 0
         var parsedJson = JSON.parse(json)
         var messages: WhatsappMessage[] = []
         try {
@@ -116,14 +117,17 @@ export class MessageParsingService {
         }
         if (parsedJson.chats) {
             messages = parsedJson.chats[0].messages
-            //messages = parsedJson.chats[0].messages.reverse();
         } else if (parsedJson.messages) {
             messages = parsedJson.messages
-            //messages = parsedJson.messages.reverse();
         } else {
             throw 'Invalid chat format'
         }
         messages.forEach((msg: WhatsappMessage) => {
+            //if message is missing id property, generate one
+            if (!msg.id) {
+                msg.id = counter.toString()
+                counter++
+            }
             if (msg.filename) {
                 msg.filename = this.formatFilename(msg.filename)
             }

@@ -68,7 +68,7 @@ export class ChatViewComponent implements OnInit {
         const yearMonthMap = this.messageParsingService.getYearMonthMap()
         const firstYearMonth = DateUtils.getFirstYearMonthFromMap(yearMonthMap)
         this.selectedYear = firstYearMonth.year
-        this.selectedMonth = firstYearMonth.month + 1 //getMonth is 0 index
+        this.selectedMonth = firstYearMonth.month
         return firstYearMonth
     }
 }

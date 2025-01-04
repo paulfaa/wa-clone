@@ -3,6 +3,8 @@ import { FavouritesService } from './favourites.service'
 import { MessageParsingService } from './message-parsing.service'
 import { MessageService } from './message.service'
 import { sampleMessage1, sampleMessage2 } from '../test/testMessages'
+import { WhatsappMessage } from '../models/models'
+import { MessageType } from '../models/message-type'
 
 describe('MessageParsingService', () => {
     let service: MessageParsingService
@@ -125,8 +127,8 @@ describe('MessageParsingService', () => {
       ]
   }`
             const expectedArg = new Map([
-                ['2019-9', [jasmine.objectContaining(sampleMessage1)]],
-                ['2020-2', [jasmine.objectContaining(sampleMessage2)]],
+                ['2019-10', [jasmine.objectContaining(sampleMessage1)]],
+                ['2020-3', [jasmine.objectContaining(sampleMessage2)]],
             ])
 
             //Act
@@ -149,8 +151,8 @@ describe('MessageParsingService', () => {
             //const expectedQuotes = new Set<string>();
             //const expectedQuotes = new Set<string>(["e0f89ae3-e5ee-4611-b65b-00a8abfec642","2e419da2-a369-4915-8a78-3e76eecb714e"]);
             const expectedArg = new Map([
-                ['2019-9', [jasmine.objectContaining(sampleMessage1)]],
-                ['2020-2', [jasmine.objectContaining(sampleMessage2)]],
+                ['2019-10', [jasmine.objectContaining(sampleMessage1)]],
+                ['2020-3', [jasmine.objectContaining(sampleMessage2)]],
             ])
 
             //Act
@@ -177,5 +179,38 @@ describe('MessageParsingService', () => {
 
         //Assert
         expect(serviceMap).toEqual(expectedMap)
+    })
+
+    it('populates the id field of messages missing an id', () => {
+        //Arrange
+        const newJsonString = `
+        {
+            "key": "userkey",
+            "contactName": "Test",
+            "messages": [
+                  {
+                      "timestamp": "2019-10-05T00:00:00Z",
+                      "fromMe": true,
+                      "type": "text",
+                      "text": "Message contents..."
+                  }
+              ]
+        }`
+        const expectedMessage: WhatsappMessage = {
+            id: '0',
+            timestamp: '2019-10-05T00:00:00Z',
+            fromMe: true,
+            type: MessageType.text,
+            text: 'Message contents...',
+        }
+        const expectedArg = new Map([
+            ['2019-10', [jasmine.objectContaining(expectedMessage)]],
+        ])
+
+        //Act
+        service.parseJsonString(newJsonString)
+
+        //Assert
+        expect(messageServiceSpy.addMessages).toHaveBeenCalledWith(expectedArg)
     })
 })

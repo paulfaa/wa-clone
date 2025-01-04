@@ -15,7 +15,7 @@ describe('FavouritesService', () => {
     let service: FavouritesService
     const message1 = sampleMessage1
     const message1Id = message1.id
-    const message1YearMonth = DateUtils.createYearMonth(2019, 9)
+    const message1YearMonth = DateUtils.createYearMonth(2019, 10)
     const message2 = sampleMessage2
 
     beforeEach(() => {
@@ -191,7 +191,7 @@ describe('FavouritesService', () => {
                     new Map<string, WhatsappMessage>([['msg-id1', message2]]),
                 ],
                 [
-                    '2019-9',
+                    '2019-10',
                     new Map<string, WhatsappMessage>([['msg-id2', message1]]),
                 ],
             ])

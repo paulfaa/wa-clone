@@ -16,8 +16,8 @@ export interface YearMonth {
 }
 
 export interface WhatsappMessage {
-    id: string
     timestamp: string
+    id: string
     fromMe: boolean
     type: MessageType
     text?: string
@@ -32,8 +32,8 @@ export interface WhatsappMessage {
 }
 
 interface BaseMessage {
-    id: string
     timestamp: string
+    id: string
     fromMe: boolean
     type: MessageType
     quotedMessageId?: string

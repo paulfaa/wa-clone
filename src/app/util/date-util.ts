@@ -17,7 +17,9 @@ export default class DateUtils {
     }
 
     static generateYearMonthKey(date: Date): string {
-        return `${date.getFullYear()}-${date.getMonth()}`
+        const year = date.getFullYear()
+        const month = this.getActualMonth(date)
+        return `${year}-${month}`
     }
 
     static yearMonthToString(yearMonth: YearMonth): string {
@@ -33,5 +35,9 @@ export default class DateUtils {
 
     static messageToYearMonthString(msg: WhatsappMessage): string {
         return this.generateYearMonthKey(new Date(msg.timestamp))
+    }
+
+    static getActualMonth(date: Date) {
+        return date.getMonth() + 1
     }
 }

@@ -45,7 +45,8 @@ export class MessageService {
                     .filter((message) => {
                         const messageDate = new Date(message.timestamp)
                         return (
-                            messageDate.getMonth() + 1 === yearMonth.month &&
+                            DateUtils.getActualMonth(messageDate) ===
+                                yearMonth.month &&
                             messageDate.getFullYear() === yearMonth.year
                         )
                     })

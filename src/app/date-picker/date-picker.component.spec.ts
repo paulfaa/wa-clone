@@ -90,14 +90,14 @@ describe('DatePickerComponent', () => {
         ).componentInstance
 
         // Act
-        yearTabGroup.selectedIndex = 2 // Select the second tab programmatically
+        yearTabGroup.selectedIndex = 2
         fixture.detectChanges()
 
         //Assert
         expect(component.onYearSelected).toHaveBeenCalled()
         expect(component.yearMonthSelectEvent.emit).toHaveBeenCalledWith({
             year: 2010,
-            month: 11,
+            month: 12,
         })
     }))
 })
