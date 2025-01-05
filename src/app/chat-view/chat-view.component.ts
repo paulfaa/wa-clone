@@ -10,6 +10,7 @@ import { FavouritesService } from '../services/favourites.service'
 import { MessageParsingService } from '../services/message-parsing.service'
 import { WhatsappMessage, YearMonth } from '../models/models'
 import DateUtils from '../util/date-util'
+import { StorageService } from '../services/storage.service'
 
 @Component({
     selector: 'app-chat-view',
@@ -25,7 +26,8 @@ export class ChatViewComponent implements OnInit {
     constructor(
         private messageService: MessageService,
         private favouritesService: FavouritesService,
-        private messageParsingService: MessageParsingService
+        private messageParsingService: MessageParsingService,
+        private storageService: StorageService
     ) {}
 
     @HostListener('window:beforeunload', ['$event'])
@@ -34,8 +36,10 @@ export class ChatViewComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        const lastViewedYearMonth =
+            this.storageService.readLastViewedYearMonthFromStorage()
         this._serviceSubscription = this.messageService.$getFilteredMessages(
-            this.getFirstYearMonth()
+            lastViewedYearMonth ?? this.getFirstYearMonth()
         )
         this._serviceSubscription.subscribe()
     }

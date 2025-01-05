@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing'
-import StorageUtils from '../util/storage-util'
 
 import { FavouritesService } from './favourites.service'
 import { WhatsappMessage } from '../models/models'
@@ -10,16 +9,37 @@ import {
     sampleMessage4,
 } from '../test/testMessages'
 import DateUtils from '../util/date-util'
+import { StorageService } from './storage.service'
 
 describe('FavouritesService', () => {
     let service: FavouritesService
+    let storageService: jasmine.SpyObj<StorageService>
+
     const message1 = sampleMessage1
     const message1Id = message1.id
     const message1YearMonth = DateUtils.createYearMonth(2019, 10)
     const message2 = sampleMessage2
+    const yearDateMap = new Map<string, Map<string, WhatsappMessage>>([
+        [
+            '2019-10',
+            new Map<string, WhatsappMessage>([['msg-id', sampleMessage1]]),
+        ],
+    ])
+
+    const mockStorageService = jasmine.createSpyObj('storageService', [
+        'readFavouritesMapFromStorage',
+        'writeFavouritesMapToStorage',
+    ])
 
     beforeEach(() => {
-        TestBed.configureTestingModule({})
+        TestBed.configureTestingModule({
+            providers: [
+                {
+                    provide: StorageService,
+                    useValue: mockStorageService,
+                },
+            ],
+        })
         service = TestBed.inject(FavouritesService)
     })
     afterEach(() => {
@@ -28,6 +48,7 @@ describe('FavouritesService', () => {
             Map<string, WhatsappMessage>
         >()
         service['areFavouritesModified'] = false
+        mockStorageService.readFavouritesMapFromStorage.calls.reset()
     })
 
     it('should be created', () => {
@@ -35,32 +56,36 @@ describe('FavouritesService', () => {
     })
 
     describe('initStorage()', () => {
-        it('does not try to read storage if fileName is not defined', () => {
+        it('does not try to read favourites from storage if fileName is not defined', () => {
             // Arrange
             const invalidName = ''
-            const storageSpy = spyOn(StorageUtils, 'readFromStorage')
 
             // Act
             service.initStorage(invalidName)
 
             // Assert
-            expect(storageSpy).not.toHaveBeenCalled()
+            expect(service['favouritesMap'].size).toBe(0)
+            expect(
+                mockStorageService.readFavouritesMapFromStorage
+            ).not.toHaveBeenCalled()
         })
-        it('tries to read from storage if fileName is defined', () => {
+
+        it('loads favourites from storage if fileName is defined and saved data exists', () => {
             // Arrange
+            expect(service['favouritesMap'].size).toBe(0)
             const validName = 'myFile.json'
-            const storageSpy = spyOn(StorageUtils, 'readFromStorage')
+            mockStorageService.readFavouritesMapFromStorage.and.returnValue(
+                yearDateMap
+            )
 
             // Act
             service.initStorage(validName)
 
             // Assert
-            expect(storageSpy).toHaveBeenCalledWith(validName + '.favourites')
-        })
-        it('loads data from storage if fileName matches', () => {
-            // Arrange
-            // Act
-            // Assert
+            expect(
+                mockStorageService.readFavouritesMapFromStorage
+            ).toHaveBeenCalled()
+            expect(service['favouritesMap'].size).toBe(1)
         })
     })
 

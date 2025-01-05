@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 import { MatDialog } from '@angular/material/dialog'
 import { MessageParsingService } from '../services/message-parsing.service'
 import { Router } from '@angular/router'
 import { FavouritesService } from '../services/favourites.service'
+import { StorageService } from '../services/storage.service'
 
 @Component({
     selector: 'app-file-upload',
@@ -16,6 +17,7 @@ export class FileUploadComponent {
     constructor(
         private messageParsingService: MessageParsingService,
         private favouritesService: FavouritesService,
+        private storageService: StorageService,
         private router: Router,
         public dialog: MatDialog
     ) {}
@@ -46,8 +48,9 @@ export class FileUploadComponent {
             const fileContent = await this.readFileContent(file)
             console.log(this.fileName)
             try {
-                this.messageParsingService.parseJsonString(fileContent)
+                this.storageService.setFileName(this.fileName)
                 this.favouritesService.initStorage(this.fileName)
+                this.messageParsingService.parseJsonString(fileContent)
                 this.showError = false
                 this.router.navigate(['view'])
             } catch (error) {

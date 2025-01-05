@@ -8,11 +8,11 @@ export default class DateUtils {
         const firstYear = Math.min(...keysArray)
         const monthSet = yearMonthMap.get(firstYear)!
         const monthArray = Array.from(monthSet)
-        const firstMonth = Math.min(...monthArray) - 1
+        const firstMonth = Math.min(...monthArray)
         return { year: firstYear, month: firstMonth }
     }
 
-    static createYearMonth(year: number, month: number) {
+    static createYearMonth(year: number, month: number): YearMonth {
         return { year, month }
     }
 

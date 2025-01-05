@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core'
-import { FavouritesService } from './favourites.service'
 import { MessageService } from './message.service'
-import { Chat, WhatsappMessage, YearMonth } from '../models/models'
+import { WhatsappMessage, YearMonth } from '../models/models'
 import DateUtils from '../util/date-util'
 
 @Injectable({

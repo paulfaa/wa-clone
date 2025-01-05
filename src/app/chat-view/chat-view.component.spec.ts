@@ -44,7 +44,7 @@ describe('ChatViewComponent', () => {
     ])
     mockMessageParsingService = jasmine.createSpyObj(
         'mockMessageParsingService',
-        ['getYearMonthMap']
+        ['getYearMonthMap', 'getParsedFilename']
     )
 
     beforeEach(async () => {
@@ -67,12 +67,12 @@ describe('ChatViewComponent', () => {
         }).compileComponents()
 
         mockMessages = new Map([
-            ['2019-09', messages2019],
-            ['2020-02', messages2020],
+            ['2019-10', messages2019],
+            ['2020-2', messages2020],
         ])
         //mockMessageService.$getAllMessages.and.returnValue(of(mockMessages));
         mockMessageService.$getFilteredMessages
-            .withArgs(DateUtils.createYearMonth(2019, 9))
+            .withArgs(DateUtils.createYearMonth(2019, 10))
             .and.returnValue(of([sampleMessage1]))
         //mockMessageService.$getFilteredMessages({year: 2019, month: 2020}).and.returnValue(of([sampleMessage1]));
         mockMessageParsingService.getYearMonthMap.and.returnValue(yearMonthMap)
@@ -85,7 +85,8 @@ describe('ChatViewComponent', () => {
     describe('ngOnInit', () => {
         it('calls messageService.$getFilteredMessages with the first date of the yearMonthMap', () => {
             //Arrange
-            const firstYearMonth = DateUtils.createYearMonth(2019, 9)
+            const firstYearMonth = DateUtils.createYearMonth(2019, 10)
+
             //Act
             component.ngOnInit()
 

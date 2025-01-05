@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
-import StorageUtils from '../util/storage-util'
 import { WhatsappMessage, YearMonth } from '../models/models'
 import DateUtils from '../util/date-util'
+import { StorageService } from './storage.service'
 
 @Injectable({
     providedIn: 'root',
@@ -12,20 +12,18 @@ export class FavouritesService {
     private fileName: string | undefined
     private areFavouritesModified = false
 
-    constructor() {
+    constructor(private storageService: StorageService) {
         this.favouritesMap = new Map<string, Map<string, WhatsappMessage>>()
     }
 
     public initStorage(currentFileName: string): void {
         if (currentFileName && currentFileName != '') {
             this.fileName = currentFileName
-            const favourites = StorageUtils.readFromStorage(
-                currentFileName + '.favourites'
-            )
+            const favourites =
+                this.storageService.readFavouritesMapFromStorage()
             if (favourites != null) {
-                this.favouritesMap = StorageUtils.readFromStorage(
-                    currentFileName + '.favourites'
-                )!
+                this.favouritesMap =
+                    this.storageService.readFavouritesMapFromStorage()!
                 console.log('loaded stored favourites for ' + favourites)
             } else {
                 console.log('no saved data found')
@@ -126,10 +124,7 @@ export class FavouritesService {
     }
 
     private updateStorage(): void {
-        StorageUtils.writeToStorage(
-            this.fileName + '.favourites',
-            this.favouritesMap
-        )
+        this.storageService.writeFavouritesMapToStorage(this.favouritesMap)
         this.areFavouritesModified = true
     }
 }
