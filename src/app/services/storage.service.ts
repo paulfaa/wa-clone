@@ -11,10 +11,6 @@ export class StorageService {
     private LAST_SELECTED_STORAGE_KEY = '.lastSelectedYearMonth'
     private FAVOURITES_STORAGE_KEY = '.favourites'
 
-    public getFileName(): string | undefined {
-        return this.fileName
-    }
-
     public setFileName(fileName: string): void {
         this.fileName = fileName
     }

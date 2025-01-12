@@ -1,19 +1,19 @@
 <mat-toolbar class="app-header">
-    <a routerLink="/upload" routerLinkActive="active" ariaCurrentWhenActive="page" (click)="callClearMessages()">WA Viewer</a>
+    <a
+        routerLink="/upload"
+        routerLinkActive="active"
+        ariaCurrentWhenActive="page"
+        (click)="callClearMessages()"
+        >WA Viewer</a
+    >
     <span class="spacer"></span>
-    <button *ngIf="isViewRoute()" mat-icon-button (click)="openFavouritesDialog()">
+    <button
+        *ngIf="isViewRoute()"
+        mat-icon-button
+        (click)="openFavouritesDialog()"
+    >
         <mat-icon>menu</mat-icon>
     </button>
 </mat-toolbar>
 
-<!-- <options-menu></options-menu> -->
-
-<!-- <file-upload></file-upload> -->
-
-<!-- <div fileUpload (fileDropped)="onFileDrop($event)">
-    <input type="file" (change)="fileBrowserHandler($event.target.files )"/>
-    Drop text file here
-</div> -->
-
-<router-outlet>
-</router-outlet>
+<router-outlet> </router-outlet>

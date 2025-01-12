@@ -21,8 +21,9 @@ describe('DatePickerComponent', () => {
     let fixture: ComponentFixture<DatePickerComponent>
     let messageParsingService: jasmine.SpyObj<MessageParsingService>
     let storageService: jasmine.SpyObj<StorageService>
-    const testFileName = 'unit_test'
 
+    const yearTabGroupCSS = '#yearTabs'
+    const monthTabGroupCSS = '#monthTabs'
     const mockMessageParsingService = jasmine.createSpyObj(
         'messageParsingService',
         ['getYearMonthMap']
@@ -30,7 +31,6 @@ describe('DatePickerComponent', () => {
     const mockStorageService = jasmine.createSpyObj('storageService', [
         'readLastViewedYearMonthFromStorage',
         'writeLastViewedYearMonthToStorage',
-        'getFileName',
     ])
     const testDatesMap = new Map<number, Set<number>>()
     testDatesMap.set(2000, new Set<number>([1, 2, 3]))
@@ -53,7 +53,9 @@ describe('DatePickerComponent', () => {
             schemas: [CUSTOM_ELEMENTS_SCHEMA],
         }).compileComponents()
         mockMessageParsingService.getYearMonthMap.and.returnValue(testDatesMap)
-        mockStorageService.getFileName.and.returnValue(testFileName)
+        mockStorageService.readLastViewedYearMonthFromStorage.and.returnValue(
+            undefined
+        )
         fixture = TestBed.createComponent(DatePickerComponent)
         component = fixture.componentInstance
         fixture.detectChanges()
@@ -64,7 +66,7 @@ describe('DatePickerComponent', () => {
     })
 
     describe('ngOnInit()', () => {
-        it('updates the current selected yearMonth if there is a value in localstorage', () => {
+        it('updates the default selected yearMonth if there is a value in localstorage', () => {
             //Arrange
             const storedYearMonth = DateUtils.createYearMonth(2010, 12)
             mockStorageService.readLastViewedYearMonthFromStorage.and.returnValue(
@@ -75,20 +77,41 @@ describe('DatePickerComponent', () => {
             component.ngOnInit()
 
             //Assert
-            expect(component['selectedYear']).toBe(2010)
-            expect(component['selectedMonth']).toBe(12)
+            const yearTabGroup: MatTabGroup = fixture.debugElement.query(
+                By.css(yearTabGroupCSS)
+            ).componentInstance
+            const monthTabGroup: MatTabGroup = fixture.debugElement.query(
+                By.css(monthTabGroupCSS)
+            ).componentInstance
+            expect(
+                mockStorageService.readLastViewedYearMonthFromStorage
+            ).toHaveBeenCalled()
+            expect(component.selectedYearIndex).toBe(1)
+            expect(component.selectedMonthIndex).toBe(0)
+
+            //expect(component['selectedYear']).toBe(2010)
+            //expect(component['selectedMonth']).toBe(12)
         })
 
-        it('sets selectedYear and selectedMonth to first values of datesMap if no value in localstorage', () => {
+        it('defaults to the earliest year and month possible if no value in localstorage', () => {
             //Arrange
-            component['fileName'] = undefined
+            mockStorageService.readLastViewedYearMonthFromStorage.and.returnValue(
+                undefined
+            )
+            const yearTabGroup: MatTabGroup = fixture.debugElement.query(
+                By.css(yearTabGroupCSS)
+            ).componentInstance
+            const monthTabGroup: MatTabGroup = fixture.debugElement.query(
+                By.css(monthTabGroupCSS)
+            ).componentInstance
 
             //Act
             component.ngOnInit()
 
             //Assert
-            expect((component as any).selectedYear).toBe(2000)
-            expect((component as any).selectedMonth).toBe(1)
+            expect(yearTabGroup.selectedIndex).toBe(0)
+            expect(monthTabGroup.selectedIndex).toBe(0)
+            //also verify that the labels are 2000 and January respectively
         })
     })
 
@@ -101,8 +124,6 @@ describe('DatePickerComponent', () => {
                 tab: { textLabel: expectedYear } as any,
                 index: 0,
             }
-            component['selectedYear'] = 2000
-            component['selectedMonth'] = 1
             spyOn(component.yearMonthSelectEvent, 'emit')
 
             //Act
@@ -126,8 +147,8 @@ describe('DatePickerComponent', () => {
                 tab: { textLabel: 'March' } as any,
                 index: 2,
             }
-            component['selectedYear'] = 2000
-            component['selectedMonth'] = 1
+            //component['selectedYear'] = 2000
+            //component['selectedMonth'] = 1
             spyOn(component.yearMonthSelectEvent, 'emit')
 
             //Act
@@ -144,7 +165,7 @@ describe('DatePickerComponent', () => {
         })
     })
 
-    it('creates an array of tabs corresponding to the datesMap object', () => {
+    it('creates a sorted array of tabs corresponding to the datesMap object', () => {
         //Act
         component.ngOnInit()
         const yearTabGroup: MatTabGroup = fixture.debugElement.query(
@@ -164,26 +185,30 @@ describe('DatePickerComponent', () => {
         expect(monthTabs[2].textLabel).toBe('March')
     })
 
-    it('emits a yearMonthSelectEvent containing the selected Year and Month when tab is clicked', waitForAsync(() => {
+    it('emits a yearMonthSelectEvent containing the selected Year and first Month of that year when tab is clicked', waitForAsync(() => {
         //Arrange
-        spyOn(component, 'onYearSelected').and.callThrough()
+        component.ngOnInit()
+        const expectedYearMonth = DateUtils.createYearMonth(2010, 12)
         spyOn(component.yearMonthSelectEvent, 'emit')
-        component['selectedYear'] = 2000
-        component['selectedMonth'] = 1
-        fixture.detectChanges()
-        const yearTabGroup: MatTabGroup = fixture.debugElement.query(
+        const yearTabGroupDebug = fixture.debugElement.query(
             By.css('#yearTabs')
-        ).componentInstance
+        )
+        const yearTabGroup = yearTabGroupDebug.componentInstance as MatTabGroup
+        const year2010Tab = yearTabGroup._allTabs.toArray()[4]
+        const tabChangeEvent = {
+            index: 0,
+            tab: year2010Tab,
+        } as MatTabChangeEvent
 
-        // Act
-        yearTabGroup.selectedIndex = 1
-        fixture.detectChanges()
+        //Act
+        component.onYearSelected(tabChangeEvent)
 
         //Assert
-        expect(component.onYearSelected).toHaveBeenCalled()
-        expect(component.yearMonthSelectEvent.emit).toHaveBeenCalledWith({
-            year: 2010,
-            month: 12,
-        })
+        expect(component.yearMonthSelectEvent.emit).toHaveBeenCalledWith(
+            expectedYearMonth
+        )
+        expect(
+            mockStorageService.writeLastViewedYearMonthToStorage
+        ).toHaveBeenCalledWith(expectedYearMonth)
     }))
 })
