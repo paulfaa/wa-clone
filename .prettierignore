@@ -5,6 +5,7 @@
 .browserslistrc
 
 src/assets/
+cypress/downloads
 # Prettier keeps adding breaking extra comma to ngClass
 src/app/message/message.component.html
 
