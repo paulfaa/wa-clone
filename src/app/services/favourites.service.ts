@@ -22,8 +22,7 @@ export class FavouritesService {
             const favourites =
                 this.storageService.readFavouritesMapFromStorage()
             if (favourites != null) {
-                this.favouritesMap =
-                    this.storageService.readFavouritesMapFromStorage()!
+                this.favouritesMap = favourites
                 console.log('loaded stored favourites for ' + favourites)
             } else {
                 console.log('no saved data found')

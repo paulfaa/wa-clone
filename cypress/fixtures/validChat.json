@@ -1,0 +1,27 @@
+{
+    "key": "user@s.whatsapp.net",
+    "contactName": "User",
+    "messages": [
+        {
+            "id": "msg1",
+            "timestamp": "2024-12-20T19:24:04Z",
+            "fromMe": false,
+            "type": "text",
+            "text": "First message!"
+        },
+        {
+            "id": "msg2",
+            "timestamp": "2024-12-20T20:27:55Z",
+            "fromMe": true,
+            "type": "text",
+            "text": "More message contents!"
+        },
+        {
+            "id": "msg3",
+            "timestamp": "2025-12-20T20:27:55Z",
+            "fromMe": true,
+            "type": "text",
+            "text": "This should not be visible by default"
+        }
+    ]
+}
