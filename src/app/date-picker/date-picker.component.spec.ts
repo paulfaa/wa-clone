@@ -147,8 +147,6 @@ describe('DatePickerComponent', () => {
                 tab: { textLabel: 'March' } as any,
                 index: 2,
             }
-            //component['selectedYear'] = 2000
-            //component['selectedMonth'] = 1
             spyOn(component.yearMonthSelectEvent, 'emit')
 
             //Act

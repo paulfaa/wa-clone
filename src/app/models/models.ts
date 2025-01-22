@@ -29,9 +29,10 @@ export interface WhatsappMessage {
     quotedMessageId?: string
     quotedTimestamp?: string
     isFavourite?: boolean
+    quote?: any
 }
 
-interface BaseMessage {
+export interface BaseMessage {
     timestamp: string
     id: string
     fromMe: boolean
@@ -42,25 +43,25 @@ interface BaseMessage {
     quote?: Quote
 }
 
-interface TextMessage extends BaseMessage {
+export interface TextMessage extends BaseMessage {
     text: string
 }
 
-interface LinkMessage extends BaseMessage {
+export interface LinkMessage extends BaseMessage {
     link: string
     caption?: string
 }
 
-interface LocationMessage extends BaseMessage {
+export interface LocationMessage extends BaseMessage {
     location: string
 }
 
-interface ImageMessage extends BaseMessage {
+export interface ImageMessage extends BaseMessage {
     filename: string
     caption?: string
 }
 
-interface AudioMessage extends BaseMessage {
+export interface AudioMessage extends BaseMessage {
     filename: string
     duration: number
 }

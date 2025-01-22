@@ -16,6 +16,17 @@ export default class DateUtils {
         return { year, month }
     }
 
+    static createYearMonthFromTimestamp(timestamp: string): YearMonth {
+        const date = new Date(timestamp)
+        const year = date.getFullYear()
+        const month = this.getActualMonth(date)
+        if (year && month) {
+            return { year, month }
+        } else {
+            throw new Error(`Invalid timestamp: ${timestamp}`)
+        }
+    }
+
     static generateYearMonthKey(date: Date): string {
         const year = date.getFullYear()
         const month = this.getActualMonth(date)
@@ -26,7 +37,7 @@ export default class DateUtils {
         return `${yearMonth.year}-${yearMonth.month}`
     }
 
-    static generateYearMonthFromKey(yearMonthKey: string): YearMonth {
+    static createYearMonthFromKey(yearMonthKey: string): YearMonth {
         const parts = yearMonthKey.split('-')
         const year = Number(parts[0])
         const month = Number(parts[1])

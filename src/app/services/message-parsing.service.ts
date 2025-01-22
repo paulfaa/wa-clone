@@ -7,14 +7,12 @@ import DateUtils from '../util/date-util'
     providedIn: 'root',
 })
 export class MessageParsingService {
-    //public onParseComplete: EventEmitter<ParseEvent> = new EventEmitter<ParseEvent>();
     private yearMonthMap: Map<number, Set<number>>
     private quoteMap: Map<string, Set<WhatsappMessage>>
     private quoteIdsMap: Map<string, Set<string>>
     private messageMap: Map<string, WhatsappMessage[]>
     private filenameRegex: RegExp = /([^\/]+$)/
     chatOwner: string = ''
-    participant: string = ''
     chatMembers: string[]
     isGroupChat: boolean
     messageCount: number
@@ -43,7 +41,7 @@ export class MessageParsingService {
         }
     }
 
-    private populateQuoteMap(quoteId: string, timestamp: string): void {
+    private populateQuoteIdsMap(quoteId: string, timestamp: string): void {
         const date = new Date(timestamp)
         const keyString = DateUtils.generateYearMonthKey(date)
         const storedQuotes = this.quoteIdsMap.get(keyString)
@@ -72,12 +70,6 @@ export class MessageParsingService {
         }
         return false
     }
-
-    //parse messages in reverse order
-    //foreach
-    //if current message has quoteId/timestamp
-    //add messageId of current message to map
-    //
 
     private populateYearMonthMap(yearMonthArrray: YearMonth[]): void {
         yearMonthArrray.forEach((yearMonth: YearMonth) => {
@@ -131,19 +123,23 @@ export class MessageParsingService {
                 msg.filename = this.formatFilename(msg.filename)
             }
             if (msg.quotedMessageId) {
-                this.populateQuoteMap(msg.quotedMessageId, msg.quotedTimestamp!)
+                this.populateQuoteIdsMap(
+                    msg.quotedMessageId,
+                    msg.quotedTimestamp!
+                )
             }
             this.populateMessageMap(msg)
         })
         const yearMonthArray: YearMonth[] = []
         const keys = this.messageMap.keys()
         for (const key of keys) {
-            const yearDate = DateUtils.generateYearMonthFromKey(key)
-            yearMonthArray.push(yearDate)
+            const yearMonth = DateUtils.createYearMonthFromKey(key)
+            yearMonthArray.push(yearMonth)
         }
         this.populateYearMonthMap(yearMonthArray)
         this.messageService.addMessages(this.messageMap)
-        this.messageMap = new Map<string, WhatsappMessage[]>() //clear map once data has been passed to messageService
+        //clear map once data has been passed to messageService
+        this.messageMap = new Map<string, WhatsappMessage[]>()
     }
 
     public getAllChatMembers(members: string[]): string[] {
@@ -154,7 +150,6 @@ export class MessageParsingService {
                 m.push(member)
             }
         }
-
         if (m.length > 2) {
             this.isGroupChat = true
         }

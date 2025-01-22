@@ -1,85 +1,101 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MessageParsingService } from '../services/message-parsing.service';
-import { MessageService } from '../services/message.service';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
+import {
+    MatDialogModule,
+    MatDialogRef,
+    MAT_DIALOG_DATA,
+} from '@angular/material/dialog'
 
-import { FavouritesDialogComponent } from './favourites-dialog.component';
+import { FavouritesDialogComponent } from './favourites-dialog.component'
+import { sampleMessage1, sampleMessage2 } from '../test/testMessages'
+import { StorageService } from '../services/storage.service'
+import { By } from '@angular/platform-browser'
 
 describe('FavouritesDialogComponent', () => {
-  let component: FavouritesDialogComponent;
-  let fixture: ComponentFixture<FavouritesDialogComponent>;
-  let mockMessageService: jasmine.SpyObj<MessageService>;
-  let mockMessageParsingService: jasmine.SpyObj<MessageParsingService>;
-  let mockMatDialogRef: jasmine.SpyObj<MatDialogRef<FavouritesDialogComponent>>;
-  let mockMatDialogData: any;
+    let component: FavouritesDialogComponent
+    let fixture: ComponentFixture<FavouritesDialogComponent>
+    let mockStorageService: jasmine.SpyObj<StorageService>
+    let mockMatDialogRef: jasmine.SpyObj<
+        MatDialogRef<FavouritesDialogComponent>
+    >
+    let mockMatDialogData: any
 
-  mockMessageService = jasmine.createSpyObj('mockMessageService', ['']);
-  mockMessageParsingService = jasmine.createSpyObj('mockMessageParsingService', ['']);
-  mockMatDialogRef = jasmine.createSpyObj('mockMatDialogRef', ['close']);
-  mockMatDialogData = {};
+    mockStorageService = jasmine.createSpyObj('mockMessageParsingService', [
+        'getFileName',
+    ])
+    mockMatDialogRef = jasmine.createSpyObj('mockMatDialogRef', ['close'])
+    mockMatDialogData = {}
+    const mockFavourites = [sampleMessage1, sampleMessage2]
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MatDialogModule],
-      declarations: [ FavouritesDialogComponent ],
-      providers: [{ provide: MessageService, useValue: mockMessageService },
-                  { provide: MatDialogRef, useValue: mockMatDialogRef },
-                  { provide: MessageParsingService, useValue: mockMessageParsingService },
-                  { provide: MAT_DIALOG_DATA, useValue: mockMatDialogData }
-      ]
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [MatDialogModule],
+            declarations: [FavouritesDialogComponent],
+            providers: [
+                { provide: MatDialogRef, useValue: mockMatDialogRef },
+                { provide: StorageService, useValue: mockStorageService },
+                { provide: MAT_DIALOG_DATA, useValue: mockMatDialogData },
+            ],
+        }).compileComponents()
+
+        fixture = TestBed.createComponent(FavouritesDialogComponent)
+        component = fixture.componentInstance
+        fixture.detectChanges()
     })
-    .compileComponents();
 
-    fixture = TestBed.createComponent(FavouritesDialogComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy()
+    })
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    describe('ngOnInit()', () => {
+        it('sets name to that of the messageParsingService', () => {
+            //Arrange
+            const fileName = 'chat.json'
+            mockStorageService.getFileName.and.returnValue(fileName)
 
-  describe('ngOnInit()', () => {
-    it('sets name to that of the messageParsingService', () => {
-      //Arrange
-      const testName = "User1"
-      mockMessageParsingService.participant = testName;
+            //Act
+            component.ngOnInit()
 
-      //Act
-      component.ngOnInit();
+            //Assert
+            expect(component.fileName).toBe(fileName)
+        })
+    })
 
-      //Assert
-      expect(component.name).toEqual(testName);
-    });
-  });
+    describe('closeDialog()', () => {
+        it('closes the dialog', () => {
+            //Act
+            component.closeDialog()
 
-  describe('closeDialog()', () => {
-    it('closes the dialog', () => {
-      //Act
-      component.closeDialog();
+            //Assert
+            expect(mockMatDialogRef.close).toHaveBeenCalled
+        })
+    })
 
-      //Assert
-      expect(mockMatDialogRef.close).toHaveBeenCalled;
-    });
-  });
+    describe('the dialog content', () => {
+        it('displays each of the favourited messages', () => {
+            //Arrange
+            component.favourites = mockFavourites
 
-  describe('the dialog content', () => {
-    it('displays each of the favourited messages', () => {
-      //Arrange
-      
-      //Act
+            //Act
+            component.ngOnInit()
 
-      //Assert
-  
-    });
-    it('displays a message if no messages are favourited', () => {
-      //Arrange
-      component.favourites = []
+            //Assert
+        })
 
-      //Act
+        it('displays a message if no messages are favourited', () => {
+            //Arrange
+            const expectedMessage = 'No messages are favourited!'
+            component.favourites = []
 
-      //Assert
-      //expect(fixture.debugElement.query())
-    });
-  });
-});
+            // Act
+            component.ngOnInit()
+            const content = fixture.debugElement.query(
+                By.css('mat-dialog-content div')
+            )
+
+            // Assert
+            expect(content.nativeElement.textContent.trim()).toBe(
+                expectedMessage
+            )
+        })
+    })
+})

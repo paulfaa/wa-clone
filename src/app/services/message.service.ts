@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs'
 import { WhatsappMessage, YearMonth } from '../models/models'
 import DateUtils from '../util/date-util'
 import { FavouritesService } from './favourites.service'
+import { isEqual } from 'lodash'
 
 @Injectable()
 export class MessageService {
@@ -53,6 +54,41 @@ export class MessageService {
                 filteredMessages.forEach((message) => {
                     var isFav = favouritedIds!.has(message.id)
                     message.isFavourite = isFav
+                    if (message.quotedMessageId && message.quotedTimestamp) {
+                        if (
+                            isEqual(
+                                DateUtils.createYearMonthFromTimestamp(
+                                    message.quotedTimestamp
+                                ),
+                                yearMonth
+                            )
+                        ) {
+                            let left = 0
+                            let right = filteredMessages.length - 1
+                            let found = false
+
+                            while (left <= right) {
+                                var middle = Math.floor((left + right) / 2)
+                                var midDate = filteredMessages[middle].timestamp
+
+                                if (midDate === message.quotedTimestamp) {
+                                    message.quote =
+                                        filteredMessages[middle].text
+                                    found = true
+                                    break
+                                } else if (midDate < message.quotedTimestamp) {
+                                    left = middle + 1
+                                } else {
+                                    right = middle - 1
+                                }
+                            }
+                            if (!found) {
+                                message.quote = `Failed to load quote ${message.quotedMessageId} with date ${message.quotedTimestamp}`
+                            }
+                        } else {
+                            message.quote = `Failed to load quote ${message.quotedMessageId} with date ${message.quotedTimestamp}`
+                        }
+                    }
                 })
                 return filteredMessages
             })

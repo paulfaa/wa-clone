@@ -7,12 +7,16 @@ import { WhatsappMessage, YearMonth } from '../models/models'
 export class StorageService {
     constructor() {}
 
-    private fileName: string | undefined
+    private fileName: string = ''
     private LAST_SELECTED_STORAGE_KEY = '.lastSelectedYearMonth'
     private FAVOURITES_STORAGE_KEY = '.favourites'
 
     public setFileName(fileName: string): void {
         this.fileName = fileName
+    }
+
+    public getFileName(): string {
+        return this.fileName
     }
 
     public writeFavouritesMapToStorage(

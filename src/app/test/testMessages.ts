@@ -40,3 +40,21 @@ export const sampleMessage5: WhatsappMessage = {
     type: MessageType.text,
     text: 'Same day message',
 }
+
+export const sampleQuotedMessage: WhatsappMessage = {
+    id: '51504725-b516-48ac-9bc7-7374c1619bfp',
+    timestamp: '2021-07-14T09:20:00Z',
+    fromMe: true,
+    type: MessageType.text,
+    text: 'Quote contents',
+}
+
+export const sampleQuotingMessage: WhatsappMessage = {
+    id: '51504725-b516-48ac-9bc7-7374c1619bfd',
+    timestamp: '2021-07-14T09:21:00Z',
+    quotedTimestamp: '2021-07-14T09:20:00Z',
+    quotedMessageId: '51504725-b516-48ac-9bc7-7374c1619bfp',
+    fromMe: true,
+    type: MessageType.text,
+    text: 'This message quotes another',
+}

@@ -1,13 +1,11 @@
-<h3 mat-dialog-title>
-    {{ name && name.length >= 1 ? name + ' - ' : '' }} Favourites
-</h3>
+<h3 mat-dialog-title>{{ fileName }} Favourites</h3>
 
 <mat-dialog-content>
     <div *ngIf="favourites.length; else noFavourites">
         <mat-card *ngFor="let msg of this.favourites">
             <mat-card-header>
                 <mat-card-title>{{
-                    msg.fromMe === true ? 'Me' : this.name
+                    msg.fromMe === true ? 'Me' : 'Them'
                 }}</mat-card-title>
                 <mat-card-subtitle>{{
                     msg.timestamp | date: 'medium'

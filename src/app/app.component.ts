@@ -33,8 +33,14 @@ export class AppComponent implements OnInit {
     }
 
     public openFavouritesDialog(): void {
-        var savedFavourites = Array.from(
-            this.favouritesService.getAllFavourites()
+        const savedFavourites = Array.from(
+            this.favouritesService
+                .getAllFavourites()
+                .sort(
+                    (a, b) =>
+                        new Date(b.timestamp).getTime() -
+                        new Date(a.timestamp).getTime()
+                )
         )
         this.dialog.open(FavouritesDialogComponent, {
             width: '80%',

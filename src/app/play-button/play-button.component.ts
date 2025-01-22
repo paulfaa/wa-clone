@@ -26,6 +26,7 @@ export class PlayButtonComponent implements OnChanges {
     }
 
     ngOnChanges(): void {
+        // use property binding instead... [duration]="durationInput"
         this.duration = this.durationInput
     }
 
