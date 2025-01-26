@@ -18,6 +18,11 @@ describe('File upload', () => {
         cy.visit('/')
     })
 
+    it('displays a loading spinner while the file is being parsed', () => {
+        cy.get(fileInput).selectFile(validChatFilePath, { force: true })
+        cy.get('.loading-spinner').should('exist')
+    })
+
     it('should parse the contents of a valid file, and redirect to the view page', () => {
         cy.get(fileInput).selectFile(validChatFilePath, { force: true })
         cy.url().should('include', '/view')

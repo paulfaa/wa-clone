@@ -1,21 +1,34 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link
+    href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet"
+/>
 
-<!-- <loading-spinner value =$progressValue | async></loading-spinner> -->
+<div class="loading-spinner" *ngIf="isLoading">
+    <mat-spinner></mat-spinner>
+</div>
 
-<input type="file" accept=".txt,.json" class="file-input"
-       (change)="onFileSelected($event)" #fileUpload>
+<input
+    type="file"
+    accept=".txt,.json"
+    class="file-input"
+    (change)="onFileSelected($event)"
+    #fileUpload
+/>
 
 <div class="file-upload">
+    Select a .txt or .json file:
 
-   Select a .txt or .json file:
-
-    <button mat-mini-fab color="primary" class="upload-btn"
-      (click)="fileUpload.click()">
+    <button
+        mat-mini-fab
+        color="primary"
+        class="upload-btn"
+        (click)="fileUpload.click()"
+    >
         <mat-icon>attach_file</mat-icon>
     </button>
 </div>
 
 <div *ngIf="showError" class="upload-error">
-  <mat-icon>warning_amber</mat-icon>
-  Unable to process file {{fileName}}
+    <mat-icon>warning_amber</mat-icon>
+    Unable to process file {{ fileName }}
 </div>

@@ -13,6 +13,7 @@ import { StorageService } from '../services/storage.service'
 export class FileUploadComponent {
     fileName: string | undefined
     showError: boolean = false
+    isLoading: boolean = false
 
     constructor(
         private messageParsingService: MessageParsingService,
@@ -41,6 +42,7 @@ export class FileUploadComponent {
     public async onFileSelected(event: any) {
         const file: File = event.target.files[0]
         if (file) {
+            this.isLoading = true
             console.log(file.type + ' uploaded')
             this.fileName = file.name
             const formData = new FormData()
@@ -56,6 +58,8 @@ export class FileUploadComponent {
             } catch (error) {
                 this.showError = true
                 console.error('Error parsing uploaded file: ', error)
+            } finally {
+                this.isLoading = false
             }
         }
     }

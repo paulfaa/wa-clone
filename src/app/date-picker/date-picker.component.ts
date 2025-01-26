@@ -1,5 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { MatTabChangeEvent } from '@angular/material/tabs'
+import {
+    Component,
+    EventEmitter,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core'
+import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs'
 import { MessageParsingService } from '../services/message-parsing.service'
 import { YearMonth } from '../models/models'
 import DateUtils from '../util/date-util'
@@ -18,6 +24,8 @@ interface TabIndexes {
 export class DatePickerComponent implements OnInit {
     @Output() yearMonthSelectEvent: EventEmitter<YearMonth> = new EventEmitter()
     //@Output() mapCreatedEvent: EventEmitter<Date> = new EventEmitter();
+
+    @ViewChild('yearTabs') yearTabs!: MatTabGroup
 
     protected yearMonthMap: Map<number, Set<number>>
 
@@ -49,19 +57,24 @@ export class DatePickerComponent implements OnInit {
             selectedMonth
         )
         this.yearMonthSelectEvent.emit(selectedYearMonth)
-        console.debug('onYearSelected: ', tabChangeEvent.tab.textLabel)
         this.storageService.writeLastViewedYearMonthToStorage(selectedYearMonth)
+        console.debug('onYearSelected: ', tabChangeEvent.tab.textLabel)
     }
 
     public onMonthSelected(tabChangeEvent: MatTabChangeEvent): void {
+        const selectedIndex = this.yearTabs.selectedIndex
+        const yearTab = this.yearTabs._tabs.toArray()[selectedIndex!]
+        const selectedYear = parseInt(yearTab.textLabel)
         const selectedMonth = DateUtils.getActualMonth(
             new Date(Date.parse(tabChangeEvent.tab.textLabel + ' 1, 2000'))
         )
-        //const selectedYear = get tab.textLabel of currently selected outer tab
-        const selectedYearMonth = DateUtils.createYearMonth(2000, selectedMonth)
+        const selectedYearMonth = DateUtils.createYearMonth(
+            selectedYear,
+            selectedMonth
+        )
         this.yearMonthSelectEvent.emit(selectedYearMonth)
-        console.debug('onMonthSelected: ', tabChangeEvent.tab.textLabel)
         this.storageService.writeLastViewedYearMonthToStorage(selectedYearMonth)
+        console.debug('onMonthSelected: ', tabChangeEvent.tab.textLabel)
     }
 
     private getFirstMonth(year: number): number {
