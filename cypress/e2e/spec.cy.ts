@@ -5,6 +5,8 @@ const validChatFilePath = 'cypress/fixtures/validChat.json'
 const invalidChatFilePath = 'cypress/fixtures/invalidChat.json'
 const firstMessage = 'First message!'
 const fileInput = 'input[type="file"]'
+const imageFilename = 'testImage.jpg'
+const missingImageFilename = 'fileDoesNotExist.jpg'
 
 describe('Navigating to the base URL', () => {
     it('redirects to /upload by default', () => {
@@ -67,6 +69,22 @@ describe('Chat view component', () => {
         cy.contains(firstMessage).should('not.exist')
         cy.contains('This should not be visible by default')
     })
+
+    it('displays images if the corresponding file exists locally', () => {
+        cy.visit('/')
+        cy.get(fileInput).selectFile(validChatFilePath, { force: true })
+        cy.url().should('include', '/view')
+        cy.contains('2025').click()
+        cy.get('img').should('have.attr', 'src').and('include', imageFilename)
+    })
+
+    it('displays the filename of an image if it does not exist locally', () => {
+        cy.visit('/')
+        cy.get(fileInput).selectFile(validChatFilePath, { force: true })
+        cy.url().should('include', '/view')
+        cy.contains('2026').click()
+        cy.contains(missingImageFilename)
+    })
 })
 
 describe('Favourites', () => {
@@ -111,17 +129,17 @@ describe('Favourites localstorage', () => {
             timestamp: '2024-12-20T19:24:04Z',
             fromMe: false,
             type: MessageType.text,
-            text: 'First message!',
+            text: 'First message!'
         }
         const savedMap = new Map<string, Map<string, WhatsappMessage>>([
             [
                 '2024-12',
-                new Map<string, WhatsappMessage>([['msg1', savedMessage]]),
-            ],
+                new Map<string, WhatsappMessage>([['msg1', savedMessage]])
+            ]
         ])
         const serializedData = Array.from(savedMap, ([key, innerMap]) => [
             key,
-            Array.from(innerMap),
+            Array.from(innerMap)
         ])
         window.localStorage.setItem(
             'validChat.json.favourites',

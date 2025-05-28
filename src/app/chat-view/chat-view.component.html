@@ -3,10 +3,12 @@
 <app-date-picker (yearMonthSelectEvent)="updateYearMonthFilter($event)">
 </app-date-picker>
 
-<div class="message-container">
-    <app-message
+<div class="messages-container">
+    <app-message-container
         *ngFor="let message of this._serviceSubscription | async"
         (toggleFavouriteEvent)="toggleFavourite($event)"
-        [messageInput]="message">
-    </app-message>
+        [messageInput]="message"
+    >
+        ></app-message-container
+    >
 </div>

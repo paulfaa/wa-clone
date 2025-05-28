@@ -2,7 +2,7 @@ import {
     ChangeDetectionStrategy,
     Component,
     HostListener,
-    OnInit,
+    OnInit
 } from '@angular/core'
 import { Observable } from 'rxjs'
 import { MessageService } from '../services/message.service'
@@ -16,7 +16,7 @@ import { StorageService } from '../services/storage.service'
     selector: 'app-chat-view',
     templateUrl: './chat-view.component.html',
     styleUrls: ['./chat-view.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChatViewComponent implements OnInit {
     public _serviceSubscription: Observable<WhatsappMessage[]> | undefined
@@ -56,12 +56,9 @@ export class ChatViewComponent implements OnInit {
     }
 
     public toggleFavourite(eventMessage: WhatsappMessage): void {
-        const id = eventMessage.id!
-        if (this.favouritesService.isFavourite(eventMessage)) {
-            this.favouritesService.removeFromFavourites(eventMessage)
-        } else {
-            this.favouritesService.addToFavourites(eventMessage)
-        }
+        this.favouritesService.isFavourite(eventMessage)
+            ? this.favouritesService.removeFromFavourites(eventMessage)
+            : this.favouritesService.addToFavourites(eventMessage)
     }
 
     private getFirstYearMonth(): YearMonth {

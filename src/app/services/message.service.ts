@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, Observable, map } from 'rxjs'
+import { BehaviorSubject, Observable, map, timestamp } from 'rxjs'
 import { WhatsappMessage, YearMonth } from '../models/models'
 import DateUtils from '../util/date-util'
 import { FavouritesService } from './favourites.service'
@@ -72,8 +72,7 @@ export class MessageService {
                                 var midDate = filteredMessages[middle].timestamp
 
                                 if (midDate === message.quotedTimestamp) {
-                                    message.quote =
-                                        filteredMessages[middle].text
+                                    message.quote = filteredMessages[middle]
                                     found = true
                                     break
                                 } else if (midDate < message.quotedTimestamp) {
@@ -83,15 +82,28 @@ export class MessageService {
                                 }
                             }
                             if (!found) {
-                                message.quote = `Failed to load quote ${message.quotedMessageId} with date ${message.quotedTimestamp}`
+                                message.quote = this.buildErrorQuote(message)
                             }
                         } else {
-                            message.quote = `Failed to load quote ${message.quotedMessageId} with date ${message.quotedTimestamp}`
+                            message.quote = this.buildErrorQuote(message)
                         }
                     }
                 })
                 return filteredMessages
             })
         )
+    }
+
+    private buildErrorQuote(message: WhatsappMessage): WhatsappMessage {
+        return {
+            id: '',
+            fromMe: message.fromMe,
+            type: 'text',
+            text: `Failed to load quote ${message.quotedMessageId} with date ${message.quotedTimestamp}`,
+            timestamp: message.timestamp,
+            isFavourite: false,
+            quotedMessageId: '',
+            quotedTimestamp: ''
+        } as WhatsappMessage
     }
 }

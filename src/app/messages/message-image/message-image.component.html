@@ -1,0 +1,14 @@
+<img
+    class="message-image"
+    *ngIf="messageInput.filename && !imageError"
+    [src]="this.src"
+    loading="lazy"
+    (error)="onImageError($event)"
+/>
+<div *ngIf="messageInput.caption" class="caption-text">
+    {{ messageInput.caption }}
+</div>
+
+<div *ngIf="imageError" class="image-error">
+    {{ messageInput.filename }} could not be found at {{ src }}
+</div>

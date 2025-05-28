@@ -1,0 +1,48 @@
+<div
+    class="message-bubble"
+    [ngClass]="{
+        'own-message': messageInput.fromMe,
+        'other-message': !messageInput.fromMe,
+        favourite: isFavourite,
+    }"
+    (click)="toggleFavourite()"
+>
+    <app-message-container
+        *ngIf="messageInput.quote"
+        [messageInput]="messageInput.quote"
+        [isQuote]="true"
+    ></app-message-container>
+
+    <app-message-text
+        *ngIf="messageInput.type === 'text'"
+        [messageInput]="messageInput"
+    ></app-message-text>
+
+    <app-message-image
+        class="image-container"
+        *ngIf="messageInput.type === 'image'"
+        [messageInput]="messageInput"
+    ></app-message-image>
+
+    <app-message-audio
+        *ngIf="messageInput.type === 'audio'"
+        [messageInput]="messageInput"
+    ></app-message-audio>
+
+    <!-- <app-message-link
+  *ngSwitchCase="'link'"
+  [message]="messageInput"
+  ></app-message-link> -->
+
+    <app-message-location
+        *ngIf="messageInput.type === 'location'"
+        [messageInput]="messageInput"
+    ></app-message-location>
+
+    <div
+        class="message-date"
+        [title]="messageInput.timestamp | date: 'dd/MM/yyyy'"
+    >
+        {{ messageInput.timestamp | date: 'HH:mm' }}
+    </div>
+</div>

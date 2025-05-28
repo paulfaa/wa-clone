@@ -22,6 +22,22 @@
             "fromMe": true,
             "type": "text",
             "text": "This should not be visible by default"
+        },
+        {
+            "id": "msg4",
+            "timestamp": "2025-12-24T20:27:55Z",
+            "fromMe": true,
+            "type": "image",
+            "filename": "/storage/emulated/0/WhatsApp/Media/WhatsApp Images/testImage.jpg",
+            "caption": "This is a caption"
+        },
+        {
+            "id": "msg4",
+            "timestamp": "2026-12-24T20:27:55Z",
+            "fromMe": true,
+            "type": "image",
+            "filename": "/storage/emulated/0/WhatsApp/Media/WhatsApp Images/fileDoesNotExist.jpg",
+            "caption": "This is a caption"
         }
     ]
 }

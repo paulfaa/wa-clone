@@ -1,20 +1,35 @@
 {
-            "key": "userkey",
-            "contactName": "Test",
-            "messages": [
-                {
-                    "timestamp": "2014-12-11T17:00:12Z",
-                    "id": "35A8984427489ACE786A9F5DFA81E7",
-                    "fromMe": true,
-                    "type": "text",
-                    "text": "Old Message"
-                },
-                {
-                    "timestamp": "2020-10-11T17:00:12Z",
-                    "id": "35A8984427489ACE786A9F5DFA81E7",
-                    "fromMe": true,
-                    "type": "text",
-                    "text": "Hello! 😛"
+    "key": "userkey",
+    "contactName": "Test",
+    "messages": [
+        {
+            "timestamp": "2014-12-11T17:00:12Z",
+            "id": "35A8984427489ACE786A9F5DFA81E7",
+            "fromMe": true,
+            "type": "text",
+            "text": "Old Message"
+        },
+        {
+            "timestamp": "2020-10-11T17:00:12Z",
+            "id": "35A8984427489ACE786A9F5DFA81E7",
+            "fromMe": true,
+            "type": "text",
+            "text": "Hello! 😛"
+        },
+        {
+            "timestamp": "2020-10-15T17:00:12Z",
+            "id": "35A8984427489ACE786A9F5DFA81E0",
+            "fromMe": false,
+            "type": "link",
+            "link": "This message has a link http://www.google.com/ in the middle."
+        },
+        {
+            "timestamp": "2020-10-15T17:00:12Z",
+            "id": "35A4G3WHWU3IHSIUHG4551E0",
+            "fromMe": true,
+            "type": "image",
+            "filename": "/storage/emulated/0/WhatsApp/Media/WhatsApp Images/testImage.jpg",
+            "caption": "This is a caption"
         }
     ]
 }

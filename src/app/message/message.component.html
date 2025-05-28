@@ -7,8 +7,9 @@
     class="messageBubble"
     (click)="toggleFavourite()"
 >
+
     <img
-        *ngIf="this.filename"
+        *ngIf="this.filename"   
         [src]="
             fromMe ? 'assets/sent/' + filename : 'assets/received/' + filename
         "

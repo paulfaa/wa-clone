@@ -1,29 +1,35 @@
-html {   background-color: rgb(226, 217, 206); }
+html {
+    background-color: rgb(226, 217, 206);
+}
 body {
     background-color: green;
-  }
-h1{
-  font-family: Helvetica;
 }
-a:link { 
-  text-decoration: none;
+h1 {
+    font-family: Helvetica;
 }
-a:visited { 
-  text-decoration: none;
-  color: inherit;
+a:link {
+    text-decoration: none;
+    color: black;
 }
-a:hover { 
-  text-decoration: none;
+a:visited {
+    text-decoration: none;
+    color: inherit;
 }
-a:active { 
-  text-decoration: none;
+a:hover {
+    text-decoration: none;
+}
+a:active {
+    text-decoration: none;
 }
 .spacer {
-  flex: 1 1 auto;
+    flex: 1 1 auto;
 }
 .app-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background-color: rgb(77, 88, 99);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #065e52;
+}
+.favourites-button {
+    background-color: #065e52;
 }

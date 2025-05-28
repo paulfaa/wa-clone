@@ -29,7 +29,7 @@ export interface WhatsappMessage {
     quotedMessageId?: string
     quotedTimestamp?: string
     isFavourite?: boolean
-    quote?: any
+    quote?: WhatsappMessage
 }
 
 export interface BaseMessage {

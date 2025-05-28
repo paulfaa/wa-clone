@@ -1,0 +1,53 @@
+.message-bubble {
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;
+    margin: 3px;
+    border-radius: 10px;
+    min-height: 40px;
+    padding-bottom: 10px;
+}
+
+.own-message {
+    background-color: #dcffbb;
+    align-self: flex-end;
+}
+
+.other-message {
+    background-color: #ffffff;
+    align-self: flex-start;
+}
+
+.own-message.favourite {
+    background-color: rgb(124, 154, 68);
+}
+
+.other-message.favourite {
+    background-color: rgb(169, 172, 164);
+}
+
+.message-date {
+    color: gray;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    font-size: small;
+    position: relative;
+    right: 10px;
+    bottom: -9px;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+}
+
+:host {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.message-bubble.quote {
+    opacity: 0.8;
+}
