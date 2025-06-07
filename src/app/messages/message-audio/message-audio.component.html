@@ -1,6 +1,9 @@
-<div *ngIf="this.messageInput.duration">
+<div *ngIf="this.messageInput.duration; else error">
     <app-play-button
         [durationInput]="messageInput.duration"
         [fileNameInput]="messageInput.filename!"
     ></app-play-button>
 </div>
+<ng-template #error>
+    <div class="error-message">Audio data missing.</div>
+</ng-template>

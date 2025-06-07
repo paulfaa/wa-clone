@@ -13,10 +13,14 @@ export class MessageImageComponent implements OnInit {
     imageError: boolean = false
 
     ngOnInit(): void {
-        const basePath = this.messageInput.fromMe
-            ? 'assets/sent/'
-            : 'assets/received/'
-        this.src = `${basePath}${this.messageInput.filename}`
+        if (this.messageInput.filename) {
+            const basePath = this.messageInput.fromMe
+                ? 'assets/sent/'
+                : 'assets/received/'
+            this.src = `${basePath}${this.messageInput.filename}`
+        } else {
+            this.imageError = true
+        }
     }
 
     onImageError(event: Event): void {

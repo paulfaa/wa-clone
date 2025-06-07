@@ -9,6 +9,6 @@
     {{ messageInput.caption }}
 </div>
 
-<div *ngIf="imageError" class="image-error">
-    {{ messageInput.filename }} could not be found at {{ src }}
+<div *ngIf="imageError" class="image-error" [title]="src">
+    Failed to load image {{ messageInput.filename }}
 </div>

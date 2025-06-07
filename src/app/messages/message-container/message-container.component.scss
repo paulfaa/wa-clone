@@ -5,7 +5,8 @@
     margin: 3px;
     border-radius: 10px;
     min-height: 40px;
-    padding-bottom: 10px;
+    box-sizing: border-box;
+    //min width 20px
 }
 
 .own-message {
@@ -27,14 +28,12 @@
 }
 
 .message-date {
+    align-self: flex-end;
     color: gray;
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
     font-size: small;
-    position: relative;
-    right: 10px;
-    bottom: -9px;
+    padding-right: 7px;
+    padding-bottom: 2px;
+    opacity: 0.8;
 }
 
 .image-container {
