@@ -29,6 +29,7 @@ testem.log
 typings/
 .angular/
 cypress/downloads
+server/favourites/
 
 # e2e
 e2e/*.js

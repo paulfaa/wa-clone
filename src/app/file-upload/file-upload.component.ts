@@ -8,7 +8,7 @@ import { StorageService } from '../services/storage.service'
 @Component({
     selector: 'app-file-upload',
     templateUrl: './file-upload.component.html',
-    styleUrls: ['./file-upload.component.scss'],
+    styleUrls: ['./file-upload.component.scss']
 })
 export class FileUploadComponent {
     fileName: string | undefined
@@ -51,7 +51,7 @@ export class FileUploadComponent {
             console.log(this.fileName)
             try {
                 this.storageService.setFileName(this.fileName)
-                this.favouritesService.initStorage(this.fileName)
+                this.favouritesService.initFavourites(this.fileName)
                 this.messageParsingService.parseJsonString(fileContent)
                 this.showError = false
                 this.router.navigate(['view'])

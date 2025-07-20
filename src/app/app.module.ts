@@ -29,6 +29,7 @@ import { MessageImageComponent } from './messages/message-image/message-image.co
 import { MessageAudioComponent } from './messages/message-audio/message-audio.component'
 import { MessageLocationComponent } from './messages/message-location/message-location.component'
 import { MessageLinkComponent } from './messages/message-link/message-link.component'
+import { HttpClientModule } from '@angular/common/http'
 
 @NgModule({
     declarations: [
@@ -62,7 +63,8 @@ import { MessageLinkComponent } from './messages/message-link/message-link.compo
         MatProgressSpinnerModule,
         MatToolbarModule,
         MatCardModule,
-        MatTabsModule
+        MatTabsModule,
+        HttpClientModule
     ],
     providers: [MessageService],
     bootstrap: [AppComponent]

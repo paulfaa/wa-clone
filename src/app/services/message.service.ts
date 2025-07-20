@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { BehaviorSubject, Observable, map, timestamp } from 'rxjs'
+import { BehaviorSubject, Observable, map, combineLatest, filter } from 'rxjs'
 import { WhatsappMessage, YearMonth } from '../models/models'
 import DateUtils from '../util/date-util'
 import { FavouritesService } from './favourites.service'
@@ -33,14 +33,18 @@ export class MessageService {
         yearMonth: YearMonth
     ): Observable<WhatsappMessage[]> {
         const keyString = DateUtils.yearMonthToString(yearMonth)
-        const favouritedIds = new Set(
-            this.favouritesService.getFavouritedIds(yearMonth)
-        )
-
         console.log('Filtering for', yearMonth)
 
-        return this.$allMessages.pipe(
-            map((messagesMap: Map<string, WhatsappMessage[]>) => {
+        return combineLatest([
+            this.$allMessages,
+            this.favouritesService.favouritesMap$,
+            this.favouritesService.favouritesInitialized$
+        ]).pipe(
+            filter(([_, __, init]) => !!init),
+            map(([messagesMap, favouritesMap]) => {
+                const favouritedIds = new Set(
+                    favouritesMap.get(keyString)?.keys() || []
+                )
                 const filteredMessages = messagesMap
                     .get(keyString)!
                     .filter((message) => {
