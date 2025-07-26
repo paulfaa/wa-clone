@@ -8,7 +8,7 @@
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve --proxy-config proxy.conf.json",
+        "start": "concurrently \"ng serve --proxy-config proxy.conf.json\" \"node server/server.js\"",
         "build": "ng build",
         "watch": "ng build --watch --configuration development",
         "test": "ng test",
@@ -47,6 +47,7 @@
         "@types/jasmine": "~4.0.0",
         "@typescript-eslint/eslint-plugin": "5.43.0",
         "@typescript-eslint/parser": "5.43.0",
+        "concurrently": "^9.2.0",
         "eslint": "^8.28.0",
         "husky": "^8.0.0",
         "jasmine-core": "~4.3.0",

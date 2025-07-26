@@ -22,6 +22,7 @@ export interface WhatsappMessage {
     type: MessageType
     text?: string
     duration?: number
+    image?: string
     filename?: string
     caption?: string
     link?: string
@@ -58,6 +59,7 @@ export interface LocationMessage extends BaseMessage {
 
 export interface ImageMessage extends BaseMessage {
     filename: string
+    image?: string
     caption?: string
 }
 

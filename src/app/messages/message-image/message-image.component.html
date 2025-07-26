@@ -1,7 +1,7 @@
 <img
     class="message-image"
-    *ngIf="messageInput.filename && !imageError"
-    [src]="this.src"
+    *ngIf="(messageInput.filename || messageInput.image) && !imageError"
+    [src]="src"
     loading="lazy"
     (error)="onImageError($event)"
 />
